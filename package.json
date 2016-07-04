@@ -1,0 +1,27 @@
+{
+  "name": "meal-calculator",
+  "version": "1.0.0",
+  "description": "A meal cost calculator",
+  "main": "index.js",
+  "scripts": {
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jayzamazing/Meal-Calculator.git"
+  },
+  "keywords": [
+    "meal",
+    "calculator",
+    "food",
+    "html",
+    "css",
+    "javascript",
+    "jquery"
+  ],
+  "author": "Adrian J Lopez <adrianjaylopez@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jayzamazing/Meal-Calculator/issues"
+  },
+  "homepage": "https://github.com/jayzamazing/Meal-Calculator#readme"
+}
