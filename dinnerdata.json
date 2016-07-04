@@ -1,1 +1,23 @@
+{
+    "menu items": [{
+        "burger": {
+            "cost": 7.99
+        },
+        "steak": {
+            "cost": 10.99
+        },
+        "ceasar salad": {
+            "cost": 7.99
+        },
+        "chicken fingers": {
+            "cost": 5.99
+        },
+        "soft drink": {
+          "cost": 1.99
+        }
 
+    }],
+    "state tax": "6.5%",
+    "recommended tip": "20%"
+
+}
