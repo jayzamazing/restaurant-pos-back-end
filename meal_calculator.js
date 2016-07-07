@@ -23,11 +23,12 @@ promiseLogging(
 
         ]);
     })
-    .then(function() {promiseLogging(someRestaurant.printTableChecks(2));}
-  );
+    .then(function() {
+        promiseLogging(someRestaurant.printTableChecks(2));
+    });
 /*
-* Function that represents generic store object
-*/
+ * Function that represents generic store object
+ */
 function Store() {
     this.state_tax = 0;
     this.tip = 0;
@@ -40,10 +41,10 @@ function Store() {
 Store.prototype.addStateTax = function(item) {
     //set as promise
     return new Promise(function(resolve, reject) {
-            //set objects tax
-            this.state_tax = parseFloat(item) / 100;
-            //return state tax
-            resolve(this.state_tax);
+        //set objects tax
+        this.state_tax = parseFloat(item) / 100;
+        //return state tax
+        resolve(this.state_tax);
     });
 };
 /*
@@ -54,16 +55,16 @@ Store.prototype.addStateTax = function(item) {
 Store.prototype.addTip = function(item) {
     //set as promise
     return new Promise(function(resolve) {
-            //set this object tip
-            this.tip = parseFloat(item) / 100;
-            //send back tip
-            resolve(this.tip);
+        //set this object tip
+        this.tip = parseFloat(item) / 100;
+        //send back tip
+        resolve(this.tip);
     });
 };
 /*
-* Function that represents restaurant object
-* @param tablenumbers - amount of tables the restaurant has
-*/
+ * Function that represents restaurant object
+ * @param tablenumbers - amount of tables the restaurant has
+ */
 function Restaurant(tableNumbers) {
     //store amount of tables restaurant has
     this.tableNumbers = tableNumbers;
@@ -77,11 +78,11 @@ function Restaurant(tableNumbers) {
 Restaurant.prototype = Object.create(Store.prototype);
 Restaurant.prototype.constructor = Restaurant;
 /*
-* Function to add customers to a table
-* @param tablenumber - specific table number
-* @param customercount - amount of dinners at the table
-* @return resolve - tables data
-*/
+ * Function to add customers to a table
+ * @param tablenumber - specific table number
+ * @param customercount - amount of dinners at the table
+ * @return resolve - tables data
+ */
 Restaurant.prototype.addDinnersToTable = function(tableNumber, customerCount) {
     //store the current context
     var context = this;
@@ -129,49 +130,49 @@ Restaurant.prototype.addGuestOrder = function(tableNumber, customerNumber, custo
     });
 };
 /*
-* Function to print out the tables checks
-* @para tableNumber - table number to print checks for
-* @return resolve - check for the table
-*/
+ * Function to print out the tables checks
+ * @para tableNumber - table number to print checks for
+ * @return resolve - check for the table
+ */
 Restaurant.prototype.printTableChecks = function(tableNumber) {
-  //store current context
-  var context = this;
-  //set as promise
-  return new Promise(function(resolve) {
-    //get certain table numbers individual customer
-    var table = context.floorTables.tables.get('table' + tableNumber);
-    //set header for check
-    var checks = 'Table #' + tableNumber + '\n';
-    //iterate over each dinner
-    table.forEach(function(item, index) {
-      //if item is valid and dinner has dishes
-      if (item && item.dishes.length) {
-        //append the dinner number
-        checks += index + '\n';
-        var total = 0;
-        //iterate over each dish
-        item.dishes.forEach(function(dish) {
-          //append dish
-          checks += dish.description + ' ' + dish.price + '\n';
-          //increment total
-          total += dish.price;
+    //store current context
+    var context = this;
+    //set as promise
+    return new Promise(function(resolve) {
+        //get certain table numbers individual customer
+        var table = context.floorTables.tables.get('table' + tableNumber);
+        //set header for check
+        var checks = 'Table #' + tableNumber + '\n';
+        //iterate over each dinner
+        table.forEach(function(item, index) {
+            //if item is valid and dinner has dishes
+            if (item && item.dishes.length) {
+                //append the dinner number
+                checks += index + '\n';
+                var total = 0;
+                //iterate over each dish
+                item.dishes.forEach(function(dish) {
+                    //append dish
+                    checks += dish.description + ' ' + dish.price + '\n';
+                    //increment total
+                    total += dish.price;
+                });
+                //calculate tax and tip
+                var tax = (total * this.state_tax).toFixed(2);
+                var tip = (total * this.tip).toFixed(2);
+                //append info to checks
+                checks += 'Sub Total $' + total + '\n';
+                checks += 'Sales Tax(' + (this.state_tax * 100) + '%)' + ' ' + tax + '\n';
+                checks += 'Tip(' + (this.tip * 100) + '%)' + ' ' + tip + '\n';
+                //calculate check total
+                total = parseFloat(tax) + parseFloat(tip) + parseFloat(total);
+                //append to checks
+                checks += 'Check Total $' + total + '\n';
+            }
         });
-        //calculate tax and tip
-        var tax = (total * this.state_tax).toFixed(2);
-        var tip = (total * this.tip).toFixed(2);
-        //append info to checks
-        checks += 'Sub Total $' + total + '\n';
-        checks += 'Sales Tax(' + (this.state_tax * 100) + '%)' + ' ' + tax + '\n';
-        checks += 'Tip(' + (this.tip * 100) + '%)' + ' ' + tip + '\n';
-        //calculate check total
-        total = parseFloat(tax) + parseFloat(tip) + parseFloat(total);
-        //append to checks
-        checks += 'Check Total $' + total + '\n';
-      }
+        //return check output
+        resolve(checks);
     });
-    //return check output
-    resolve(checks);
-  });
 };
 /*
  * Function to set the menu items
@@ -205,29 +206,29 @@ Restaurant.prototype.getMenuItems = function(items) {
     });
 };
 /*
-* Function to represent tables object
-*/
+ * Function to represent tables object
+ */
 function Tables() {
     this.tables = new Map();
 }
 /*
-* Function to add a certain amount of tables the restaurant
-*/
+ * Function to add a certain amount of tables the restaurant
+ */
 Tables.prototype.createTables = function() {
     for (var i = 1; i <= this.tableNumbers; i++) {
         this.tables.set('table' + i, new Map());
     }
 };
 /*
-* Function to represent a generic dinner
-*/
+ * Function to represent a generic dinner
+ */
 function Dinner() {
     this.dishes = [];
 }
 /*
-* Function to add dishes to a dinner
-* @param items - dishes to add
-*/
+ * Function to add dishes to a dinner
+ * @param items - dishes to add
+ */
 Dinner.prototype.addDishes = function(items) {
     this.dishes = this.dishes.concat(items);
 };
@@ -251,10 +252,10 @@ function getRestaurantData() {
     });
 }
 /*
-* Function to deal with chain of promises and their logging
-* @param callbacks- functions to perform
-* @return resolve/reject - either data or rejection reason
-*/
+ * Function to deal with chain of promises and their logging
+ * @param callbacks- functions to perform
+ * @return resolve/reject - either data or rejection reason
+ */
 function promiseAllLogging(callbacks) {
     return new Promise(function(resolve, reject) {
         Promise.all(callbacks).then(result => {
