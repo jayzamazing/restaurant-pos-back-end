@@ -18,9 +18,13 @@ promiseLogging(
             //add dinners to a specific table
             someRestaurant.addDinnersToTable(2, 3),
             //add order to a dinner at a specific table
-            someRestaurant.addGuestOrder(2, 1, ['burger', 'fries', 'soft drink'])
+            someRestaurant.addGuestOrder(2, 1, ['burger', 'fries', 'soft drink']),
+            //TODO
+
         ]);
-    });
+    })
+    .then(function() {promiseLogging(someRestaurant.printTableChecks(2));}
+  );
 /*
 * Function that represents generic store object
 */
@@ -37,7 +41,7 @@ Store.prototype.addStateTax = function(item) {
     //set as promise
     return new Promise(function(resolve, reject) {
             //set objects tax
-            this.state_tax = item;
+            this.state_tax = parseFloat(item) / 100;
             //return state tax
             resolve(this.state_tax);
     });
@@ -51,7 +55,7 @@ Store.prototype.addTip = function(item) {
     //set as promise
     return new Promise(function(resolve) {
             //set this object tip
-            this.tip = item;
+            this.tip = parseFloat(item) / 100;
             //send back tip
             resolve(this.tip);
     });
@@ -87,7 +91,7 @@ Restaurant.prototype.addDinnersToTable = function(tableNumber, customerCount) {
         var temp = new Map();
         //loop over each and add dinners
         for (var i = 1; i <= customerCount; i++) {
-            temp.set('dinner' + i, new Dinner());
+            temp.set('Dinner #' + i, new Dinner());
         }
         //store updated table and dinner information in floortables
         context.floorTables.tables.set('table' + tableNumber, temp);
@@ -109,7 +113,7 @@ Restaurant.prototype.addGuestOrder = function(tableNumber, customerNumber, custo
     return new Promise(function(resolve) {
         //get certain table numbers individual customer
         var table = context.floorTables.tables.get('table' + tableNumber);
-        var dinner = table.get('dinner' + customerNumber);
+        var dinner = table.get('Dinner #' + customerNumber);
         //get the menu item objects
         customerOrder = context.getMenuItems(customerOrder);
         //iterate and add customers order to customer
@@ -117,12 +121,57 @@ Restaurant.prototype.addGuestOrder = function(tableNumber, customerNumber, custo
             dinner.addDishes(item);
         });
         //update table with dinner info
-        table.set('dinner' + customerNumber, dinner);
+        table.set('Dinner #' + customerNumber, dinner);
         //update map with tables info
         context.floorTables.tables.set('table' + tableNumber, table);
         //return dishes added to dinner
-        resolve(context.floorTables.tables.get('table' + tableNumber).get('dinner' + customerNumber).dishes);
+        resolve(context.floorTables.tables.get('table' + tableNumber).get('Dinner #' + customerNumber).dishes);
     });
+};
+/*
+* Function to print out the tables checks
+* @para tableNumber - table number to print checks for
+* @return resolve - check for the table
+*/
+Restaurant.prototype.printTableChecks = function(tableNumber) {
+  //store current context
+  var context = this;
+  //set as promise
+  return new Promise(function(resolve) {
+    //get certain table numbers individual customer
+    var table = context.floorTables.tables.get('table' + tableNumber);
+    //set header for check
+    var checks = 'Table #' + tableNumber + '\n';
+    //iterate over each dinner
+    table.forEach(function(item, index) {
+      //if item is valid and dinner has dishes
+      if (item && item.dishes.length) {
+        //append the dinner number
+        checks += index + '\n';
+        var total = 0;
+        //iterate over each dish
+        item.dishes.forEach(function(dish) {
+          //append dish
+          checks += dish.description + ' ' + dish.price + '\n';
+          //increment total
+          total += dish.price;
+        });
+        //calculate tax and tip
+        var tax = (total * this.state_tax).toFixed(2);
+        var tip = (total * this.tip).toFixed(2);
+        //append info to checks
+        checks += 'Sub Total $' + total + '\n';
+        checks += 'Sales Tax(' + (this.state_tax * 100) + '%)' + ' ' + tax + '\n';
+        checks += 'Tip(' + (this.tip * 100) + '%)' + ' ' + tip + '\n';
+        //calculate check total
+        total = parseFloat(tax) + parseFloat(tip) + parseFloat(total);
+        //append to checks
+        checks += 'Check Total $' + total + '\n';
+      }
+    });
+    //return check output
+    resolve(checks);
+  });
 };
 /*
  * Function to set the menu items
