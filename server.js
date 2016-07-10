@@ -15,20 +15,32 @@ var restaurantController = new Restaurant(5);
 //set folder for static content
 app.use(express.static('public'));
 /*
-* Function to set the first page to load
-*/
+ * Function to set the first page to load
+ */
 app.get('/', function(req, res) {
-  response.sendFile('/index.html');
+    response.sendFile('/index.html');
 });
 //TODO stub placeholders
 app.post('/order', jsonParser, function(req, res) {
-  //if there is no body in the request
-  if (!req.body) {
-    //return error code 400
-    return res.sendStatus(400);
-  }
-  // ph.promiseLogging(restaurantController
-  //   .addGuestOrder(,,));
+    //if there is no body in the request
+    if (!req.body) {
+        //return error code 400
+        return res.sendStatus(400);
+    }
+    ph.promiseAllLogging([
+      //TODO remove later
+      restaurantController.addDinnersToTable(2, 3),
+      //add order to tables dinner
+      restaurantController
+        .addGuestOrder(req.body.table_number,
+            req.body.dinner_number,
+            req.body.order)
+          ])
+          //if there are no error return 200 status
+          .then(function() {res.sendStatus(200);})
+          //otherwise return 400 status`
+          .catch(function() {res.sendStatus(400);});
+
 });
 
 
@@ -49,12 +61,17 @@ ph.promiseLogging(
             restaurantController.addMenuItems(result['menu items']),
             restaurantController.addStateTax(result['state tax']),
             restaurantController.addTip(result['recommended tip']),
+            //TODO remove in the future
             //add dinners to a specific table
-            restaurantController.addDinnersToTable(2, 3),
+            //restaurantController.addDinnersToTable(2, 3),
             //add order to a dinner at a specific table
-            restaurantController.addGuestOrder(2, 1, ['burger', 'fries', 'soft drink']),
+            //restaurantController.addGuestOrder(2, 1, ['burger', 'fries', 'soft drink']),
         ]);
-    })
-    .then(function() {
-        ph.promiseLogging(restaurantController.printTableChecks(2));
-    });
+    })  //TODO remove in the future
+    // .then(function() {
+    //     ph.promiseLogging(restaurantController.printTableChecks(2));
+    // })
+    ;
+//export for testing
+exports.app = app;
+exports.storage = restaurantController;
