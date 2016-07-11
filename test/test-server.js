@@ -1,7 +1,7 @@
 //import chai, chai-http, and server.js for testing
 var chai = require('chai');
 var chaiHttp = require('chai-http');
-var server = require('../server.js');
+var server = require('../server/server.js');
 //extends objects with should for test chaining
 var should = chai.should();
 //used to make requests and check state of object
@@ -25,7 +25,11 @@ describe('Restaurant POS', function() {
                 res.should.have.status(200);
                 //check valid content is being sent back
                 res.should.have.header('content-type', 'text/html; charset=UTF-8');
-                //TODO more tests for state of server
+                //ensure menu items is an array with objects that have specific properties
+                storage.menu_items.should.be.a('array');
+                storage.menu_items[0].should.have.property('description');
+                storage.menu_items[0].should.have.property('price');
+                //deal with asynchronous call
                 done();
             });
     });
@@ -47,10 +51,14 @@ describe('Restaurant POS', function() {
             })
             //when done do the following
             .end(function(err, res) {
-              //check server gives 200 response
-              res.should.have.status(200);
-              //TODO more tests for state of server
-              done();
+                //check server gives 200 response
+                res.should.have.status(200);
+                //check stored values match for description and price
+                storage.floorTables.tables.get('table2').get('Dinner #1').dishes[0].should.have.property('description');
+                storage.floorTables.tables.get('table2').get('Dinner #1').dishes[0].should.have.property('price');
+                storage.floorTables.tables.get('table2').get('Dinner #1').dishes[0].description.should.equal('burger');
+                storage.floorTables.tables.get('table2').get('Dinner #1').dishes[0].price.should.equal(7.99);
+                done();
             });
     });
 });
