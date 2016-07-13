@@ -10,7 +10,11 @@
         "price": 7.99
     }, {
         "description": "chicken fingers",
-        "price": 5.99
+        "price": 5.99,
+        "categories": [
+          "lunch",
+          "dinner"
+        ]
     }, {
         "description": "soft drink",
         "price": 1.99
