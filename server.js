@@ -28,11 +28,13 @@ restaurantController.get('/', function(req, res) {
 });
 /*
  * Function to get the stores information
+ * @param req.body.name - name of the store
  * @return - res with 201 and store / res with 500 error
  */
 restaurantController.get('/store', function(req, res) {
     //get the store data from mongo and log results or reject reason
-    ph.promiseLogging(Stores.getStore('FOod r Us'))
+    //ph.promiseLogging(Stores.getStore('FOod r Us'))
+    ph.promiseLogging(Stores.getStore(req.body.name))
         //if succesful then return 201 with the store data
         .then(function(item) {
             res.status(201).json(item);
@@ -43,11 +45,21 @@ restaurantController.get('/store', function(req, res) {
 });
 /*
  * Function to create a store
+ * @param req.body.name - name of store
+ * @param req.body.address - address of the store
+ * @param req.body.state - state the store resides in
+ * @param req.body.zip - zip code of the store
+ * @param req.body.tax - state tax
+ * @param req.body.tip - recommended tip
  * @return - res with 201 and store / res with 500 error
  */
 restaurantController.post('/store', function(req, res) {
     //create store data in mongo and log results or reject reason
-    ph.promiseLogging(Stores.createStore('FOod r Us3', '313 somewhere', 'nowehere', 'fl', '33412', '6.5', '20'))
+    //ph.promiseLogging(Stores.createStore('FOod r Us3', '313 somewhere', 'nowehere', 'fl', '33412', '6.5', '20'))
+    ph.promiseLogging(Stores.createStore(
+      req.body.name, req.body.address, req.body.state,
+      req.body.zip, req.body.tax, req.body.tip
+    ))
         //if succesful then return 201 with the store data
         .then(function(item) {
             res.status(201).json(item);
@@ -58,11 +70,22 @@ restaurantController.post('/store', function(req, res) {
 });
 /*
  * Function to update a store
+ * @param req.body.name1 - original name of store
+ * @param req.body.name2 - name to change to, if store name is changed
+ * @param req.body.address - address of the store
+ * @param req.body.state - state the store resides in
+ * @param req.body.zip - zip code of the store
+ * @param req.body.tax - state tax
+ * @param req.body.tip - recommended tip
  * @return - res with 201 and store / res with 500 error
  */
 restaurantController.put('/store', function(req, res) {
     //create store data in mongo and log results or reject reason
-    ph.promiseLogging(Stores.updateStore('FOod r Us3', 'FOod r Us9', '313 blah', 'here', 'fl', '33412', '9', '20'))
+    //ph.promiseLogging(Stores.updateStore('FOod r Us3', 'FOod r Us9', '313 blah', 'here', 'fl', '33412', '9', '20'))
+    ph.promiseLogging(Stores.updateStore(
+      req.body.name1, req.body.name2, req.body.address, req.body.state,
+    req.body.zip, req.body.tax, req.body.tip)
+    )
         //if succesful then return 201 with the store data
         .then(function(item) {
             res.status(201).json(item);
@@ -73,11 +96,13 @@ restaurantController.put('/store', function(req, res) {
 });
 /*
  * Function to delete a store
+ * @param req.body.name - name of the store
  * @return - res with 201 and store / res with 500 error
  */
 restaurantController.delete('/store', function(req, res) {
     //delete menu item in mongo and log results or reject reason
-    ph.promiseLogging(Stores.deleteStore('FOod r Us3'))
+    //ph.promiseLogging(Stores.deleteStore('FOod r Us3'))
+    ph.promiseLogging(Stores.deleteStore(req.body.name))
         //if succesful then return 201 with the store data
         .then(function(item) {
             res.status(201).json(item);
@@ -88,16 +113,15 @@ restaurantController.delete('/store', function(req, res) {
 });
 /*
  * Function to create a menu item
+ * @param req.body.itemname - name of menu item
+ * @param req.body.price - price of item
+ * @param req.body.categories - array of categories
  * @return - res with 201 and menu item / res with 500 error
  */
 restaurantController.post('/menuitem', function(req, res) {
     //create menu item in mongo and log results or reject reason
-    ph.promiseAllLogging([
-      Menu.createItem('cheeseburger', '7.99', ['lunch', 'burgers', 'dinner']),
-      Menu.createItem('spinach omlete', '4.99', ['breakfast', 'omlete']),
-      Menu.createItem('steak', '12.99', ['dinner', 'entree']),
-      Menu.createItem('reuben', '6.99', ['lunch', 'sandwhich'])
-    ])
+    //ph.promiseLogging(Menu.createItem('cheeseburger', '7.99', ['lunch', 'burgers', 'dinner']))
+    ph.promiseLogging(Menu.createItem(req.body.itemname, req.body.price, req.body.categories))
         //if succesful then return 201 with the menu item data
         .then(function(item) {
             res.status(201).json(item);
@@ -108,12 +132,18 @@ restaurantController.post('/menuitem', function(req, res) {
 });
 /*
  * Function to update a menu item
+ * @param req.body.itemname1 - original name of menu item
+ * @param req.body.itemname2 - name of menu item after change
+ * @param req.body.price - price of item
+ * @param req.body.categories - array of categories
  * @return - res with 201 and menu item / res with 500 error
  * (item that was updated, not updated item)
  */
 restaurantController.put('/menuitem', function(req, res) {
     //update menu item in mongo and log results or reject reason
-    ph.promiseLogging(Menu.updateItem('burger', 'cheeseburger', '10.99', ['lunch', 'burgers', 'dinner']))
+    //ph.promiseLogging(Menu.updateItem('burger', 'cheeseburger', '10.99', ['lunch', 'burgers', 'dinner']))
+    ph.promiseLogging(Menu.updateItem(
+      req.body.itemname1, req.body.itemname2, req.body.price, req.body.categories))
         //if succesful then return 201 with the menu item data
         .then(function(item) {
             res.status(201).json(item);
@@ -124,11 +154,13 @@ restaurantController.put('/menuitem', function(req, res) {
 });
 /*
  * Function to delete a menu item
+ * @param req.body.itemname - name of menu item
  * @return - res with 201 and menu item / res with 500 error
  */
 restaurantController.delete('/menuitem', function(req, res) {
     //delete menu item in mongo and log results or reject reason
-    ph.promiseLogging(Menu.deleteItem('cheeseburger'))
+    //ph.promiseLogging(Menu.deleteItem('cheeseburger'))
+    ph.promiseLogging(Menu.deleteItem(req.body.itemname))
         //if succesful then return 201 with the menu item data
         .then(function(item) {
             res.status(201).json(item);
