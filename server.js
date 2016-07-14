@@ -57,6 +57,21 @@ restaurantController.post('/store', function(req, res) {
         });
 });
 /*
+ * Function to delete a store
+ * @return - res with 201 and store / res with 500 error
+ */
+restaurantController.delete('/store', function(req, res) {
+    //delete menu item in mongo and log results or reject reason
+    ph.promiseLogging(Stores.deleteStore('FOod r Us3'))
+        //if succesful then return 201 with the store data
+        .then(function(item) {
+            res.status(201).json(item);
+            //if there was an error, return 500
+        }).catch(function() {
+            res.status(500);
+        });
+});
+/*
  * Function to create a menu item
  * @return - res with 201 and menu item / res with 500 error
  */
