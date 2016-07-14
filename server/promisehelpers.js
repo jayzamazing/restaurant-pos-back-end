@@ -3,7 +3,7 @@
 function RestaurantLogging() {}
 /*
  * Function to deal with chain of promises and their logging
- * @param callbacks- functions to perform
+ * @param callbacks- functions to perform as array
  * @return resolve/reject - either data or rejection reason
  */
 RestaurantLogging.promiseAllLogging = function(callbacks) {

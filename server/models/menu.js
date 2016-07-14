@@ -38,7 +38,7 @@ Menu.createItem = function(name, price, categories) {
             //if there is an error or store is empty
             if (err || !result) {
                 //send back error
-                reject('Could not create menu item ' + name);
+                reject('Could not create menu item: ' + name);
             }
             //otherwise send back success
             resolve('Created item: ' + result);

@@ -72,6 +72,43 @@ Store.createStore = function(name, address, city, state, zip, tax, tip) {
     });
 };
 /*
+ * Function to update a store
+ * @param storeName - name of store to update
+ * @param name - name of store
+ * @param address - address of store
+ * @param city - city of store
+ * @param state - state of store
+ * @param zip - zip code of store
+ * @param tax - local tax
+ * @param tip - recommended tip
+ * @resolve/reject - show store / error
+ */
+Store.updateStore = function(storeName, name, address, city, state, zip, tax, tip) {
+    //return promise so this can be used in a promise chain
+    return new Promise(function(resolve, reject) {
+        //object to fill for query
+        var store = {
+            store_name: name,
+            address: address,
+            city: city,
+            state: state,
+            zip_code: zip,
+            state_tax: tax,
+            recommended_tip: tip
+        };
+        //mongoose method to update store data to mongo
+        Store.findOneAndUpdate(storeName, store, function(err, result) {
+            //if there is an error or store is empty
+            if (err || !result) {
+                //send back error
+                reject('Could not create store ' + name);
+            }
+            //otherwise send back success
+            resolve('Created store ' + result);
+        });
+    });
+};
+/*
  * Function to retried the store info
  * @param name - name of the store to retrieve
  * @resolve/reject - store info / error message

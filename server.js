@@ -57,6 +57,21 @@ restaurantController.post('/store', function(req, res) {
         });
 });
 /*
+ * Function to update a store
+ * @return - res with 201 and store / res with 500 error
+ */
+restaurantController.put('/store', function(req, res) {
+    //create store data in mongo and log results or reject reason
+    ph.promiseLogging(Stores.updateStore('FOod r Us3', 'FOod r Us9', '313 blah', 'here', 'fl', '33412', '9', '20'))
+        //if succesful then return 201 with the store data
+        .then(function(item) {
+            res.status(201).json(item);
+            //if there was an error, return 500
+        }).catch(function() {
+            res.status(500);
+        });
+});
+/*
  * Function to delete a store
  * @return - res with 201 and store / res with 500 error
  */
@@ -77,7 +92,12 @@ restaurantController.delete('/store', function(req, res) {
  */
 restaurantController.post('/menuitem', function(req, res) {
     //create menu item in mongo and log results or reject reason
-    ph.promiseLogging(Menu.createItem('burger', '7.99', ['lunch', 'burgers', 'dinner']))
+    ph.promiseAllLogging([
+      Menu.createItem('cheeseburger', '7.99', ['lunch', 'burgers', 'dinner']),
+      Menu.createItem('spinach omlete', '4.99', ['breakfast', 'omlete']),
+      Menu.createItem('steak', '12.99', ['dinner', 'entree']),
+      Menu.createItem('reuben', '6.99', ['lunch', 'sandwhich'])
+    ])
         //if succesful then return 201 with the menu item data
         .then(function(item) {
             res.status(201).json(item);

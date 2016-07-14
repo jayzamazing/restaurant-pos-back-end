@@ -1,5 +1,5 @@
-{
-    "menu items": [{
+[
+    {
         "description": "burger",
         "price": 7.99
     }, {
@@ -27,7 +27,5 @@
     }, {
         "description": "salad",
         "price": 1.99
-    }],
-    "state tax": "6.5%",
-    "recommended tip": "20%"
-}
+    }
+  ]
