@@ -48,6 +48,15 @@ describe('Test for menu model.', function() {
                 item.price.should.equal(10.99);
                 item.categories.should.be.an('array')
                 .to.include.members(['lunch', 'burgers', 'dinner']);
+                //check mongo directly to see data was stored
+                Menu.findOne({name: 'whataburger'}, function(err, result) {
+                  result.name.should.be.a('string');
+                  result.name.should.equal('whataburger');
+                  result.price.should.be.a('number');
+                  result.price.should.equal(10.99);
+                  result.categories.should.be.an('array')
+                  .to.include.members(['lunch', 'burgers', 'dinner']);
+                });
                 done();
             });
     });

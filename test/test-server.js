@@ -71,6 +71,3 @@ describe('Restaurant POS', function() {
     //         });
     //});
 });
-describe('run test-menu.js', function() {
-  require('./models/test-menu.js');
-});

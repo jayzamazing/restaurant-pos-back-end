@@ -120,7 +120,6 @@ restaurantController.delete('/store', function(req, res) {
  */
 restaurantController.post('/menuitem', function(req, res) {
     //create menu item in mongo and log results or reject reason
-    //ph.promiseLogging(Menu.createItem('cheeseburger', '7.99', ['lunch', 'burgers', 'dinner']))
     ph.promiseLogging(Menu.createItem(req.body.itemname, req.body.price, req.body.categories))
         //if succesful then return 201 with the menu item data
         .then(function(item) {
@@ -137,11 +136,9 @@ restaurantController.post('/menuitem', function(req, res) {
  * @param req.body.price - price of item
  * @param req.body.categories - array of categories
  * @return - res with 201 and menu item / res with 500 error
- * (item that was updated, not updated item)
  */
 restaurantController.put('/menuitem', function(req, res) {
     //update menu item in mongo and log results or reject reason
-    //ph.promiseLogging(Menu.updateItem('burger', 'cheeseburger', '10.99', ['lunch', 'burgers', 'dinner']))
     ph.promiseLogging(Menu.updateItem(
       req.body.itemname1, req.body.itemname2, req.body.price, req.body.categories))
         //if succesful then return 201 with the menu item data
@@ -159,7 +156,6 @@ restaurantController.put('/menuitem', function(req, res) {
  */
 restaurantController.delete('/menuitem', function(req, res) {
     //delete menu item in mongo and log results or reject reason
-    //ph.promiseLogging(Menu.deleteItem('cheeseburger'))
     ph.promiseLogging(Menu.deleteItem(req.body.itemname))
         //if succesful then return 201 with the menu item data
         .then(function(item) {
