@@ -241,6 +241,6 @@ if (require.main === module) {
 //    restaurantModel.getRestaurantData()
 //);
 //export for testing
-//exports.app = restaurantController;
+exports.app = restaurantController;
 //exports.storage = restaurantModel;
 exports.runServer = runServer;

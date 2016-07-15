@@ -41,7 +41,7 @@ Menu.createItem = function(name, price, categories) {
                 reject('Could not create menu item: ' + name);
             }
             //otherwise send back success
-            resolve('Created item: ' + result);
+            resolve(result);
         });
     });
 };
@@ -70,7 +70,7 @@ Menu.updateItem = function(item, name, price, categories) {
             }
             //otherwise send back success, data sent back is original item found,
             //not the modified query
-            resolve('Updated item: ' + result);
+            resolve(result);
         });
     });
 };
@@ -89,7 +89,7 @@ Menu.deleteItem = function(name) {
                 reject('Could not delete item: ' + name);
             }
             //otherwise send back success
-            resolve('Deleted item: ' + name);
+            resolve(name);
         });
     });
 };
@@ -108,7 +108,7 @@ Menu.getMenu = function() {
                 reject('Could not get the menu');
             }
             //otherwise send back success
-            resolve('Menu Items: ' + result);
+            resolve(result);
         });
     });
 };
