@@ -67,7 +67,7 @@ Store.createStore = function(name, address, city, state, zip, tax, tip) {
                 reject('Could not create store ' + name);
             }
             //otherwise send back success
-            resolve('Created store ' + result);
+            resolve(result);
         });
     });
 };
@@ -104,7 +104,7 @@ Store.updateStore = function(storeName, name, address, city, state, zip, tax, ti
                 reject('Could not create store ' + name);
             }
             //otherwise send back success
-            resolve('Created store ' + result);
+            resolve(result);
         });
     });
 };
@@ -126,7 +126,7 @@ Store.getStore = function(name) {
                 reject('Could not read store ' + name);
             }
             //otherwise send back success
-            resolve('Read store ' + result);
+            resolve(result);
         });
     });
 };
@@ -145,7 +145,7 @@ Store.deleteStore = function(name) {
                 reject('Could not delete store: ' + name);
             }
             //otherwise send back success
-            resolve('Deleted store: ' + name);
+            resolve(name);
         });
     });
 };

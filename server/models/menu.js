@@ -51,7 +51,7 @@ Menu.createItem = function(name, price, categories) {
  * @param name - name of menu item
  * @param price - price of menu item
  * @param categories - array of categories
- * @resolve/reject - either the query that was updated, not item after update /error
+ * @resolve/reject - updated item /error
  */
 Menu.updateItem = function(item, name, price, categories) {
     //return promise so this can be used in a promise chain
@@ -68,8 +68,7 @@ Menu.updateItem = function(item, name, price, categories) {
                 //send back error
                 reject('Could not update menu item');
             }
-            //otherwise send back success, data sent back is original item found,
-            //not the modified query
+            //otherwise send back success
             resolve(result);
         });
     });

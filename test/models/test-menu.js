@@ -51,8 +51,40 @@ describe('Test for menu model.', function() {
                 done();
             });
     });
-    it('', function(done) {
-
+    //test menu item was updated
+    it('should update menu item in mongo', function(done) {
+      ph.promiseLogging(Menu.updateItem('whataburger', 'cheeseburger', 7.99, ['lunch', 'burgers']))
+          //if succesful then return 201 with the menu item data
+          .then(function(item) {
+              //check returned json against expected value
+              item.name.should.be.a('string');
+              item.name.should.equal('cheeseburger');
+              item.price.should.be.a('number');
+              item.price.should.equal(7.99);
+              item.categories.should.be.an('array')
+              .to.include.members(['lunch', 'burgers']);
+              done();
+          });
     });
-
+    //test menu item was deleted
+    it('should delete menu item in mongo', function(done) {
+      ph.promiseLogging(Menu.deleteItem('cheeseburger'))
+          //if succesful then return 201 with the menu item data
+          .then(function(item) {
+              //check returned json against expected value
+              item.should.be.a('string');
+              item.should.equal('cheeseburger');
+              done();
+          });
+    });
+    //test that only the 4 original items are returned
+    it('should get all menu items from mongo', function(done) {
+      ph.promiseLogging(Menu.getMenu('cheeseburger'))
+          //if succesful then return 201 with the menu item data
+          .then(function(item) {
+              //check returned json against expected value
+              item.length.should.eql(4);
+              done();
+          });
+    });
 });
