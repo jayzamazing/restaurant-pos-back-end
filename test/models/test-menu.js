@@ -72,6 +72,15 @@ describe('Test for menu model.', function() {
               item.price.should.equal(7.99);
               item.categories.should.be.an('array')
               .to.include.members(['lunch', 'burgers']);
+              //check mongo directly to see data was stored
+              Menu.findOne({name: 'cheeseburger'}, function(err, result) {
+                result.name.should.be.a('string');
+                result.name.should.equal('cheeseburger');
+                result.price.should.be.a('number');
+                result.price.should.equal(7.99);
+                result.categories.should.be.an('array')
+                .to.include.members(['lunch', 'burgers']);
+              });
               done();
           });
     });
@@ -83,7 +92,12 @@ describe('Test for menu model.', function() {
               //check returned json against expected value
               item.should.be.a('string');
               item.should.equal('cheeseburger');
-              done();
+              //check mongo directly to ensure data does not exist
+              Menu.findOne({name: 'cheeseburger'}, function(err, result) {
+                //if null is returned, then value is not in mongo
+                should.not.exist(result);
+                done();
+              });
           });
     });
     //test that only the 4 original items are returned

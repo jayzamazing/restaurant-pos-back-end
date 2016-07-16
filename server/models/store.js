@@ -20,15 +20,15 @@ var StoreSchema = new mongoose.Schema({
         required: true
     },
     zip_code: {
-        type: Number,
+        type: String,
         required: true
     },
     state_tax: {
-        type: String,
+        type: Number,
         required: true
     },
     recommended_tip: {
-        type: String,
+        type: Number,
         required: true
     }
 
@@ -97,7 +97,7 @@ Store.updateStore = function(storeName, name, address, city, state, zip, tax, ti
             recommended_tip: tip
         };
         //mongoose method to update store data to mongo
-        Store.findOneAndUpdate(storeName, store, function(err, result) {
+        Store.findOneAndUpdate(storeName, store, {new: true},  function(err, result) {
             //if there is an error or store is empty
             if (err || !result) {
                 //send back error

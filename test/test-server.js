@@ -10,6 +10,7 @@ var app = server.app;
 //var storage = server.storage;
 //use http plugin
 chai.use(chaiHttp);
+global.DATABASE_URL = 'mongodb://localhost/restaurant-pos-test';
 /*
  * All tests that should be run
  */
