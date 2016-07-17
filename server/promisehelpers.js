@@ -1,4 +1,5 @@
 /*jshint esversion: 6 */
+(function() {
 //Function object for exporting
 function RestaurantLogging() {}
 /*
@@ -41,3 +42,4 @@ RestaurantLogging.promiseLogging = function(callback) {
     });
 };
 var exports = module.exports = RestaurantLogging;
+})();
