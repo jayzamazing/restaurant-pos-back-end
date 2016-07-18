@@ -1,5 +1,6 @@
 /*jshint esversion: 6 */
 (function() {
+    "use strict";
     //import express
     var express = require('express');
     var restaurantController = express();
@@ -22,35 +23,37 @@
     //use bodyparser for all routes
     restaurantController.use(bodyParser.json());
     /*
-     * Function to set the first page to load
+     * Function to set the first page to load and also set the initial state of the application
      * @return - sends the index.html file back
      */
     restaurantController.get('/', function(req, res) {
-
-        //get the restaurant data mongo and log results or reject reason
-        ph.promiseAllLogging([
-            Store.getStore('FOod r Us1'),
-            Menu.getMenu()
-        ]).then(function(results) {
-            //pass results to restaurant model, results[0] = store data, results[1] = menu data
-            ph.promiseLogging(
-                restaurantModel.setRestaurantData(results[0], results[1])
-            ).then(function() {
-                //send index page back to requestor
-                res.sendFile(__dirname + '/public/index.html');
+        //if the following fields are empty, ensure this is only run once
+        if (restaurantModel.menu_items.length === 0 && restaurantModel.store_name === '') {
+            //get the restaurant data mongo and log results or reject reason
+            ph.promiseAllLogging([
+                Store.getStore('FOod r Us1'),
+                Menu.getMenu()
+            ]).then(function(results) {
+                //pass results to restaurant model, results[0] = store data, results[1] = menu data
+                ph.promiseLogging(
+                    restaurantModel.setRestaurantData(results[0], results[1])
+                ).then(function() {
+                    //send index page back to requestor
+                    res.sendFile(__dirname + '/public/index.html');
+                });
+            }).catch(function(err) {
+                console.log(err);
             });
-        });
+        }
 
     });
     /*
      * Function to get the store information
-     * @param req.body.name - name of the store
      * @return - res with 201 and store / res with 500 error
      */
     restaurantController.get('/store', function(req, res) {
         //get the store data from mongo and log results or reject reason
-        //ph.promiseLogging(store.getStore('FOod r Us'))
-        ph.promiseLogging(store.getStore(req.body.name))
+        ph.promiseLogging(restaurantModel.getStore())
             //if succesful then return 201 with the store data
             .then(function(item) {
                 res.status(201).json(item);
@@ -60,22 +63,22 @@
             });
     });
     /*
-     * Function to create a store
+     * Function to create a store in mongo
      * @param req.body.name - name of store
      * @param req.body.address - address of the store
      * @param req.body.state - state the store resides in
      * @param req.body.zip - zip code of the store
      * @param req.body.tax - state tax
      * @param req.body.tip - recommended tip
+     * is to become this restaurants information
      * @return - res with 201 and store / res with 500 error
      */
     restaurantController.post('/store', function(req, res) {
         //create store data in mongo and log results or reject reason
-        //ph.promiseLogging(store.createStore('FOod r Us3', '313 somewhere', 'nowehere', 'fl', '33412', '6.5', '20'))
-        ph.promiseLogging(store.createStore(
-                req.body.name, req.body.address, req.body.state,
-                req.body.zip, req.body.tax, req.body.tip
-            ))
+        ph.promiseLogging(restaurantModel.setStore({
+                store_name: req.body.store_name, address: req.body.address, state: req.body.state, city: req.body.city,
+                zip_code: req.body.zip_code, state_tax: req.body.tax, recommended_tip: req.body.recommended_tip
+            }))
             //if succesful then return 201 with the store data
             .then(function(item) {
                 res.status(201).json(item);
@@ -93,6 +96,8 @@
      * @param req.body.zip - zip code of the store
      * @param req.body.tax - state tax
      * @param req.body.tip - recommended tip
+     * @param req.body.main_store - true/false depending on if the set store information
+     * is to become this restaurants information
      * @return - res with 201 and store / res with 500 error
      */
     restaurantController.put('/store', function(req, res) {
@@ -195,50 +200,82 @@
                 res.status(500);
             });
     });
-    //TODO stub placeholders
-    // restaurantController.post('/order', function(req, res) {
-    //     //if there is no body in the request
-    //     if (!req.body) {
-    //         //return error code 400
-    //         return res.sendStatus(400);
-    //     }
-    //     ph.promiseAllLogging([
-    //             //TODO remove later
-    //             restaurantModel.addDinnersToTable(2, 3),
-    //             //add order to tables dinner
-    //             restaurantModel
-    //             .addGuestOrder(req.body.table_number,
-    //                 req.body.dinner_number,
-    //                 req.body.order)
-    //         ])
-    //         //if there are no error return 200 status
-    //         .then(function() {
-    //             res.sendStatus(200);
-    //         })
-    //         //otherwise return 400 status
-    //         .catch(function() {
-    //             res.sendStatus(400);
-    //         });
-    // });
     /*
-     *
+     * Function to deal with setting the seperate check count
+     * @param req.body.table_number - table number to add seperate checks to
+     * @param req.body.guest - amount of guests
+     */
+    restaurantController.post('/guest', function(req, res) {
+      //if there is no body in the request
+      if (!req.body) {
+          //return error code 400
+          res.sendStatus(400);
+      }
+        //add seperate checks to specific table
+        ph.promiseLogging(restaurantModel.addDinnersToTable(req.body.table_number, req.body.guest))
+            //if succesful then return 201
+            .then(function() {
+                res.status(201);
+            //if there was an error, return 500
+            }).catch(function() {
+                res.status(500);
+            });
+    });
+    /*
+    * Function to add order to table for a specific check
+    * @param req.body.table_number - table number to add the order to
+    * @param req.dinner_number - dinner or guest number
+    * @param req.body.order - the meals for a specific guest
+    * @return - status 200/400
+    */
+    restaurantController.post('/order', function(req, res) {
+        //if there is no body in the request
+        if (!req.body) {
+            //return error code 400
+            res.sendStatus(400);
+        }
+        ph.promiseLogging([
+                //add order to tables dinner
+                restaurantModel
+                .addGuestOrder(req.body.table_number,
+                    req.body.dinner_number,
+                    req.body.order)
+            ])
+            //if there are no error return 200 status
+            .then(function() {
+                res.sendStatus(200);
+            })
+            //otherwise return 400 status
+            .catch(function() {
+                res.sendStatus(400);
+            });
+    });
+    /*
+     * Function to get mongoose connection started and node running
      */
     function runServer(callback) {
+        //connect to database using what is stored in config file
         mongoose.connect(config.DATABASE_URL, function(err) {
+            //if there is any kind of error
             if (err && callback) {
+                //pass the error to the callback
                 return callback(err);
             }
             //start listening on specified port for requests
             restaurantController.listen(config.PORT, function() {
                 console.log('Listening on localhost:' + config.PORT);
+                //perform callback
                 if (callback) {
                     callback();
                 }
             });
         });
     }
+    //turn into executable and module, if is run directly, otherwise server can be started differently
     if (require.main === module) {
+        //run this function
         runServer(function(err) {
+            //if there are any errors, pass to console
             if (err) {
                 console.error(err);
             }

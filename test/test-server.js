@@ -78,6 +78,16 @@
                     name: 'reuben',
                     price: 6.99,
                     categories: ['lunch', 'sandwhich']
+                });
+                Menu.create({
+                    name: 'soft drink',
+                    price: 1.99,
+                    categories: ['drinks', 'soda']
+                });
+                Menu.create({
+                    name: 'fries',
+                    price: 1.99,
+                    categories: ['lunch', 'side']
                 }, done());
             });
         });
@@ -104,8 +114,7 @@
                     res.should.have.status(200);
                     //check valid content is being sent back
                     res.should.have.header('content-type', 'text/html; charset=UTF-8');
-                    //ensure menu items is an array with objects that have specific properties
-                    //TODO add more test cases
+                    //ensure menu items have specific properties
                     storage.menu_items.should.be.a('array');
                     storage.menu_items[0].should.have.property('name');
                     storage.menu_items[0].name.should.equal('hamburger');
@@ -196,6 +205,98 @@
                     done();
                 });
         });
+        //test for get /store
+        it('should get the store data', function(done) {
+            //setup a request
+            chai.request(app)
+                //request to /
+                .get('/store')
+                //when finished do the following
+                .end(function(err, res) {
+                    //check server gives 201 response and the data sent back from the server
+                    res.should.have.status(201);
+                    res.body.store_name.should.be.a('string');
+                    res.body.store_name.should.equal('FOod r Us1');
+                    res.body.address.should.be.a('string');
+                    res.body.address.should.equal('313 somewhere');
+                    res.body.city.should.be.a('string');
+                    res.body.city.should.equal('nowehere');
+                    res.body.state.should.be.a('string');
+                    res.body.state.should.equal('fl');
+                    res.body.zip_code.should.be.a('string');
+                    res.body.zip_code.should.equal('33412');
+                    res.body.state_tax.should.be.a('number');
+                    res.body.state_tax.should.equal(6.5);
+                    res.body.recommended_tip.should.be.a('number');
+                    res.body.recommended_tip.should.equal(20);
+                    //check returned json against expected value
+                    storage.store_name.should.be.a('string');
+                    storage.store_name.should.equal('FOod r Us1');
+                    storage.address.should.be.a('string');
+                    storage.address.should.equal('313 somewhere');
+                    storage.city.should.be.a('string');
+                    storage.city.should.equal('nowehere');
+                    storage.state.should.be.a('string');
+                    storage.state.should.equal('fl');
+                    storage.zip_code.should.be.a('string');
+                    storage.zip_code.should.equal('33412');
+                    storage.state_tax.should.be.a('number');
+                    storage.state_tax.should.equal(6.5);
+                    storage.recommended_tip.should.be.a('number');
+                    storage.recommended_tip.should.equal(20);
+                    done();
+                });
+        });
+        //test for get /store
+        it('should get the store data', function(done) {
+            //setup a request
+            chai.request(app)
+                //request to /
+                .post('/store')
+                //attach data to request
+                .send({
+                    store_name: 'FOod r Us6',
+                    address: '324 drive rd',
+                    city: 'kablah',
+                    state: 'om',
+                    zip_code: '23423',
+                    tax: 6,
+                    recommended_tip: 13
+                })
+                //when finished do the following
+                .end(function(err, res) {
+                  res.body.store_name.should.be.a('string');
+                  res.body.store_name.should.equal('FOod r Us6');
+                  res.body.address.should.be.a('string');
+                  res.body.address.should.equal('324 drive rd');
+                  res.body.city.should.be.a('string');
+                  res.body.city.should.equal('kablah');
+                  res.body.state.should.be.a('string');
+                  res.body.state.should.equal('om');
+                  res.body.zip_code.should.be.a('string');
+                  res.body.zip_code.should.equal('23423');
+                  res.body.state_tax.should.be.a('number');
+                  res.body.state_tax.should.equal(6);
+                  res.body.recommended_tip.should.be.a('number');
+                  res.body.recommended_tip.should.equal(13);
+                  //check returned json against expected value
+                  storage.store_name.should.be.a('string');
+                  storage.store_name.should.equal('FOod r Us6');
+                  storage.address.should.be.a('string');
+                  storage.address.should.equal('324 drive rd');
+                  storage.city.should.be.a('string');
+                  storage.city.should.equal('kablah');
+                  storage.state.should.be.a('string');
+                  storage.state.should.equal('om');
+                  storage.zip_code.should.be.a('string');
+                  storage.zip_code.should.equal('23423');
+                  storage.state_tax.should.be.a('number');
+                  storage.state_tax.should.equal(6);
+                  storage.recommended_tip.should.be.a('number');
+                  storage.recommended_tip.should.equal(13);
+                  done();
+                });
+        });
 
         //TODO uncomment when restaurant is reimplemented
         //test /order request
@@ -209,7 +310,7 @@
         //             "table_number": 2,
         //             "dinner_number": 1,
         //             "order": [
-        //                 "burger",
+        //                 "hamburger",
         //                 "fries",
         //                 "soft drink"
         //             ]
@@ -225,6 +326,6 @@
         //             storage.floorTables.tables.get('table2').get('Dinner #1').dishes[0].price.should.equal(7.99);
         //             done();
         //         });
-        //});
+        // });
     });
 })();

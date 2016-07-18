@@ -172,13 +172,7 @@
                 //take the json data and store in restaurant class
                 ph.promiseAllLogging([
                     context.addMenuItems(menuData),
-                    Store.prototype.addStoreName.call(context, storeData.store_name),
-                    Store.prototype.addAddress.call(context, storeData.address),
-                    Store.prototype.addCity.call(context, storeData.city),
-                    Store.prototype.addState.call(context, storeData.state),
-                    Store.prototype.addStateTax.call(context, storeData.state_tax),
-                    Store.prototype.addZipCode.call(context, storeData.zip_code),
-                    Store.prototype.addTip.call(context, storeData.recommended_tip)
+                    Store.prototype.setStore.call(context, storeData)
                 ]);
                 resolve({
                     storeData,

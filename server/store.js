@@ -117,5 +117,50 @@
             resolve(context.recommended_tip);
         });
     };
+    /*
+    * Function to set the store data in one call
+    * @param storeData.store_name - name of store
+    * @param storeData.address - address of store
+    * @param storeData.city - city of store
+    * @param storeData.state - state of store
+    * @param storeData.state_tax - tax for store
+    * @param storeData.zip_code - zip code of store
+    * @param storeData.recommended_tip - recommended tip in area
+    */
+    Store.prototype.setStore = function(storeData) {
+      console.log('show storedata:');
+      console.log(storeData);
+      var context = this;
+      return new Promise(function(resolve) {
+        context.store_name = storeData.store_name;
+        context.address = storeData.address;
+        context.city = storeData.city;
+        context.state = storeData.state;
+        context.state_tax = storeData.state_tax;
+        context.zip_code = storeData.zip_code;
+        context.recommended_tip = storeData.recommended_tip;
+        resolve(storeData);
+      });
+    };
+    /*
+    * Function to get all the store data
+    * resolve: store_name, address, city, zip_code, state, state_tax, recommended_tip
+    */
+    Store.prototype.getStore = function() {
+      var context = this;
+      //set as promise
+      return new Promise(function(resolve) {
+          //send back all store info
+          resolve({
+            store_name: context.store_name,
+            address: context.address,
+            city: context.city,
+            zip_code: context.zip_code,
+            state: context.state,
+            state_tax: context.state_tax,
+            recommended_tip: context.recommended_tip
+          });
+      });
+    };
     var exports = module.exports = Store;
 })();
