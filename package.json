@@ -1,9 +1,10 @@
 {
-  "name": "meal-calculator",
-  "version": "1.0.0",
+  "name": "restaurant-pos",
+  "version": "1.0.4",
   "description": "A meal cost calculator",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
+    "test": "mocha ./test/ ./test/models"
   },
   "repository": {
     "type": "git",
@@ -23,5 +24,14 @@
   "bugs": {
     "url": "https://github.com/jayzamazing/Meal-Calculator/issues"
   },
-  "homepage": "https://github.com/jayzamazing/Meal-Calculator#readme"
+  "homepage": "https://github.com/jayzamazing/Meal-Calculator#readme",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "mongoose": "^4.5.3"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "chai-http": "^3.0.0"
+  }
 }
