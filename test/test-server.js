@@ -59,36 +59,32 @@
                     state_tax: 4,
                     recommended_tip: 12
                 });
+                //promise chain to retain order
                 Menu.create({
                     name: 'hamburger',
                     price: 7.99,
                     categories: ['lunch', 'burgers', 'dinner']
-                });
-                Menu.create({
+                }).then(Menu.create({
                     name: 'spinach omlete',
                     price: 4.99,
                     categories: ['breakfast', 'omlete']
-                });
-                Menu.create({
+                })).then(Menu.create({
                     name: 'steak',
                     price: 12.99,
                     categories: ['dinner', 'entree']
-                });
-                Menu.create({
+                })).then(Menu.create({
                     name: 'reuben',
                     price: 6.99,
                     categories: ['lunch', 'sandwhich']
-                });
-                Menu.create({
+                })).then(Menu.create({
                     name: 'soft drink',
                     price: 1.99,
                     categories: ['drinks', 'soda']
-                });
-                Menu.create({
+                })).then(Menu.create({
                     name: 'fries',
                     price: 1.99,
                     categories: ['lunch', 'side']
-                }, done());
+                })).then(done());
             });
         });
         //teardown after tests
