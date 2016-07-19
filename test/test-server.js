@@ -137,7 +137,7 @@
                     storage.menu_items[3].categories.should.be.an('array')
                         .to.include.members(['lunch', 'sandwhich']);
                     //check mongo directly to ensure data does not exist
-                    Menu.find(function(err, result) {
+                    Menu.find({}, null, {sort: {date: -1}}, function(err, result) {
                         result[0].should.have.property('name');
                         result[0].name.should.equal('hamburger');
                         result[0].should.have.property('price');
@@ -181,7 +181,7 @@
                     //check mongo directly to see data was stored
                     Store.findOne({
                         store_name: 'Foodizawezome'
-                    }, function(err, result) {
+                    }, null, {sort: {date: -1}}, function(err, result) {
                         result.store_name.should.be.a('string');
                         result.store_name.should.equal('Foodizawezome');
                         result.address.should.be.a('string');
@@ -278,7 +278,7 @@
                     //check mongo directly to see data was stored
                     Store.findOne({
                         store_name: 'FOod r Us6'
-                    }, function(err, result) {
+                    }, null, {sort: {date: -1}}, function(err, result) {
                         result.store_name.should.be.a('string');
                         result.store_name.should.equal('FOod r Us6');
                         result.address.should.be.a('string');
@@ -333,7 +333,7 @@
                     //check mongo directly to see data was stored
                     Store.findOne({
                         store_name: 'somestore9'
-                    }, function(err, result) {
+                    }, null, {sort: {date: -1}}, function(err, result) {
                         result.store_name.should.be.a('string');
                         result.store_name.should.equal('somestore9');
                         result.address.should.be.a('string');
@@ -369,7 +369,7 @@
                     res.body.should.equal('FOod r Us4');
                     Store.findOne({
                         name: 'FOod r Us4'
-                    }, function(err, result) {
+                    }, null, {sort: {date: -1}}, function(err, result) {
                         //if null is returned, then value is not in mongo
                         should.not.exist(err);
                         should.not.exist(result);
@@ -400,7 +400,7 @@
                     //check mongo directly to see data was stored
                     Menu.findOne({
                         name: 'shrimp fettuccine'
-                    }, function(err, result) {
+                    }, null, {sort: {date: -1}}, function(err, result) {
                         result.name.should.be.a('string');
                         result.name.should.equal('shrimp fettuccine');
                         result.price.should.be.a('number');
@@ -435,7 +435,7 @@
                     //check mongo directly to see data was stored
                     Menu.findOne({
                         name: 'steak sub'
-                    }, function(err, result) {
+                    }, null, {sort: {date: -1}}, function(err, result) {
                         result.name.should.be.a('string');
                         result.name.should.equal('steak sub');
                         result.price.should.be.a('number');
@@ -468,7 +468,7 @@
                     //check mongo directly to ensure data does not exist
                     Menu.findOne({
                         name: 'reuben'
-                    }, function(err, result) {
+                    }, null, {sort: {date: -1}}, function(err, result) {
                         //if null is returned, then value is not in mongo
                         should.not.exist(err);
                         should.not.exist(result);

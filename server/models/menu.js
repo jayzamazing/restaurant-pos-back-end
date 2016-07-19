@@ -108,7 +108,7 @@
         //return promise so this can be used in a promise chain
         return new Promise(function(resolve, reject) {
             //get the menu
-            Menu.find(function(err, result) {
+            Menu.find({}, null, {sort: {date: -1}}, function(err, result) {
                 //if there is an error or store is empty
                 if (err || !result) {
                     //send back error
