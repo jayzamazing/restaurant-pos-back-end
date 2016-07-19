@@ -23,27 +23,24 @@
         //setup before doing tests
         before(function(done) {
             server.runServer(function() {
-                //go through mongoose and create some mock items for testing
+                //go through mongoose and create some mock items for testing in order
                 Menu.create({
                     name: 'hamburger',
                     price: 7.99,
                     categories: ['lunch', 'burgers', 'dinner']
-                });
-                Menu.create({
+                }).then(Menu.create({
                     name: 'spinach omlete',
                     price: 4.99,
                     categories: ['breakfast', 'omlete']
-                });
-                Menu.create({
+                })).then(Menu.create({
                     name: 'steak',
                     price: 12.99,
                     categories: ['dinner', 'entree']
-                });
-                Menu.create({
+                })).then(Menu.create({
                     name: 'reuben',
                     price: 6.99,
                     categories: ['lunch', 'sandwhich']
-                }, done());
+                })).then(done());
             });
         });
         //teardown after tests
