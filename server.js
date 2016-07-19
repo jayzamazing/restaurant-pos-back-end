@@ -64,21 +64,19 @@
     });
     /*
      * Function to create a store in mongo
-     * @param req.body.name - name of store
+     * @param req.body.store_name - name of store
      * @param req.body.address - address of the store
      * @param req.body.state - state the store resides in
-     * @param req.body.zip - zip code of the store
+     * @param req.body.zip_code - zip code of the store
      * @param req.body.tax - state tax
-     * @param req.body.tip - recommended tip
+     * @param req.body.recommended_tip - recommended tip
      * is to become this restaurants information
      * @return - res with 201 and store / res with 500 error
      */
     restaurantController.post('/store', function(req, res) {
         //create store data in mongo and log results or reject reason
-        ph.promiseLogging(restaurantModel.setStore({
-                store_name: req.body.store_name, address: req.body.address, state: req.body.state, city: req.body.city,
-                zip_code: req.body.zip_code, state_tax: req.body.tax, recommended_tip: req.body.recommended_tip
-            }))
+        ph.promiseLogging(Store.createStore(req.body.store_name, req.body.address, req.body.city, req.body.state,
+                req.body.zip_code, req.body.tax, req.body.recommended_tip))
             //if succesful then return 201 with the store data
             .then(function(item) {
                 res.status(201).json(item);
@@ -103,9 +101,9 @@
     restaurantController.put('/store', function(req, res) {
         //create store data in mongo and log results or reject reason
         //ph.promiseLogging(store.updateStore('FOod r Us3', 'FOod r Us9', '313 blah', 'here', 'fl', '33412', '9', '20'))
-        ph.promiseLogging(store.updateStore(
-                req.body.name1, req.body.name2, req.body.address, req.body.state,
-                req.body.zip, req.body.tax, req.body.tip))
+        ph.promiseLogging(Store.updateStore(
+                req.body.name1, req.body.name2, req.body.address, req.body.city,
+                req.body.state, req.body.zip, req.body.tax, req.body.tip))
             //if succesful then return 201 with the store data
             .then(function(item) {
                 res.status(201).json(item);
@@ -122,7 +120,7 @@
     restaurantController.delete('/store', function(req, res) {
         //delete menu item in mongo and log results or reject reason
         //ph.promiseLogging(store.deleteStore('FOod r Us3'))
-        ph.promiseLogging(store.deleteStore(req.body.name))
+        ph.promiseLogging(Store.deleteStore(req.body.name))
             //if succesful then return 201 with the store data
             .then(function(item) {
                 res.status(201).json(item);
@@ -206,28 +204,30 @@
      * @param req.body.guest - amount of guests
      */
     restaurantController.post('/guest', function(req, res) {
-      //if there is no body in the request
-      if (!req.body) {
-          //return error code 400
-          res.sendStatus(400);
-      }
+        //if there is no body in the request
+        if (!req.body) {
+            //return error code 400
+            res.sendStatus(400);
+        }
         //add seperate checks to specific table
         ph.promiseLogging(restaurantModel.addDinnersToTable(req.body.table_number, req.body.guest))
             //if succesful then return 201
-            .then(function() {
-                res.status(201);
-            //if there was an error, return 500
+            .then(function(item) {
+                res.status(201).json({
+                    dinners: item.get('table' + req.body.table_number).length
+                });
+                //if there was an error, return 500
             }).catch(function() {
                 res.status(500);
             });
     });
     /*
-    * Function to add order to table for a specific check
-    * @param req.body.table_number - table number to add the order to
-    * @param req.dinner_number - dinner or guest number
-    * @param req.body.order - the meals for a specific guest
-    * @return - status 200/400
-    */
+     * Function to add order to table for a specific check
+     * @param req.body.table_number - table number to add the order to
+     * @param req.dinner_number - dinner or guest number
+     * @param req.body.order - the meals for a specific guest
+     * @return - status 200/400
+     */
     restaurantController.post('/order', function(req, res) {
         //if there is no body in the request
         if (!req.body) {

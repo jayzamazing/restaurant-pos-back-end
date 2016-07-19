@@ -128,8 +128,6 @@
     * @param storeData.recommended_tip - recommended tip in area
     */
     Store.prototype.setStore = function(storeData) {
-      console.log('show storedata:');
-      console.log(storeData);
       var context = this;
       return new Promise(function(resolve) {
         context.store_name = storeData.store_name;
