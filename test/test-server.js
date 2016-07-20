@@ -494,17 +494,17 @@
                     res.should.have.header('content-type', 'application/json; charset=utf-8');
                     //ensure menu items have specific properties
                     res.body.should.be.a('array');
-                    var temp = storage.menu_items.map(function(field) {return field.name;}).indexOf('hamburger');
-                    res.body[temp].should.have.property('name');
-                    res.body[temp].should.have.property('price');
-                    res.body[temp].price.should.equal(7.99);
-                    res.body[temp].categories.should.be.an('array')
+                    var temp2 = storage.menu_items.map(function(field) {return field.name;}).indexOf('hamburger');
+                    res.body[temp2].should.have.property('name');
+                    res.body[temp2].should.have.property('price');
+                    res.body[temp2].price.should.equal(7.99);
+                    res.body[temp2].categories.should.be.an('array')
                         .to.include.members(['lunch', 'burgers', 'dinner']);
-                    temp = storage.menu_items.map(function(field) {return field.name;}).indexOf('spinach omlete');
-                    res.body[temp].should.have.property('name');
-                    res.body[temp].should.have.property('price');
-                    res.body[temp].price.should.equal(4.99);
-                    res.body[temp].categories.should.be.an('array')
+                    temp2 = storage.menu_items.map(function(field) {return field.name;}).indexOf('spinach omlete');
+                    res.body[temp2].should.have.property('name');
+                    res.body[temp2].should.have.property('price');
+                    res.body[temp2].price.should.equal(4.99);
+                    res.body[temp2].categories.should.be.an('array')
                         .to.include.members(['breakfast', 'omlete']);
                     done();
                 });
