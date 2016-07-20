@@ -116,32 +116,32 @@
                     res.should.have.header('content-type', 'text/html; charset=UTF-8');
                     //ensure menu items have specific properties
                     storage.menu_items.should.be.a('array');
-                    storage.menu_items[0].should.have.property('name');
-                    storage.menu_items[0].name.should.equal('hamburger');
-                    storage.menu_items[0].should.have.property('price');
-                    storage.menu_items[0].price.should.equal(7.99);
-                    storage.menu_items[0].categories.should.be.an('array')
+                    var temp = storage.menu_items.map(function(field) {return field.name;}).indexOf('hamburger');
+                    storage.menu_items[temp].should.have.property('name');
+                    storage.menu_items[temp].should.have.property('price');
+                    storage.menu_items[temp].price.should.equal(7.99);
+                    storage.menu_items[temp].categories.should.be.an('array')
                         .to.include.members(['lunch', 'burgers', 'dinner']);
-                    storage.menu_items[1].should.have.property('name');
-                    storage.menu_items[1].name.should.equal('spinach omlete');
-                    storage.menu_items[1].should.have.property('price');
-                    storage.menu_items[1].price.should.equal(4.99);
-                    storage.menu_items[1].categories.should.be.an('array')
+                    temp = storage.menu_items.map(function(field) {return field.name;}).indexOf('spinach omlete');
+                    storage.menu_items[temp].should.have.property('name');
+                    storage.menu_items[temp].should.have.property('price');
+                    storage.menu_items[temp].price.should.equal(4.99);
+                    storage.menu_items[temp].categories.should.be.an('array')
                         .to.include.members(['breakfast', 'omlete']);
-                    storage.menu_items[2].should.have.property('name');
-                    storage.menu_items[2].name.should.equal('steak');
-                    storage.menu_items[2].should.have.property('price');
-                    storage.menu_items[2].price.should.equal(12.99);
-                    storage.menu_items[2].categories.should.be.an('array')
+                    temp = storage.menu_items.map(function(field) {return field.name;}).indexOf('steak');
+                    storage.menu_items[temp].should.have.property('name');
+                    storage.menu_items[temp].should.have.property('price');
+                    storage.menu_items[temp].price.should.equal(12.99);
+                    storage.menu_items[temp].categories.should.be.an('array')
                         .to.include.members(['dinner', 'entree']);
-                    storage.menu_items[3].should.have.property('name');
-                    storage.menu_items[3].name.should.equal('reuben');
-                    storage.menu_items[3].should.have.property('price');
-                    storage.menu_items[3].price.should.equal(6.99);
-                    storage.menu_items[3].categories.should.be.an('array')
+                    temp = storage.menu_items.map(function(field) {return field.name;}).indexOf('reuben');
+                    storage.menu_items[temp].should.have.property('name');
+                    storage.menu_items[temp].should.have.property('price');
+                    storage.menu_items[temp].price.should.equal(6.99);
+                    storage.menu_items[temp].categories.should.be.an('array')
                         .to.include.members(['lunch', 'sandwhich']);
                     //check mongo directly to ensure data does not exist
-                    Menu.find(function(err, result) {
+                    Menu.find().sort({_id: 1}).exec(function(err, result) {
                         result[0].should.have.property('name');
                         result[0].name.should.equal('hamburger');
                         result[0].should.have.property('price');
@@ -494,17 +494,17 @@
                     res.should.have.header('content-type', 'application/json; charset=utf-8');
                     //ensure menu items have specific properties
                     res.body.should.be.a('array');
-                    res.body[0].should.have.property('name');
-                    res.body[0].name.should.equal('hamburger');
-                    res.body[0].should.have.property('price');
-                    res.body[0].price.should.equal(7.99);
-                    res.body[0].categories.should.be.an('array')
+                    var temp = storage.menu_items.map(function(field) {return field.name;}).indexOf('hamburger');
+                    res.body[temp].should.have.property('name');
+                    res.body[temp].should.have.property('price');
+                    res.body[temp].price.should.equal(7.99);
+                    res.body[temp].categories.should.be.an('array')
                         .to.include.members(['lunch', 'burgers', 'dinner']);
-                    res.body[1].should.have.property('name');
-                    res.body[1].name.should.equal('spinach omlete');
-                    res.body[1].should.have.property('price');
-                    res.body[1].price.should.equal(4.99);
-                    res.body[1].categories.should.be.an('array')
+                    temp = storage.menu_items.map(function(field) {return field.name;}).indexOf('spinach omlete');
+                    res.body[temp].should.have.property('name');
+                    res.body[temp].should.have.property('price');
+                    res.body[temp].price.should.equal(4.99);
+                    res.body[temp].categories.should.be.an('array')
                         .to.include.members(['breakfast', 'omlete']);
                     done();
                 });
