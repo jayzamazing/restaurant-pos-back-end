@@ -141,7 +141,7 @@
                     storage.menu_items[3].categories.should.be.an('array')
                         .to.include.members(['lunch', 'sandwhich']);
                     //check mongo directly to ensure data does not exist
-                    Menu.find({}, null, {sort: {'_id': 1}}, function(err, result) {
+                    Menu.find().sort({_id: 1}).exec(function(err, result) {
                         result[0].should.have.property('name');
                         result[0].name.should.equal('hamburger');
                         result[0].should.have.property('price');
