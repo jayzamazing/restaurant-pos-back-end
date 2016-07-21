@@ -1,5 +1,6 @@
 /*jshint esversion: 6 */
 (function() {
+  "use strict";
     //import mongoose
     var mongoose = require('mongoose');
     //set the schema for this collection

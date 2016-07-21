@@ -5,9 +5,9 @@
     var chaiHttp = require('chai-http');
     //get local files
     var server = require('../server.js');
-    var Store = require('../server/models/store.js');
+    var Store = require('../server/models/store-model.js');
     var ph = require('../server/promisehelpers.js');
-    var Menu = require('../server/models/menu.js');
+    var Menu = require('../server/models/menu-model.js');
     //extends objects with should for test chaining
     var should = chai.should();
     //used to make requests and check state of object
@@ -118,24 +118,28 @@
                     storage.menu_items.should.be.a('array');
                     var temp = storage.menu_items.map(function(field) {return field.name;}).indexOf('hamburger');
                     storage.menu_items[temp].should.have.property('name');
+                    storage.menu_items[temp].name.should.equal('hamburger');
                     storage.menu_items[temp].should.have.property('price');
                     storage.menu_items[temp].price.should.equal(7.99);
                     storage.menu_items[temp].categories.should.be.an('array')
                         .to.include.members(['lunch', 'burgers', 'dinner']);
                     temp = storage.menu_items.map(function(field) {return field.name;}).indexOf('spinach omlete');
                     storage.menu_items[temp].should.have.property('name');
+                    storage.menu_items[temp].name.should.equal('spinach omlete');
                     storage.menu_items[temp].should.have.property('price');
                     storage.menu_items[temp].price.should.equal(4.99);
                     storage.menu_items[temp].categories.should.be.an('array')
                         .to.include.members(['breakfast', 'omlete']);
                     temp = storage.menu_items.map(function(field) {return field.name;}).indexOf('steak');
                     storage.menu_items[temp].should.have.property('name');
+                    storage.menu_items[temp].name.should.equal('steak');
                     storage.menu_items[temp].should.have.property('price');
                     storage.menu_items[temp].price.should.equal(12.99);
                     storage.menu_items[temp].categories.should.be.an('array')
                         .to.include.members(['dinner', 'entree']);
                     temp = storage.menu_items.map(function(field) {return field.name;}).indexOf('reuben');
                     storage.menu_items[temp].should.have.property('name');
+                    storage.menu_items[temp].name.should.equal('reuben');
                     storage.menu_items[temp].should.have.property('price');
                     storage.menu_items[temp].price.should.equal(6.99);
                     storage.menu_items[temp].categories.should.be.an('array')
@@ -496,12 +500,14 @@
                     res.body.should.be.a('array');
                     var temp2 = storage.menu_items.map(function(field) {return field.name;}).indexOf('hamburger');
                     res.body[temp2].should.have.property('name');
+                    res.body[temp2].name.should.equal('hamburger');
                     res.body[temp2].should.have.property('price');
                     res.body[temp2].price.should.equal(7.99);
                     res.body[temp2].categories.should.be.an('array')
                         .to.include.members(['lunch', 'burgers', 'dinner']);
                     temp2 = storage.menu_items.map(function(field) {return field.name;}).indexOf('spinach omlete');
                     res.body[temp2].should.have.property('name');
+                    res.body[temp2].name.should.equal('spinach omlete');
                     res.body[temp2].should.have.property('price');
                     res.body[temp2].price.should.equal(4.99);
                     res.body[temp2].categories.should.be.an('array')
@@ -524,6 +530,7 @@
                 })
                 //when finished do the following
                 .end(function(err, res) {
+                    res.should.have.status(201);
                     //check to see how many dinners were created under the table
                     res.body.dinners.should.equal(3);
                 });
@@ -550,9 +557,34 @@
                     storage.floorTables.tables.get('table2').get('Dinner #1').dishes[0].should.have.property('price');
                     storage.floorTables.tables.get('table2').get('Dinner #1').dishes[0].description.should.equal('burger');
                     storage.floorTables.tables.get('table2').get('Dinner #1').dishes[0].price.should.equal(7.99);
-
+                    done();
                 });
-                done();
+
         });
+        //test for post for /user to add user to mongodb
+        it('should post the user data', function(done) {
+            //setup a request
+            chai.request(app)
+                //request to /store
+                .post('/user')
+                //attach data to request
+                .send({username: 'blah', password: 'kablah'})
+                //when finished do the following
+                .end(function(err, res) {
+                    //check to see how many dinners were created under the table
+                    res.should.have.status(201);
+                    User.findOne({username: 'blah'}, function(err, result) {
+                      console.log('looking at password');
+
+                      console.log(result);
+                      result.username.should.be.a('string');
+                      result.username.should.equal('blah');
+                      result.password.should.be.a('string');
+                      result.password.should.equal('kablah1');
+                    });
+                    done();
+                });
+
+              });
     });
 })();
