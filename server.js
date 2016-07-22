@@ -40,8 +40,8 @@
                     //send index page back to requestor
                     res.sendFile(__dirname + '/public/index.html');
                 });
-            }).catch(function(err) {
-                console.log(err);
+            }).catch(function() {
+                res.sendStatus(500);
             });
         }
     });
@@ -227,8 +227,6 @@
      * @return - status 200/400
      */
     restaurantController.post('/order', function(req, res) {
-        console.log('Looking at order body');
-        console.log(req.body.order);
         //if there is no body in the request
         if (!req.body) {
             //return error code 400

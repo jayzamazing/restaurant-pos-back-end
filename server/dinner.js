@@ -13,5 +13,5 @@ function Dinner() {
 Dinner.prototype.addDishes = function(items) {
     this.dishes = this.dishes.concat(items);
 };
-var exports = module.exports = Dinner;
+module.exports = Dinner;
 })();

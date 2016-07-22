@@ -19,7 +19,7 @@
         this.floorTables = new Tables();
         this.menu_items = [];
         //set floortables to have a certain amount of tables
-        this.floorTables.createTables();
+        this.floorTables.createTables(this.tableNumbers);
     }
     //Inherit variables and functions from store object, is a relationship
     Restaurant.prototype = Object.create(Store.prototype);
@@ -66,7 +66,7 @@
             customerOrder = context.getMenuItems(customerOrder);
             //iterate and add customers order to customer
             customerOrder.forEach(function(item) {
-                dinner.addDishes(item);
+                dinner.addDishes(item._doc);
             });
             //update table with dinner info
             table.set('Dinner #' + customerNumber, dinner);
@@ -148,7 +148,7 @@
             //find specific item
             return context.menu_items.find(function(menu_item) {
                 //if item matches, then return object
-                if (menu_item.description === item) {
+                if (menu_item._doc.name === item) {
                     return menu_item;
                 }
             });
@@ -181,5 +181,5 @@
             }
         });
     };
-    var exports = module.exports = Restaurant;
+    module.exports = Restaurant;
 })();

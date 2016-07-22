@@ -41,5 +41,5 @@ RestaurantLogging.promiseLogging = function(callback) {
             });
     });
 };
-var exports = module.exports = RestaurantLogging;
+module.exports = RestaurantLogging;
 })();

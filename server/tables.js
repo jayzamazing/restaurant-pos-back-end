@@ -9,10 +9,10 @@
     /*
      * Function to add a certain amount of tables the restaurant
      */
-    Tables.prototype.createTables = function() {
-        for (var i = 1; i <= this.tableNumbers; i++) {
+    Tables.prototype.createTables = function(tableNumbers) {
+        for (var i = 1; i <= tableNumbers; i++) {
             this.tables.set('table' + i, new Map());
         }
     };
-    var exports = module.exports = Tables;
+    module.exports = Tables;
 })();

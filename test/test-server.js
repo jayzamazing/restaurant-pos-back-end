@@ -532,51 +532,50 @@
 
         //test for post for /guest to add guests to specific table
         //and /order to add order to table
-        // it('should post the guest data and order data', function(done) {
-        //     //setup a request
-        //     chai.request(app)
-        //         //request to /store
-        //         .post('/guest')
-        //         //attach data to request
-        //         .send({
-        //             table_number: '2',
-        //             guest: '3'
-        //         })
-        //         //when finished do the following
-        //         .end(function(err, res) {
-        //             res.should.have.status(201);
-        //             //check to see how many dinners were created under the table
-        //             res.body.dinners.should.equal(3);
-        //         });
-        //     //setup a request
-        //     chai.request(app)
-        //         //post to /order
-        //         .post('/order')
-        //         //attach data to request
-        //         .send({
-        //             table_number: 2,
-        //             dinner_number: 1,
-        //             order: [
-        //                 "hamburger",
-        //                 "fries",
-        //                 "soft drink"
-        //             ]
-        //         })
-        //         //when done do the following
-        //         .end(function(err, res) {
-        //             // //check server gives 200 response
-        //             res.should.have.status(200);
-        //             console.log('looking at tables');
-        //             console.log(storage.floorTables.tables);
-        //             // //check stored values match for description and price
-        //             storage.floorTables.tables.get('table2').get('Dinner #1').dishes[0].should.have.property('description');
-        //             storage.floorTables.tables.get('table2').get('Dinner #1').dishes[0].should.have.property('price');
-        //             storage.floorTables.tables.get('table2').get('Dinner #1').dishes[0].description.should.equal('burger');
-        //             storage.floorTables.tables.get('table2').get('Dinner #1').dishes[0].price.should.equal(7.99);
-        //             done();
-        //         });
-        //
-        // });
+        it('should post the guest data and order data', function(done) {
+            //setup a request
+            chai.request(app)
+                //request to /store
+                .post('/guest')
+                //attach data to request
+                .send({
+                    table_number: '2',
+                    guest: '3'
+                })
+                //when finished do the following
+                .end(function(err, res) {
+                    res.should.have.status(201);
+                    //check to see how many dinners were created under the table
+                    res.body.dinners.should.equal(3);
+
+                });
+            //setup a request
+            chai.request(app)
+                //post to /order
+                .post('/order')
+                //attach data to request
+                .send({
+                    table_number: 2,
+                    dinner_number: 1,
+                    order: [
+                        "hamburger",
+                        "fries",
+                        "soft drink"
+                    ]
+                })
+                //when done do the following
+                .end(function(err, res) {
+                    // //check server gives 200 response
+                    res.should.have.status(200);
+                    //check stored values match for description and price
+                    storage.floorTables.tables.get('table2').get('Dinner #1').dishes[0].should.have.property('name');
+                    storage.floorTables.tables.get('table2').get('Dinner #1').dishes[0].should.have.property('price');
+                    storage.floorTables.tables.get('table2').get('Dinner #1').dishes[0].name.should.equal('hamburger');
+                    storage.floorTables.tables.get('table2').get('Dinner #1').dishes[0].price.should.equal(7.99);
+                    done();
+                });
+
+        });
         //test for post for /user to add user to mongodb
         // it('should post the user data', function(done) {
         //     //setup a request
