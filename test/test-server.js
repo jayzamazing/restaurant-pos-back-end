@@ -6,6 +6,7 @@
     //get local files
     var server = require('../server.js');
     var Store = require('../server/models/store-model.js');
+    var User = require('../server/models/user-model.js');
     var ph = require('../server/promisehelpers.js');
     var Menu = require('../server/models/menu-model.js');
     //extends objects with should for test chaining
@@ -97,7 +98,10 @@
             Menu.remove({}, function() {
                 //delete contents of store in mongodb
                 Store.remove({}, function() {
-                    done();
+                    //delete contents of menu in mongodb
+                    User.remove({}, function() {
+                        done();
+                    });
                 });
             });
 
@@ -577,34 +581,34 @@
 
         });
         //test for post for /user to add user to mongodb
-        // it('should post the user data', function(done) {
-        //     //setup a request
-        //     chai.request(app)
-        //         //request to /store
-        //         .post('/user')
-        //         //attach data to request
-        //         .send({
-        //             username: 'blah',
-        //             password: 'kablah'
-        //         })
-        //         //when finished do the following
-        //         .end(function(err, res) {
-        //             //check to see how many dinners were created under the table
-        //             res.should.have.status(201);
-        //             User.findOne({
-        //                 username: 'blah'
-        //             }, function(err, result) {
-        //                 console.log('looking at password');
-        //
-        //                 console.log(result);
-        //                 result.username.should.be.a('string');
-        //                 result.username.should.equal('blah');
-        //                 result.password.should.be.a('string');
-        //                 result.password.should.equal('kablah1');
-        //             });
-        //             done();
-        //         });
-        //
-        // });
+        it('should post the user data', function(done) {
+            //setup a request
+            chai.request(app)
+                //request to /store
+                .post('/users')
+                //attach data to request
+                .send({
+                    username: "blah",
+                    password: "kablah"
+                })
+                //when finished do the following
+                .end(function(err, res) {
+                    //check to see how many dinners were created under the table
+                    res.should.have.status(201);
+                    User.findOne({
+                        username: "blah"
+                    }, function(err, result) {
+                        console.log('looking at password');
+
+                        console.log(result);
+                        result.username.should.be.a('string');
+                        result.username.should.equal('blah');
+                        result.password.should.be.a('string');
+                        result.password.should.not.equal('kablah');
+                        done();
+                    });
+                });
+
+        });
     });
 })();

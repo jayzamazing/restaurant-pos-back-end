@@ -261,9 +261,15 @@
             password: req.body.password
         });
         //save credentials to mongodb
-        user.saveCredentials();
-        //return sucess message
-        res.sendStatus(201);
+        ph.promiseLogging(user.saveCredentials())
+        .then(function() {
+          //return sucess message
+          res.sendStatus(201);
+        })
+        //otherwise return 400 status
+        .catch(function() {
+            res.sendStatus(400);
+        });
     });
     /*
      * Function to get mongoose connection started and node running
