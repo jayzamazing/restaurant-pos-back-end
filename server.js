@@ -5,9 +5,10 @@
     var express = require('express');
     var restaurantController = express();
     var mongoose = require('mongoose');
+    var passport = require('passport');
+    var BasicStrategy = require('passport-http').BasicStrategy;
     //to deal with json parsing
     var bodyParser = require('body-parser');
-    var jsonParser = bodyParser.json();
     //import local files
     var Restaurant = require('./server/restaurant.js');
     var ph = require('./server/promisehelpers.js');
@@ -21,6 +22,26 @@
     restaurantController.use('static', express.static('public'));
     //use bodyparser for all routes
     restaurantController.use(bodyParser.json());
+    restaurantController.use(passport.initialize());
+    /*
+    * Set up the strategy to authenticate users against
+    * @resolve/reject - user data / error
+    */
+    var strategy = new BasicStrategy(function(username, password, callback) {
+      User.findOne({username: username}, function(err, user) {
+        if(err) {
+          callback('Invalid username');
+        }
+        user.validatePassword(password, function(err, isValid){
+          if(err || !result) {
+            callback('Invalid password');
+          }
+        });
+        callback(null, user);
+      });
+
+    });
+    passport.use(strategy);
     /*
      * Function to set the first page to load and also set the initial state of the application
      * @return - sends the index.html file back
@@ -49,7 +70,7 @@
      * Function to get the store information
      * @return - res with 201 and store / res with 500 error
      */
-    restaurantController.get('/store', function(req, res) {
+    restaurantController.get('/store', passport.authenticate('basic', {session: false}), function(req, res) {
         //get the store data from mongo and log results or reject reason
         ph.promiseLogging(restaurantModel.getStore())
             //if succesful then return 201 with the store data

@@ -43,6 +43,24 @@
         });
       }
     });
+    /*
+    * Function to validate a given password against hashed version
+    * @param password - password to validate
+    * @resolve/reject - success/error message
+    */
+    UserSchema.methods.validatePassword = function(password) {
+      var context = this;
+      return new Promise(function(resolve, reject) {
+        bcrypt.compare(password, context.password, function(err, valid) {
+          //if there is any error, send error back
+          if (err) {
+            reject(err);
+          }
+          //send back success message, either true or false
+          resolve(valid);
+        });
+      });
+    };
     //create collection variable based on schema
     var User = mongoose.model('User', UserSchema);
     /*
@@ -64,23 +82,6 @@
             });
         });
     };
-    /*
-    * Function to validate a given password against hashed version
-    * @param password - password to validate
-    * @resolve/reject - success/error message
-    */
-    User.prototype.validatePassword = function(password) {
-      var context = this;
-      return new Promise(function(resolve, reject) {
-        bcrypt.compare(password, context.password, function(err, valid) {
-          //if there is any error, send error back
-          if (err) {
-            reject(err);
-          }
-          //send back success message, either true or false
-          resolve(valid);
-        });
-      });
-    };
+
     module.exports = User;
 })();

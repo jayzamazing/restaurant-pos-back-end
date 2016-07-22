@@ -38,7 +38,7 @@
         it('should create a user in mongo', function(done) {
             //initialize and declare user model
             var user = new User({
-                username: "blah",
+                username: "supahbored",
                 password: "kablah"
             });
             //save credentials to mongodb
@@ -49,11 +49,11 @@
                     item.should.equal('Saved user credentials');
                     //check against what is stored in mongodb
                     User.findOne({
-                        username: "blah"
+                        username: "supahbored"
                     }, function(err, result) {
                       //check the response against what is expected
                       result.username.should.be.a('string');
-                      result.username.should.equal('blah');
+                      result.username.should.equal('supahbored');
                       //validate expected password against what is stored in mongodb
                       //using bcrypt to compare the values
                       ph.promiseLogging(user.validatePassword('kablah'))

@@ -89,6 +89,10 @@
                     name: 'fries',
                     price: 1.99,
                     categories: ['lunch', 'side']
+                });
+                User.create({
+                  username: 'test',
+                  password: 'test'
                 }, done());
             });
         });
@@ -229,8 +233,12 @@
             chai.request(app)
                 //request to /
                 .get('/store')
+                //attach data to request
+                .auth('test', 'test')
                 //when finished do the following
                 .end(function(err, res) {
+                  console.log('looking at data from get store');
+                    console.log(res.body);
                     //check server gives 201 response and the data sent back from the server
                     res.should.have.status(201);
                     res.body.store_name.should.be.a('string');
@@ -588,19 +596,16 @@
                 .post('/users')
                 //attach data to request
                 .send({
-                    username: "blah",
-                    password: "kablah"
+                    username: 'blah',
+                    password: 'kablah'
                 })
                 //when finished do the following
                 .end(function(err, res) {
                     //check to see how many dinners were created under the table
                     res.should.have.status(201);
                     User.findOne({
-                        username: "blah"
+                        username: 'blah'
                     }, function(err, result) {
-                        console.log('looking at password');
-
-                        console.log(result);
                         result.username.should.be.a('string');
                         result.username.should.equal('blah');
                         result.password.should.be.a('string');
