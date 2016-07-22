@@ -1,5 +1,6 @@
 /*jshint esversion: 6 */
 (function() {
+  global.DATABASE_URL = 'mongodb://localhost/restaurant-pos-test';
     //import chai, chai-http for testing
     var chai = require('chai');
     var chaiHttp = require('chai-http');
@@ -16,7 +17,7 @@
     var storage = server.storage;
     //use http plugin
     chai.use(chaiHttp);
-    global.DATABASE_URL = 'mongodb://localhost/restaurant-pos-test';
+
     /*
      * All tests that should be run
      */
