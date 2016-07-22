@@ -175,8 +175,8 @@
                     Store.prototype.setStore.call(context, storeData)
                 ]);
                 resolve({
-                    storeData,
-                    menuData
+                    storeData: storeData,
+                    menuData: menuData
                 });
             }
         });
