@@ -2,7 +2,7 @@
   "name": "restaurant-pos",
   "version": "1.2.1",
   "description": "A meal cost calculator",
-  "main": "server.js",
+  "main": "public/js/index.js",
   "scripts": {
     "test": "mocha ./test/ ./test/models",
     "mkdir": "mkdir -p build",
@@ -47,9 +47,9 @@
   "author": "Adrian J Lopez <adrianjaylopez@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/jayzamazing/Meal-Calculator/issues"
+    "url": "https://github.com/jayzamazing/Restaurant-POS/issues"
   },
-  "homepage": "https://github.com/jayzamazing/Meal-Calculator#readme",
+  "homepage": "https://github.com/jayzamazing/Restaurant-POS#readme",
   "dependencies": {
     "bcrypt": "0.8.7",
     "body-parser": "1.15.2",
