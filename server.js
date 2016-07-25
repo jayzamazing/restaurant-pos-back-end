@@ -60,7 +60,7 @@
                     restaurantModel.setRestaurantData(results[0], results[1])
                 ).then(function() {
                     //send index page back to requestor
-                    res.sendFile(__dirname + './build/index.html');
+                    res.sendFile(__dirname + '/build/index.html');
                 });
             }).catch(function() {
                 res.sendStatus(500);
