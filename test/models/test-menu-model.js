@@ -5,7 +5,7 @@
     var chaiHttp = require('chai-http');
     //get local files
     var server = require('../../server.js');
-    var Menu = require('../../server/models/menu.js');
+    var Menu = require('../../server/models/menu-model.js');
     var ph = require('../../server/promisehelpers.js');
     //
     var mongoose = require('mongoose');

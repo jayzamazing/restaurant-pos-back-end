@@ -4,24 +4,44 @@
     //import express
     var express = require('express');
     var restaurantController = express();
-    //temporary usage of fs to get json data
-    //var fs = require('fs');
     var mongoose = require('mongoose');
+    var passport = require('passport');
+    var BasicStrategy = require('passport-http').BasicStrategy;
     //to deal with json parsing
     var bodyParser = require('body-parser');
-    var jsonParser = bodyParser.json();
     //import local files
     var Restaurant = require('./server/restaurant.js');
     var ph = require('./server/promisehelpers.js');
     var config = require('./server/config.js');
-    var Store = require('./server/models/store.js');
-    var Menu = require('./server/models/menu.js');
+    var Store = require('./server/models/store-model.js');
+    var Menu = require('./server/models/menu-model.js');
+    var User = require('./server/models/user-model.js');
     //initialize restaurant and set to have 5 tables
     var restaurantModel = new Restaurant(5);
     //set folder for static content
     restaurantController.use('static', express.static('public'));
     //use bodyparser for all routes
     restaurantController.use(bodyParser.json());
+    restaurantController.use(passport.initialize());
+    /*
+    * Set up the strategy to authenticate users against
+    * @resolve/reject - user data / error
+    */
+    var strategy = new BasicStrategy(function(username, password, callback) {
+      User.findOne({username: username}, function(err, user) {
+        if(err) {
+          callback('Invalid username');
+        }
+        user.validatePassword(password, function(err, isValid){
+          if(err || !result) {
+            callback('Invalid password');
+          }
+        });
+        callback(null, user);
+      });
+
+    });
+    passport.use(strategy);
     /*
      * Function to set the first page to load and also set the initial state of the application
      * @return - sends the index.html file back
@@ -41,17 +61,16 @@
                     //send index page back to requestor
                     res.sendFile(__dirname + '/public/index.html');
                 });
-            }).catch(function(err) {
-                console.log(err);
+            }).catch(function() {
+                res.sendStatus(500);
             });
         }
-
     });
     /*
      * Function to get the store information
      * @return - res with 201 and store / res with 500 error
      */
-    restaurantController.get('/store', function(req, res) {
+    restaurantController.get('/store', passport.authenticate('basic', {session: false}), function(req, res) {
         //get the store data from mongo and log results or reject reason
         ph.promiseLogging(restaurantModel.getStore())
             //if succesful then return 201 with the store data
@@ -59,7 +78,7 @@
                 res.status(201).json(item);
                 //if there was an error, return 500
             }).catch(function() {
-                res.status(500);
+                res.sendStatus(500);
             });
     });
     /*
@@ -82,7 +101,7 @@
                 res.status(201).json(item);
                 //if there was an error, return 500
             }).catch(function() {
-                res.status(500);
+                res.sendStatus(500);
             });
     });
     /*
@@ -109,7 +128,7 @@
                 res.status(201).json(item);
                 //if there was an error, return 500
             }).catch(function() {
-                res.status(500);
+                res.sendStatus(500);
             });
     });
     /*
@@ -126,7 +145,7 @@
                 res.status(201).json(item);
                 //if there was an error, return 500
             }).catch(function() {
-                res.status(500);
+                res.sendStatus(500);
             });
     });
     /*
@@ -144,7 +163,7 @@
                 res.status(201).json(item);
                 //if there was an error, return 500
             }).catch(function() {
-                res.status(500);
+                res.sendStatus(500);
             });
     });
     /*
@@ -164,7 +183,7 @@
                 res.status(201).json(item);
                 //if there was an error, return 500
             }).catch(function() {
-                res.status(500);
+                res.sendStatus(500);
             });
     });
     /*
@@ -180,7 +199,7 @@
                 res.status(201).json(item);
                 //if there was an error, return 500
             }).catch(function() {
-                res.status(500);
+                res.sendStatus(500);
             });
     });
     /*
@@ -195,7 +214,7 @@
                 res.status(201).json(item);
                 //if there was an error, return 500
             }).catch(function() {
-                res.status(500);
+                res.sendStatus(500);
             });
     });
     /*
@@ -214,11 +233,11 @@
             //if succesful then return 201
             .then(function(item) {
                 res.status(201).json({
-                    dinners: item.get('table' + req.body.table_number).length
+                    dinners: item.get('table' + req.body.table_number).size
                 });
                 //if there was an error, return 500
             }).catch(function() {
-                res.status(500);
+                res.sendStatus(500);
             });
     });
     /*
@@ -234,13 +253,13 @@
             //return error code 400
             res.sendStatus(400);
         }
-        ph.promiseLogging([
+        ph.promiseLogging(
                 //add order to tables dinner
                 restaurantModel
                 .addGuestOrder(req.body.table_number,
                     req.body.dinner_number,
                     req.body.order)
-            ])
+            )
             //if there are no error return 200 status
             .then(function() {
                 res.sendStatus(200);
@@ -249,6 +268,29 @@
             .catch(function() {
                 res.sendStatus(400);
             });
+    });
+    /*
+     * Function that deals with adding users for authentication
+     * @param req.body.username - user name
+     * @param req.body.password - password for the user
+     * @response - 201 success
+     */
+    restaurantController.post('/users', function(req, res) {
+        //initialize and declare user model
+        var user = new User({
+            username: req.body.username,
+            password: req.body.password
+        });
+        //save credentials to mongodb
+        ph.promiseLogging(user.saveCredentials())
+        .then(function() {
+          //return sucess message
+          res.sendStatus(201);
+        })
+        //otherwise return 400 status
+        .catch(function() {
+            res.sendStatus(400);
+        });
     });
     /*
      * Function to get mongoose connection started and node running
@@ -281,7 +323,6 @@
             }
         });
     }
-
     //export for testing
     exports.app = restaurantController;
     exports.storage = restaurantModel;

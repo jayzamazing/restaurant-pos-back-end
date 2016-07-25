@@ -160,5 +160,5 @@
           });
       });
     };
-    var exports = module.exports = Store;
+    module.exports = Store;
 })();

@@ -1,13 +1,15 @@
 /*jshint esversion: 6 */
 (function() {
+  global.DATABASE_URL = 'mongodb://localhost/restaurant-pos-test';
     //import chai, chai-http for testing
     var chai = require('chai');
     var chaiHttp = require('chai-http');
     //get local files
     var server = require('../server.js');
-    var Store = require('../server/models/store.js');
+    var Store = require('../server/models/store-model.js');
+    var User = require('../server/models/user-model.js');
     var ph = require('../server/promisehelpers.js');
-    var Menu = require('../server/models/menu.js');
+    var Menu = require('../server/models/menu-model.js');
     //extends objects with should for test chaining
     var should = chai.should();
     //used to make requests and check state of object
@@ -15,7 +17,7 @@
     var storage = server.storage;
     //use http plugin
     chai.use(chaiHttp);
-    global.DATABASE_URL = 'mongodb://localhost/restaurant-pos-test';
+
     /*
      * All tests that should be run
      */
@@ -88,6 +90,10 @@
                     name: 'fries',
                     price: 1.99,
                     categories: ['lunch', 'side']
+                });
+                User.create({
+                  username: 'test',
+                  password: 'test'
                 }, done());
             });
         });
@@ -97,7 +103,10 @@
             Menu.remove({}, function() {
                 //delete contents of store in mongodb
                 Store.remove({}, function() {
-                    done();
+                    //delete contents of menu in mongodb
+                    User.remove({}, function() {
+                        done();
+                    });
                 });
             });
 
@@ -116,32 +125,46 @@
                     res.should.have.header('content-type', 'text/html; charset=UTF-8');
                     //ensure menu items have specific properties
                     storage.menu_items.should.be.a('array');
-                    var temp = storage.menu_items.map(function(field) {return field.name;}).indexOf('hamburger');
+                    var temp = storage.menu_items.map(function(field) {
+                        return field.name;
+                    }).indexOf('hamburger');
                     storage.menu_items[temp].should.have.property('name');
+                    storage.menu_items[temp].name.should.equal('hamburger');
                     storage.menu_items[temp].should.have.property('price');
                     storage.menu_items[temp].price.should.equal(7.99);
                     storage.menu_items[temp].categories.should.be.an('array')
                         .to.include.members(['lunch', 'burgers', 'dinner']);
-                    temp = storage.menu_items.map(function(field) {return field.name;}).indexOf('spinach omlete');
+                    temp = storage.menu_items.map(function(field) {
+                        return field.name;
+                    }).indexOf('spinach omlete');
                     storage.menu_items[temp].should.have.property('name');
+                    storage.menu_items[temp].name.should.equal('spinach omlete');
                     storage.menu_items[temp].should.have.property('price');
                     storage.menu_items[temp].price.should.equal(4.99);
                     storage.menu_items[temp].categories.should.be.an('array')
                         .to.include.members(['breakfast', 'omlete']);
-                    temp = storage.menu_items.map(function(field) {return field.name;}).indexOf('steak');
+                    temp = storage.menu_items.map(function(field) {
+                        return field.name;
+                    }).indexOf('steak');
                     storage.menu_items[temp].should.have.property('name');
+                    storage.menu_items[temp].name.should.equal('steak');
                     storage.menu_items[temp].should.have.property('price');
                     storage.menu_items[temp].price.should.equal(12.99);
                     storage.menu_items[temp].categories.should.be.an('array')
                         .to.include.members(['dinner', 'entree']);
-                    temp = storage.menu_items.map(function(field) {return field.name;}).indexOf('reuben');
+                    temp = storage.menu_items.map(function(field) {
+                        return field.name;
+                    }).indexOf('reuben');
                     storage.menu_items[temp].should.have.property('name');
+                    storage.menu_items[temp].name.should.equal('reuben');
                     storage.menu_items[temp].should.have.property('price');
                     storage.menu_items[temp].price.should.equal(6.99);
                     storage.menu_items[temp].categories.should.be.an('array')
                         .to.include.members(['lunch', 'sandwhich']);
                     //check mongo directly to ensure data does not exist
-                    Menu.find().sort({_id: 1}).exec(function(err, result) {
+                    Menu.find().sort({
+                        _id: 1
+                    }).exec(function(err, result) {
                         result[0].should.have.property('name');
                         result[0].name.should.equal('hamburger');
                         result[0].should.have.property('price');
@@ -211,8 +234,12 @@
             chai.request(app)
                 //request to /
                 .get('/store')
+                //attach data to request
+                .auth('test', 'test')
                 //when finished do the following
                 .end(function(err, res) {
+                  console.log('looking at data from get store');
+                    console.log(res.body);
                     //check server gives 201 response and the data sent back from the server
                     res.should.have.status(201);
                     res.body.store_name.should.be.a('string');
@@ -494,17 +521,23 @@
                     res.should.have.header('content-type', 'application/json; charset=utf-8');
                     //ensure menu items have specific properties
                     res.body.should.be.a('array');
-                    var temp = storage.menu_items.map(function(field) {return field.name;}).indexOf('hamburger');
-                    res.body[temp].should.have.property('name');
-                    res.body[temp].should.have.property('price');
-                    res.body[temp].price.should.equal(7.99);
-                    res.body[temp].categories.should.be.an('array')
+                    var temp2 = storage.menu_items.map(function(field) {
+                        return field.name;
+                    }).indexOf('hamburger');
+                    res.body[temp2].should.have.property('name');
+                    res.body[temp2].name.should.equal('hamburger');
+                    res.body[temp2].should.have.property('price');
+                    res.body[temp2].price.should.equal(7.99);
+                    res.body[temp2].categories.should.be.an('array')
                         .to.include.members(['lunch', 'burgers', 'dinner']);
-                    temp = storage.menu_items.map(function(field) {return field.name;}).indexOf('spinach omlete');
-                    res.body[temp].should.have.property('name');
-                    res.body[temp].should.have.property('price');
-                    res.body[temp].price.should.equal(4.99);
-                    res.body[temp].categories.should.be.an('array')
+                    temp2 = storage.menu_items.map(function(field) {
+                        return field.name;
+                    }).indexOf('spinach omlete');
+                    res.body[temp2].should.have.property('name');
+                    res.body[temp2].name.should.equal('spinach omlete');
+                    res.body[temp2].should.have.property('price');
+                    res.body[temp2].price.should.equal(4.99);
+                    res.body[temp2].categories.should.be.an('array')
                         .to.include.members(['breakfast', 'omlete']);
                     done();
                 });
@@ -524,8 +557,10 @@
                 })
                 //when finished do the following
                 .end(function(err, res) {
+                    res.should.have.status(201);
                     //check to see how many dinners were created under the table
                     res.body.dinners.should.equal(3);
+
                 });
             //setup a request
             chai.request(app)
@@ -545,14 +580,41 @@
                 .end(function(err, res) {
                     // //check server gives 200 response
                     res.should.have.status(200);
-                    // //check stored values match for description and price
-                    storage.floorTables.tables.get('table2').get('Dinner #1').dishes[0].should.have.property('description');
+                    //check stored values match for description and price
+                    storage.floorTables.tables.get('table2').get('Dinner #1').dishes[0].should.have.property('name');
                     storage.floorTables.tables.get('table2').get('Dinner #1').dishes[0].should.have.property('price');
-                    storage.floorTables.tables.get('table2').get('Dinner #1').dishes[0].description.should.equal('burger');
+                    storage.floorTables.tables.get('table2').get('Dinner #1').dishes[0].name.should.equal('hamburger');
                     storage.floorTables.tables.get('table2').get('Dinner #1').dishes[0].price.should.equal(7.99);
-
+                    done();
                 });
-                done();
+
+        });
+        //test for post for /user to add user to mongodb
+        it('should post the user data', function(done) {
+            //setup a request
+            chai.request(app)
+                //request to /store
+                .post('/users')
+                //attach data to request
+                .send({
+                    username: 'blah',
+                    password: 'kablah'
+                })
+                //when finished do the following
+                .end(function(err, res) {
+                    //check to see how many dinners were created under the table
+                    res.should.have.status(201);
+                    User.findOne({
+                        username: 'blah'
+                    }, function(err, result) {
+                        result.username.should.be.a('string');
+                        result.username.should.equal('blah');
+                        result.password.should.be.a('string');
+                        result.password.should.not.equal('kablah');
+                        done();
+                    });
+                });
+
         });
     });
 })();
