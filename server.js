@@ -66,7 +66,6 @@
                 res.sendStatus(500);
             });
         }
-        res.sendFile(__dirname + '/build/index.html'); //TODO remove and uncomment above
     });
     /*
      * Function to get the store information
