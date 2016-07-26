@@ -19,7 +19,8 @@
     //initialize restaurant and set to have 5 tables
     var restaurantModel = new Restaurant(5);
     //set folder for static content
-    restaurantController.use('static', express.static('public'));
+    restaurantController.use('/static', express.static('build'));
+    restaurantController.use('/scripts', express.static(__dirname + '/node_modules/'));
     //use bodyparser for all routes
     restaurantController.use(bodyParser.json());
     restaurantController.use(passport.initialize());
@@ -59,7 +60,7 @@
                     restaurantModel.setRestaurantData(results[0], results[1])
                 ).then(function() {
                     //send index page back to requestor
-                    res.sendFile(__dirname + '/public/index.html');
+                    res.sendFile(__dirname + '/build/index.html');
                 });
             }).catch(function() {
                 res.sendStatus(500);
