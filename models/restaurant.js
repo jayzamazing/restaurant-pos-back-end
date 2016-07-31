@@ -1,7 +1,6 @@
 /*jshint esversion: 6 */
 (function() {
     "use strict";
-    var fs = require('fs');
     var Store = require('./store.js');
     var Tables = require('./tables.js');
     var Dinner = require('./dinner.js');

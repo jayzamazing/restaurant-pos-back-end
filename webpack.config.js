@@ -3,18 +3,28 @@ var webpack = require('webpack');
 var packageData = require('./package.json');
 var minify = process.argv.indexOf('--minify') != -1;
 var filename = [packageData.name, packageData.version, 'js'];
+var fs = require('fs');
+
+var nodeModules = {};
+fs.readdirSync('node_modules')
+  .filter(function(x) {
+    return ['.bin'].indexOf(x) === -1;
+  })
+  .forEach(function(mod) {
+    nodeModules[mod] = 'commonjs ' + mod;
+  });
 var plugins = [];
 if (minify) {
     filename.splice(filename.length - 1, 0, 'min');
     plugins.push(new webpack.optimize.UglifyJsPlugin());
 }
-module.exports = {
+module.exports = [
+  {
     entry: path.resolve(__dirname, packageData.main),
     output: {
         path: path.resolve(__dirname, 'build'),
         filename: filename.join('.'),
     },
-    devtool: 'source-map',
     module: {
       loaders: [
         {
@@ -27,5 +37,54 @@ module.exports = {
         }
       ]
     },
+    devtool: 'source-map',
+    externals: nodeModules,
     plugins: plugins
-};
+  },
+  {
+    entry: path.resolve(__dirname, packageData.server),
+    target: 'node',
+    output: {
+        path: path.resolve(__dirname, 'build'),
+        filename: 'server-' + filename.join('.'),
+    },
+    module: {
+      loaders: [
+        {
+          test: /\.js$/,
+          exclude: /(node_modules)/,
+          loader: 'babel',
+          query: {
+            presets: ['es2015']
+          }
+        }
+      ]
+    },
+    devtool: 'source-map',
+    externals: nodeModules,
+    plugins: plugins
+  },
+  {
+    entry:  packageData.tests,
+    target: 'node',
+    output: {
+        path: path.resolve(__dirname, 'build'),
+        filename: 'test-' + filename.join('.'),
+    },
+    module: {
+      loaders: [
+        {
+          test: /\.js$/,
+          exclude: /(node_modules)/,
+          loader: 'babel',
+          query: {
+            presets: ['es2015']
+          }
+        }
+      ]
+    },
+    devtool: 'source-map',
+    externals: nodeModules,
+    plugins: plugins
+  }
+];
