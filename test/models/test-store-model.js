@@ -4,9 +4,9 @@
     var chai = require('chai');
     var chaiHttp = require('chai-http');
     //get local files
-    var server = require('../../server.js');
-    var Store = require('../../server/models/store-model.js');
-    var ph = require('../../server/promisehelpers.js');
+    var server = require('../../controllers/server.js');
+    var Store = require('../../models/store-model.js');
+    var ph = require('../../lib/promisehelpers.js');
     //
     var mongoose = require('mongoose');
     //extends objects with should for test chaining

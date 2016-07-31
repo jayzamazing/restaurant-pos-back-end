@@ -5,11 +5,11 @@
     var chai = require('chai');
     var chaiHttp = require('chai-http');
     //get local files
-    var server = require('../server.js');
-    var Store = require('../server/models/store-model.js');
-    var User = require('../server/models/user-model.js');
-    var ph = require('../server/promisehelpers.js');
-    var Menu = require('../server/models/menu-model.js');
+    var server = require('../controllers/server.js');
+    var Store = require('../models/store-model.js');
+    var User = require('../models/user-model.js');
+    var ph = require('../lib/promisehelpers.js');
+    var Menu = require('../models/menu-model.js');
     //extends objects with should for test chaining
     var should = chai.should();
     //used to make requests and check state of object

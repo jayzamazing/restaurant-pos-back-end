@@ -5,7 +5,7 @@
     var Store = require('./store.js');
     var Tables = require('./tables.js');
     var Dinner = require('./dinner.js');
-    var ph = require('./promisehelpers.js');
+    var ph = require('../lib/promisehelpers.js');
     /*
      * Function that represents restaurant object
      * @param tablenumbers - amount of tables the restaurant has

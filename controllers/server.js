@@ -3,27 +3,28 @@
     "use strict";
     //import express
     var express = require('express');
-    var restaurantController = express();
+    var app = express();
     var mongoose = require('mongoose');
     var passport = require('passport');
+    var path = require('path');
     var BasicStrategy = require('passport-http').BasicStrategy;
     //to deal with json parsing
     var bodyParser = require('body-parser');
     //import local files
-    var Restaurant = require('./server/restaurant.js');
-    var ph = require('./server/promisehelpers.js');
-    var config = require('./server/config.js');
-    var Store = require('./server/models/store-model.js');
-    var Menu = require('./server/models/menu-model.js');
-    var User = require('./server/models/user-model.js');
+    var Restaurant = require('../models/restaurant.js');
+    var ph = require('../lib/promisehelpers.js');
+    var config = require('../config/config.js');
+    var Store = require('../models/store-model.js');
+    var Menu = require('../models/menu-model.js');
+    var User = require('../models/user-model.js');
     //initialize restaurant and set to have 5 tables
     var restaurantModel = new Restaurant(5);
     //set folder for static content
-    restaurantController.use('/static', express.static('build'));
-    restaurantController.use('/scripts', express.static(__dirname + '/node_modules/'));
+    app.use('/static', express.static('../build'));
+    app.use('/scripts', express.static(__dirname + '/node_modules/'));
     //use bodyparser for all routes
-    restaurantController.use(bodyParser.json());
-    restaurantController.use(passport.initialize());
+    app.use(bodyParser.json());
+    app.use(passport.initialize());
     /*
     * Set up the strategy to authenticate users against
     * @resolve/reject - user data / error
@@ -47,7 +48,7 @@
      * Function to set the first page to load and also set the initial state of the application
      * @return - sends the index.html file back
      */
-    restaurantController.get('/', function(req, res) {
+    app.get('/', function(req, res) {
         //if the following fields are empty, ensure this is only run once
         if (restaurantModel.menu_items.length === 0 && restaurantModel.store_name === '') {
             //get the restaurant data mongo and log results or reject reason
@@ -60,7 +61,7 @@
                     restaurantModel.setRestaurantData(results[0], results[1])
                 ).then(function() {
                     //send index page back to requestor
-                    res.sendFile(__dirname + '/build/index.html');
+                    res.sendFile(path.resolve('build/index.html'));
                 });
             }).catch(function() {
                 res.sendStatus(500);
@@ -71,7 +72,7 @@
      * Function to get the store information
      * @return - res with 201 and store / res with 500 error
      */
-    restaurantController.get('/store', passport.authenticate('basic', {session: false}), function(req, res) {
+    app.get('/store', passport.authenticate('basic', {session: false}), function(req, res) {
         //get the store data from mongo and log results or reject reason
         ph.promiseLogging(restaurantModel.getStore())
             //if succesful then return 201 with the store data
@@ -93,7 +94,7 @@
      * is to become this restaurants information
      * @return - res with 201 and store / res with 500 error
      */
-    restaurantController.post('/store', function(req, res) {
+    app.post('/store', function(req, res) {
         //create store data in mongo and log results or reject reason
         ph.promiseLogging(Store.createStore(req.body.store_name, req.body.address, req.body.city, req.body.state,
                 req.body.zip_code, req.body.tax, req.body.recommended_tip))
@@ -118,7 +119,7 @@
      * is to become this restaurants information
      * @return - res with 201 and store / res with 500 error
      */
-    restaurantController.put('/store', function(req, res) {
+    app.put('/store', function(req, res) {
         //create store data in mongo and log results or reject reason
         //ph.promiseLogging(store.updateStore('FOod r Us3', 'FOod r Us9', '313 blah', 'here', 'fl', '33412', '9', '20'))
         ph.promiseLogging(Store.updateStore(
@@ -137,7 +138,7 @@
      * @param req.body.name - name of the store
      * @return - res with 201 and store / res with 500 error
      */
-    restaurantController.delete('/store', function(req, res) {
+    app.delete('/store', function(req, res) {
         //delete menu item in mongo and log results or reject reason
         //ph.promiseLogging(store.deleteStore('FOod r Us3'))
         ph.promiseLogging(Store.deleteStore(req.body.name))
@@ -156,7 +157,7 @@
      * @param req.body.categories - array of categories
      * @return - res with 201 and menu item / res with 500 error
      */
-    restaurantController.post('/menuitem', function(req, res) {
+    app.post('/menuitem', function(req, res) {
         //create menu item in mongo and log results or reject reason
         ph.promiseLogging(Menu.createItem(req.body.itemname, req.body.price, req.body.categories))
             //if succesful then return 201 with the menu item data
@@ -175,7 +176,7 @@
      * @param req.body.categories - array of categories
      * @return - res with 201 and menu item / res with 500 error
      */
-    restaurantController.put('/menuitem', function(req, res) {
+    app.put('/menuitem', function(req, res) {
         //update menu item in mongo and log results or reject reason
         ph.promiseLogging(Menu.updateItem(
                 req.body.itemname1, req.body.itemname2, req.body.price, req.body.categories))
@@ -192,7 +193,7 @@
      * @param req.body.itemname - name of menu item
      * @return - res with 201 and menu item / res with 500 error
      */
-    restaurantController.delete('/menuitem', function(req, res) {
+    app.delete('/menuitem', function(req, res) {
         //delete menu item in mongo and log results or reject reason
         ph.promiseLogging(Menu.deleteItem(req.body.itemname))
             //if succesful then return 201 with the menu item data
@@ -207,7 +208,7 @@
      * Function to get the entire menu
      * @return - res with 201 and menu / res with 500 error
      */
-    restaurantController.get('/menu', function(req, res) {
+    app.get('/menu', function(req, res) {
         //get entire menu from mongo and log results or reject reason
         ph.promiseLogging(Menu.getMenu())
             //if succesful then return 201 with the menu data
@@ -223,7 +224,7 @@
      * @param req.body.table_number - table number to add seperate checks to
      * @param req.body.guest - amount of guests
      */
-    restaurantController.post('/guest', function(req, res) {
+    app.post('/guest', function(req, res) {
         //if there is no body in the request
         if (!req.body) {
             //return error code 400
@@ -248,7 +249,7 @@
      * @param req.body.order - the meals for a specific guest
      * @return - status 200/400
      */
-    restaurantController.post('/order', function(req, res) {
+    app.post('/order', function(req, res) {
         //if there is no body in the request
         if (!req.body) {
             //return error code 400
@@ -276,7 +277,7 @@
      * @param req.body.password - password for the user
      * @response - 201 success
      */
-    restaurantController.post('/users', function(req, res) {
+    app.post('/users', function(req, res) {
         //initialize and declare user model
         var user = new User({
             username: req.body.username,
@@ -305,7 +306,7 @@
                 return callback(err);
             }
             //start listening on specified port for requests
-            restaurantController.listen(config.PORT, function() {
+            app.listen(config.PORT, function() {
                 console.log('Listening on localhost:' + config.PORT);
                 //perform callback
                 if (callback) {
@@ -325,7 +326,7 @@
         });
     }
     //export for testing
-    exports.app = restaurantController;
+    exports.app = app;
     exports.storage = restaurantModel;
     exports.runServer = runServer;
 })();
