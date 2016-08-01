@@ -20,7 +20,7 @@ if (minify) {
 }
 module.exports = [
   {
-    entry: path.resolve(__dirname, packageData.main),
+    entry: packageData.main,
     output: {
         path: path.resolve(__dirname, 'build'),
         filename: filename.join('.'),
@@ -30,10 +30,7 @@ module.exports = [
         {
           test: /\.js$/,
           exclude: /(node_modules)/,
-          loader: 'babel',
-          query: {
-            presets: ['es2015']
-          }
+          loader: 'babel'
         }
       ]
     },
@@ -42,7 +39,7 @@ module.exports = [
     plugins: plugins
   },
   {
-    entry: path.resolve(__dirname, packageData.server),
+    entry: ['babel-polyfill', packageData.server],
     target: 'node',
     output: {
         path: path.resolve(__dirname, 'build'),
@@ -53,10 +50,7 @@ module.exports = [
         {
           test: /\.js$/,
           exclude: /(node_modules)/,
-          loader: 'babel',
-          query: {
-            presets: ['es2015']
-          }
+          loader: 'babel'
         }
       ]
     },
@@ -65,7 +59,7 @@ module.exports = [
     plugins: plugins
   },
   {
-    entry:  packageData.tests,
+    entry:  ['babel-polyfill', packageData.tests[0], packageData.tests[1], packageData.tests[2], packageData.tests[3]],
     target: 'node',
     output: {
         path: path.resolve(__dirname, 'build'),
@@ -76,10 +70,7 @@ module.exports = [
         {
           test: /\.js$/,
           exclude: /(node_modules)/,
-          loader: 'babel',
-          query: {
-            presets: ['es2015']
-          }
+          loader: 'babel'
         }
       ]
     },

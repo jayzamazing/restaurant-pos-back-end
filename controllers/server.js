@@ -52,20 +52,36 @@
         //if the following fields are empty, ensure this is only run once
         if (restaurantModel.menu_items.length === 0 && restaurantModel.store_name === '') {
             //get the restaurant data mongo and log results or reject reason
-            ph.promiseAllLogging([
-                Store.getStore('FOod r Us1'),
-                Menu.getMenu()
-            ]).then(function(results) {
-                //pass results to restaurant model, results[0] = store data, results[1] = menu data
-                ph.promiseLogging(
+            (async function(){
+              try {
+                var results = await ph.promiseAllLogging([
+                    Store.getStore('FOod r Us1'),
+                    Menu.getMenu()
+                ]);
+                await ph.promiseLogging(
                     restaurantModel.setRestaurantData(results[0], results[1])
-                ).then(function() {
-                    //send index page back to requestor
-                    res.sendFile(path.resolve('build/index.html'));
-                });
-            }).catch(function() {
+                );
+                //send index page back to requestor
+                res.sendFile(path.resolve('build/index.html'));
+              } catch (error) {
+                console.error(error);
                 res.sendStatus(500);
-            });
+              }
+            }());
+            // ph.promiseAllLogging([
+            //     Store.getStore('FOod r Us1'),
+            //     Menu.getMenu()
+            // ]).then(function(results) {
+            //     //pass results to restaurant model, results[0] = store data, results[1] = menu data
+            //     ph.promiseLogging(
+            //         restaurantModel.setRestaurantData(results[0], results[1])
+            //     ).then(function() {
+            //         //send index page back to requestor
+            //         res.sendFile(path.resolve('build/index.html'));
+            //     });
+            // }).catch(function() {
+            //     res.sendStatus(500);
+            // });
         }
     });
     /*
@@ -73,15 +89,23 @@
      * @return - res with 201 and store / res with 500 error
      */
     app.get('/store', passport.authenticate('basic', {session: false}), function(req, res) {
+        (async function() {
+          try {
+            var item = await ph.promiseLogging(restaurantModel.getStore());
+            res.status(201).json(item);
+          } catch (err) {
+            res.sendStatus(500);
+          }
+        }());
         //get the store data from mongo and log results or reject reason
-        ph.promiseLogging(restaurantModel.getStore())
-            //if succesful then return 201 with the store data
-            .then(function(item) {
-                res.status(201).json(item);
-                //if there was an error, return 500
-            }).catch(function() {
-                res.sendStatus(500);
-            });
+        // ph.promiseLogging(restaurantModel.getStore())
+        //     //if succesful then return 201 with the store data
+        //     .then(function(item) {
+        //         res.status(201).json(item);
+        //         //if there was an error, return 500
+        //     }).catch(function() {
+        //         res.sendStatus(500);
+        //     });
     });
     /*
      * Function to create a store in mongo
@@ -95,16 +119,25 @@
      * @return - res with 201 and store / res with 500 error
      */
     app.post('/store', function(req, res) {
-        //create store data in mongo and log results or reject reason
-        ph.promiseLogging(Store.createStore(req.body.store_name, req.body.address, req.body.city, req.body.state,
-                req.body.zip_code, req.body.tax, req.body.recommended_tip))
-            //if succesful then return 201 with the store data
-            .then(function(item) {
-                res.status(201).json(item);
-                //if there was an error, return 500
-            }).catch(function() {
-                res.sendStatus(500);
-            });
+      (async function() {
+        try {
+          var result = await ph.promiseLogging(Store.createStore(req.body.store_name, req.body.address, req.body.city, req.body.state,
+                  req.body.zip_code, req.body.tax, req.body.recommended_tip));
+          res.status(201).json(result);
+        } catch (err) {
+          res.sendStatus(500);
+        }
+      }());
+        // //create store data in mongo and log results or reject reason
+        // ph.promiseLogging(Store.createStore(req.body.store_name, req.body.address, req.body.city, req.body.state,
+        //         req.body.zip_code, req.body.tax, req.body.recommended_tip))
+        //     //if succesful then return 201 with the store data
+        //     .then(function(item) {
+        //         res.status(201).json(item);
+        //         //if there was an error, return 500
+        //     }).catch(function() {
+        //         res.sendStatus(500);
+        //     });
     });
     /*
      * Function to update a store
@@ -120,18 +153,28 @@
      * @return - res with 201 and store / res with 500 error
      */
     app.put('/store', function(req, res) {
+      (async function() {
+        try {
+          var result = await ph.promiseLogging(Store.updateStore(
+                  req.body.name1, req.body.name2, req.body.address, req.body.city,
+                  req.body.state, req.body.zip, req.body.tax, req.body.tip));
+          res.status(201).json(result);
+        } catch (err) {
+          res.sendStatus(500);
+        }
+      }());
         //create store data in mongo and log results or reject reason
         //ph.promiseLogging(store.updateStore('FOod r Us3', 'FOod r Us9', '313 blah', 'here', 'fl', '33412', '9', '20'))
-        ph.promiseLogging(Store.updateStore(
-                req.body.name1, req.body.name2, req.body.address, req.body.city,
-                req.body.state, req.body.zip, req.body.tax, req.body.tip))
-            //if succesful then return 201 with the store data
-            .then(function(item) {
-                res.status(201).json(item);
-                //if there was an error, return 500
-            }).catch(function() {
-                res.sendStatus(500);
-            });
+        // ph.promiseLogging(Store.updateStore(
+        //         req.body.name1, req.body.name2, req.body.address, req.body.city,
+        //         req.body.state, req.body.zip, req.body.tax, req.body.tip))
+        //     //if succesful then return 201 with the store data
+        //     .then(function(item) {
+        //         res.status(201).json(item);
+        //         //if there was an error, return 500
+        //     }).catch(function() {
+        //         res.sendStatus(500);
+        //     });
     });
     /*
      * Function to delete a store
@@ -139,16 +182,24 @@
      * @return - res with 201 and store / res with 500 error
      */
     app.delete('/store', function(req, res) {
+      (async function() {
+        try {
+          var result = await ph.promiseLogging(Store.deleteStore(req.body.name));
+          res.status(201).json(result);
+        } catch (err) {
+          res.sendStatus(500);
+        }
+      }());
         //delete menu item in mongo and log results or reject reason
         //ph.promiseLogging(store.deleteStore('FOod r Us3'))
-        ph.promiseLogging(Store.deleteStore(req.body.name))
-            //if succesful then return 201 with the store data
-            .then(function(item) {
-                res.status(201).json(item);
-                //if there was an error, return 500
-            }).catch(function() {
-                res.sendStatus(500);
-            });
+        // ph.promiseLogging(Store.deleteStore(req.body.name))
+        //     //if succesful then return 201 with the store data
+        //     .then(function(item) {
+        //         res.status(201).json(item);
+        //         //if there was an error, return 500
+        //     }).catch(function() {
+        //         res.sendStatus(500);
+        //     });
     });
     /*
      * Function to create a menu item
@@ -158,15 +209,23 @@
      * @return - res with 201 and menu item / res with 500 error
      */
     app.post('/menuitem', function(req, res) {
+      (async function() {
+        try {
+          var result = await ph.promiseLogging(Menu.createItem(req.body.itemname, req.body.price, req.body.categories));
+          res.status(201).json(result);
+        } catch (err) {
+          res.sendStatus(500);
+        }
+      }());
         //create menu item in mongo and log results or reject reason
-        ph.promiseLogging(Menu.createItem(req.body.itemname, req.body.price, req.body.categories))
-            //if succesful then return 201 with the menu item data
-            .then(function(item) {
-                res.status(201).json(item);
-                //if there was an error, return 500
-            }).catch(function() {
-                res.sendStatus(500);
-            });
+        // ph.promiseLogging(Menu.createItem(req.body.itemname, req.body.price, req.body.categories))
+        //     //if succesful then return 201 with the menu item data
+        //     .then(function(item) {
+        //         res.status(201).json(item);
+        //         //if there was an error, return 500
+        //     }).catch(function() {
+        //         res.sendStatus(500);
+        //     });
     });
     /*
      * Function to update a menu item
@@ -177,16 +236,25 @@
      * @return - res with 201 and menu item / res with 500 error
      */
     app.put('/menuitem', function(req, res) {
+      (async function() {
+        try {
+          var result = await ph.promiseLogging(Menu.updateItem(
+                  req.body.itemname1, req.body.itemname2, req.body.price, req.body.categories));
+          res.status(201).json(result);
+        } catch (err) {
+          res.sendStatus(500);
+        }
+      }());
         //update menu item in mongo and log results or reject reason
-        ph.promiseLogging(Menu.updateItem(
-                req.body.itemname1, req.body.itemname2, req.body.price, req.body.categories))
-            //if succesful then return 201 with the menu item data
-            .then(function(item) {
-                res.status(201).json(item);
-                //if there was an error, return 500
-            }).catch(function() {
-                res.sendStatus(500);
-            });
+        // ph.promiseLogging(Menu.updateItem(
+        //         req.body.itemname1, req.body.itemname2, req.body.price, req.body.categories))
+        //     //if succesful then return 201 with the menu item data
+        //     .then(function(item) {
+        //         res.status(201).json(item);
+        //         //if there was an error, return 500
+        //     }).catch(function() {
+        //         res.sendStatus(500);
+        //     });
     });
     /*
      * Function to delete a menu item
@@ -194,30 +262,46 @@
      * @return - res with 201 and menu item / res with 500 error
      */
     app.delete('/menuitem', function(req, res) {
+      (async function() {
+        try {
+          var result = await ph.promiseLogging(Menu.deleteItem(req.body.itemname));
+          res.status(201).json(result);
+        } catch (err) {
+          res.sendStatus(500);
+        }
+      }());
         //delete menu item in mongo and log results or reject reason
-        ph.promiseLogging(Menu.deleteItem(req.body.itemname))
-            //if succesful then return 201 with the menu item data
-            .then(function(item) {
-                res.status(201).json(item);
-                //if there was an error, return 500
-            }).catch(function() {
-                res.sendStatus(500);
-            });
+        // ph.promiseLogging(Menu.deleteItem(req.body.itemname))
+        //     //if succesful then return 201 with the menu item data
+        //     .then(function(item) {
+        //         res.status(201).json(item);
+        //         //if there was an error, return 500
+        //     }).catch(function() {
+        //         res.sendStatus(500);
+        //     });
     });
     /*
      * Function to get the entire menu
      * @return - res with 201 and menu / res with 500 error
      */
     app.get('/menu', function(req, res) {
+      (async function() {
+        try {
+          var result = await ph.promiseLogging(Menu.getMenu());
+          res.status(201).json(result);
+        } catch (err) {
+          res.sendStatus(500);
+        }
+      }());
         //get entire menu from mongo and log results or reject reason
-        ph.promiseLogging(Menu.getMenu())
-            //if succesful then return 201 with the menu data
-            .then(function(item) {
-                res.status(201).json(item);
-                //if there was an error, return 500
-            }).catch(function() {
-                res.sendStatus(500);
-            });
+        // ph.promiseLogging(Menu.getMenu())
+        //     //if succesful then return 201 with the menu data
+        //     .then(function(item) {
+        //         res.status(201).json(item);
+        //         //if there was an error, return 500
+        //     }).catch(function() {
+        //         res.sendStatus(500);
+        //     });
     });
     /*
      * Function to deal with setting the seperate check count
@@ -225,22 +309,32 @@
      * @param req.body.guest - amount of guests
      */
     app.post('/guest', function(req, res) {
-        //if there is no body in the request
-        if (!req.body) {
-            //return error code 400
-            res.sendStatus(400);
+      //if there is no body in the request
+      if (!req.body) {
+          //return error code 400
+          res.sendStatus(400);
+      }
+      (async function() {
+        try {
+          var result = await ph.promiseLogging(restaurantModel.addDinnersToTable(req.body.table_number, req.body.guest));
+          res.status(201).json({
+              dinners: result.get('table' + req.body.table_number).size
+          });
+        } catch (err) {
+          res.sendStatus(500);
         }
+      }());
         //add seperate checks to specific table
-        ph.promiseLogging(restaurantModel.addDinnersToTable(req.body.table_number, req.body.guest))
-            //if succesful then return 201
-            .then(function(item) {
-                res.status(201).json({
-                    dinners: item.get('table' + req.body.table_number).size
-                });
-                //if there was an error, return 500
-            }).catch(function() {
-                res.sendStatus(500);
-            });
+        // ph.promiseLogging(restaurantModel.addDinnersToTable(req.body.table_number, req.body.guest))
+        //     //if succesful then return 201
+        //     .then(function(item) {
+        //         res.status(201).json({
+        //             dinners: item.get('table' + req.body.table_number).size
+        //         });
+        //         //if there was an error, return 500
+        //     }).catch(function() {
+        //         res.sendStatus(500);
+        //     });
     });
     /*
      * Function to add order to table for a specific check
@@ -255,21 +349,35 @@
             //return error code 400
             res.sendStatus(400);
         }
-        ph.promiseLogging(
-                //add order to tables dinner
-                restaurantModel
-                .addGuestOrder(req.body.table_number,
-                    req.body.dinner_number,
-                    req.body.order)
-            )
-            //if there are no error return 200 status
-            .then(function() {
-                res.sendStatus(200);
-            })
-            //otherwise return 400 status
-            .catch(function() {
-                res.sendStatus(400);
-            });
+        (async function() {
+          try {
+            await ph.promiseLogging(
+                    //add order to tables dinner
+                    restaurantModel
+                    .addGuestOrder(req.body.table_number,
+                        req.body.dinner_number,
+                        req.body.order)
+                );
+            res.sendStatus(200);
+          } catch (err) {
+            res.sendStatus(400);
+          }
+        }());
+        // ph.promiseLogging(
+        //         //add order to tables dinner
+        //         restaurantModel
+        //         .addGuestOrder(req.body.table_number,
+        //             req.body.dinner_number,
+        //             req.body.order)
+        //     )
+        //     //if there are no error return 200 status
+        //     .then(function() {
+        //         res.sendStatus(200);
+        //     })
+        //     //otherwise return 400 status
+        //     .catch(function() {
+        //         res.sendStatus(400);
+        //     });
     });
     /*
      * Function that deals with adding users for authentication
@@ -283,16 +391,24 @@
             username: req.body.username,
             password: req.body.password
         });
-        //save credentials to mongodb
-        ph.promiseLogging(user.saveCredentials())
-        .then(function() {
-          //return sucess message
-          res.sendStatus(201);
-        })
-        //otherwise return 400 status
-        .catch(function() {
+        (async function() {
+          try {
+            var result = await ph.promiseLogging(user.saveCredentials());
+            res.sendStatus(201);
+          } catch (err) {
             res.sendStatus(400);
-        });
+          }
+        }());
+        //save credentials to mongodb
+        // ph.promiseLogging(user.saveCredentials())
+        // .then(function() {
+        //   //return sucess message
+        //   res.sendStatus(201);
+        // })
+        // //otherwise return 400 status
+        // .catch(function() {
+        //     res.sendStatus(400);
+        // });
     });
     /*
      * Function to get mongoose connection started and node running
