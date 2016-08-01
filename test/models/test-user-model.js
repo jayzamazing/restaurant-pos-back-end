@@ -8,11 +8,6 @@
     var server = require('../../controllers/server.js');
     var User = require('../../models/user-model.js');
     var ph = require('../../lib/promisehelpers.js');
-    var mongoose = require('mongoose');
-    //extends objects with should for test chaining
-    var should = chai.should();
-    //used to make requests and check state of object
-    var app = server.app;
     //use http plugin
     chai.use(chaiHttp);
     /*

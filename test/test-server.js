@@ -8,7 +8,6 @@
     var server = require('../controllers/server.js');
     var Store = require('../models/store-model.js');
     var User = require('../models/user-model.js');
-    var ph = require('../lib/promisehelpers.js');
     var Menu = require('../models/menu-model.js');
     //extends objects with should for test chaining
     var should = chai.should();
