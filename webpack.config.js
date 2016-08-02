@@ -59,7 +59,7 @@ module.exports = [
     plugins: plugins
   },
   {
-    entry:  ['babel-polyfill', packageData.tests[0], packageData.tests[1], packageData.tests[2], packageData.tests[3]],
+    entry:  ['babel-polyfill'].concat(packageData.tests),
     target: 'node',
     output: {
         path: path.resolve(__dirname, 'build'),
