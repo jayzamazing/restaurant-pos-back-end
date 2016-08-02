@@ -1,9 +1,11 @@
 /*jshint esversion: 6 */
 (function() {
+  var events = require('events');
     /*
      * Function that represents generic store object
      */
     function Store() {
+        events.EventEmitter.call(this);
         this.store_name = '';
         this.address = '';
         this.city = '';
@@ -11,7 +13,10 @@
         this.state = '';
         this.state_tax = 0;
         this.recommended_tip = 0;
+
     }
+    Store.prototype = Object.create(events.EventEmitter.prototype);
+    Store.prototype.constructor = Store;
     /*
      * Function to add name to the store
      * @param store_name - name of store
@@ -129,16 +134,17 @@
     */
     Store.prototype.setStore = function(storeData) {
       var context = this;
-      return new Promise(function(resolve) {
-        context.store_name = storeData.store_name;
-        context.address = storeData.address;
-        context.city = storeData.city;
-        context.state = storeData.state;
-        context.state_tax = storeData.state_tax;
-        context.zip_code = storeData.zip_code;
-        context.recommended_tip = storeData.recommended_tip;
-        resolve(storeData);
-      });
+      // return new Promise(function(resolve) {
+        this.store_name = storeData.store_name;
+        this.address = storeData.address;
+        this.city = storeData.city;
+        this.state = storeData.state;
+        this.state_tax = storeData.state_tax;
+        this.zip_code = storeData.zip_code;
+        this.recommended_tip = storeData.recommended_tip;
+        // resolve(storeData);
+      // });
+      this.emit('end', storeData);
     };
     /*
     * Function to get all the store data

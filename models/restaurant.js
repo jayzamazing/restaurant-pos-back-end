@@ -5,6 +5,7 @@
     var Tables = require('./tables.js');
     var Dinner = require('./dinner.js');
     var ph = require('../lib/promisehelpers.js');
+    var events = require('events');
     /*
      * Function that represents restaurant object
      * @param tablenumbers - amount of tables the restaurant has
@@ -169,16 +170,34 @@
                 //otherwise take the data, parse it, and send it back to the promise
             } else {
                 //take the json data and store in restaurant class
-                ph.promiseAllLogging([
-                    context.addMenuItems(menuData),
-                    Store.prototype.setStore.call(context, storeData)
-                ]);
+                menuData = getData(context.addMenuItems, menuData, context);
+                storeData = getData(Store.prototype.setStore, storeData, context);
+                // ph.promiseAllLogging([
+                //     context.addMenuItems(menuData),
+                //     Store.prototype.setStore.call(context, storeData)
+                // ]);
                 resolve({
                     storeData: storeData,
                     menuData: menuData
                 });
             }
         });
+    };
+
+    function getData(func, data, context) {
+          try {
+            var temp;
+            func.call(context, data);
+            var retrieveData = function(data) {
+              temp = data;
+            }
+            context.on('end', retrieveData);
+            context.removeListener('end', retrieveData);
+            return data;
+          } catch (err) {
+            throw err;
+          }
+
     };
     module.exports = Restaurant;
 })();
