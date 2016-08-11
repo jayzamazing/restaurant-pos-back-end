@@ -1,4 +1,5 @@
 /*jshint esversion: 6 */
+import 'babel-polyfill';
 (function() {
   global.DATABASE_URL = 'mongodb://localhost/restaurant-pos-test';
     //import chai, chai-http for testing
