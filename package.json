@@ -1,7 +1,7 @@
 {
   "name": "restaurant-pos",
-  "version": "1.2.3",
-  "description": "A meal cost calculator",
+  "version": "2.0.0",
+  "description": "Simple restaurant point of sale system",
   "main": "./public/js/index.js",
   "server": "./controllers/server.js",
   "tests": [
@@ -11,6 +11,11 @@
     "./test/models/test-user-model.js"
   ],
   "scripts": {
+    "test2": "npm run jshint && npm run mocha",
+    "jshint2": "jshint src/. test/. --config",
+    "start2": "node src/",
+    "mocha2": "mocha test/ --recursive",
+
     "test": "mocha build/test-restaurant-pos.1.2.3.min.js",
     "mkdir": "mkdir -p build",
     "build": "npm run clean && npm run mkdir && npm run build:html && npm run build:css && npm run build:js",
@@ -64,9 +69,21 @@
     "express": "4.14.0",
     "handlebars": "4.0.5",
     "jquery": "2.2.3",
-    "mongoose": "4.5.3",
     "passport": "0.3.2",
-    "passport-http": "0.3.0"
+    "passport-http": "0.3.0",
+    "compression": "1.6.2",
+    "cors": "2.7.1",
+    "feathers": "2.0.1",
+    "feathers-authentication": "0.7.9",
+    "feathers-configuration": "0.2.3",
+    "feathers-errors": "2.4.0",
+    "feathers-hooks": "1.5.5",
+    "feathers-mongoose": "3.5.1",
+    "feathers-rest": "1.4.3",
+    "feathers-socketio": "1.4.1",
+    "mongoose": "4.5.8",
+    "serve-favicon": "2.3.0",
+    "winston": "2.2.0"
   },
   "devDependencies": {
     "babel-core": "6.10.4",
@@ -80,8 +97,10 @@
     "chokidar-cli": "1.2.0",
     "less": "2.7.1",
     "less-plugin-clean-css": "1.5.1",
-    "mocha": "2.5.3",
     "uglify-js": "2.6.4",
-    "webpack": "1.13.1"
+    "webpack": "1.13.1",
+    "jshint": "2.9.2",
+    "mocha": "3.0.2",
+    "request": "2.74.0"
   }
 }
