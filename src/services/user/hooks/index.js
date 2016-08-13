@@ -5,7 +5,12 @@ const hooks = require('feathers-hooks');
 const auth = require('feathers-authentication').hooks;
 
 exports.before = {
-  all: [],
+  all: [
+    auth.restrictToRoles({
+      roles: ['admin'],
+      fieldName: 'roles'
+    })
+  ],
   find: [
     auth.verifyToken(),
     auth.populateUser(),
