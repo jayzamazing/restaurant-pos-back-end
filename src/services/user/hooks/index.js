@@ -9,7 +9,10 @@ exports.before = {
   find: [
     auth.verifyToken(),
     auth.populateUser(),
-    auth.restrictToAuthenticated()
+    auth.restrictToAuthenticated(),
+    auth.restrictToRoles({
+      roles: ['admin']
+    })
   ],
   get: [
     auth.verifyToken(),
@@ -17,13 +20,13 @@ exports.before = {
     auth.restrictToAuthenticated(),
     auth.restrictToOwner({ ownerField: '_id' }),
     auth.restrictToRoles({
-      roles: ['admin'],
+      roles: ['admin']
     })
   ],
   create: [
     auth.hashPassword(),
     auth.restrictToRoles({
-      roles: ['admin'],
+      roles: ['admin']
     })
   ],
   update: [
@@ -32,7 +35,7 @@ exports.before = {
     auth.restrictToAuthenticated(),
     auth.restrictToOwner({ ownerField: '_id' }),
     auth.restrictToRoles({
-      roles: ['admin', 'user'],
+      roles: ['admin', 'user']
     })
   ],
   patch: [
@@ -41,7 +44,7 @@ exports.before = {
     auth.restrictToAuthenticated(),
     auth.restrictToOwner({ ownerField: '_id' }),
     auth.restrictToRoles({
-      roles: ['admin'],
+      roles: ['admin']
     })
   ],
   remove: [
@@ -50,7 +53,7 @@ exports.before = {
     auth.restrictToAuthenticated(),
     auth.restrictToOwner({ ownerField: '_id' }),
     auth.restrictToRoles({
-      roles: ['admin'],
+      roles: ['admin']
     })
   ]
 };
