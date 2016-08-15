@@ -6,20 +6,36 @@ const auth = require('feathers-authentication').hooks;
 
 exports.before = {
   all: [
-    auth.restrictToRoles({
-      roles: ['admin'],
-      fieldName: 'roles'
-    }),
     auth.verifyToken(),
     auth.populateUser(),
     auth.restrictToAuthenticated()
   ],
   find: [],
-  get: [],
-  create: [],
-  update: [],
-  patch: [],
-  remove: []
+  get: [
+    auth.restrictToRoles({
+      roles: ['admin', 'user'],
+    })
+  ],
+  create: [
+    auth.restrictToRoles({
+      roles: ['admin'],
+    })
+  ],
+  update: [
+    auth.restrictToRoles({
+      roles: ['admin'],
+    })
+  ],
+  patch: [
+    auth.restrictToRoles({
+      roles: ['admin'],
+    })
+  ],
+  remove: [
+    auth.restrictToRoles({
+      roles: ['admin'],
+    })
+  ]
 };
 
 exports.after = {

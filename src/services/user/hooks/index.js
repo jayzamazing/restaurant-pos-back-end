@@ -5,12 +5,7 @@ const hooks = require('feathers-hooks');
 const auth = require('feathers-authentication').hooks;
 
 exports.before = {
-  all: [
-    // auth.restrictToRoles({
-    //   roles: ['admin'],
-    //   fieldName: 'roles'
-    // })
-  ],
+  all: [],
   find: [
     auth.verifyToken(),
     auth.populateUser(),
@@ -20,28 +15,43 @@ exports.before = {
     auth.verifyToken(),
     auth.populateUser(),
     auth.restrictToAuthenticated(),
-    auth.restrictToOwner({ ownerField: '_id' })
+    auth.restrictToOwner({ ownerField: '_id' }),
+    auth.restrictToRoles({
+      roles: ['admin'],
+    })
   ],
   create: [
-    auth.hashPassword()
+    auth.hashPassword(),
+    auth.restrictToRoles({
+      roles: ['admin'],
+    })
   ],
   update: [
     auth.verifyToken(),
     auth.populateUser(),
     auth.restrictToAuthenticated(),
-    auth.restrictToOwner({ ownerField: '_id' })
+    auth.restrictToOwner({ ownerField: '_id' }),
+    auth.restrictToRoles({
+      roles: ['admin', 'user'],
+    })
   ],
   patch: [
     auth.verifyToken(),
     auth.populateUser(),
     auth.restrictToAuthenticated(),
-    auth.restrictToOwner({ ownerField: '_id' })
+    auth.restrictToOwner({ ownerField: '_id' }),
+    auth.restrictToRoles({
+      roles: ['admin'],
+    })
   ],
   remove: [
     auth.verifyToken(),
     auth.populateUser(),
     auth.restrictToAuthenticated(),
-    auth.restrictToOwner({ ownerField: '_id' })
+    auth.restrictToOwner({ ownerField: '_id' }),
+    auth.restrictToRoles({
+      roles: ['admin'],
+    })
   ]
 };
 

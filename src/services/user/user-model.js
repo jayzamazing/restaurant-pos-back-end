@@ -19,10 +19,10 @@ const userSchema = new Schema({
     type: String,
     require: true
   },
-  // roles: [{
-  //   type: String,
-  //   required: true
-  // }],
+  roles: [{
+    type: String,
+    required: true
+  }],
 createdAt: {
   type: Date,
   'default': Date.now
