@@ -19,7 +19,10 @@
          */
         before(function(done) {
             server.runServer(function() {
-              done();
+              User.create({
+                username: 'test',
+                password: 'test'
+              }, done());
             });
         });
         //teardown after tests

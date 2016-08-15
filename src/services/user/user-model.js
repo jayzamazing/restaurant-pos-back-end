@@ -19,18 +19,18 @@ const userSchema = new Schema({
     type: String,
     require: true
   },
-  roles: [{
-      type: String,
-      required: true
-  }],
-  createdAt: {
-    type: Date,
-    'default': Date.now
-  },
-  updatedAt: {
-    type: Date,
-    'default': Date.now
-  }
+  // roles: [{
+  //   type: String,
+  //   required: true
+  // }],
+createdAt: {
+  type: Date,
+  'default': Date.now
+},
+updatedAt: {
+  type: Date,
+  'default': Date.now
+}
 });
 //set the schema for this collection
 const userModel = mongoose.model('user', userSchema);
