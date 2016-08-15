@@ -1,4 +1,5 @@
 'use strict';
+const table = require('./table');
 const store = require('./store');
 const menu = require('./menu');
 const authentication = require('./authentication');
@@ -14,4 +15,5 @@ module.exports = function() {
   app.configure(user);
   app.configure(menu);
   app.configure(store);
+  app.configure(table);
 };

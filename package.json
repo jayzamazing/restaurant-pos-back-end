@@ -73,7 +73,7 @@
     "feathers-configuration": "0.2.3",
     "feathers-errors": "2.4.0",
     "feathers-hooks": "1.5.5",
-    "feathers-mongoose": "3.5.1",
+    "feathers-mongoose": "^3.5.1",
     "feathers-rest": "1.4.3",
     "feathers-socketio": "1.4.1",
     "handlebars": "4.0.5",
