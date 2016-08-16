@@ -25,6 +25,9 @@ exports.before = {
   ],
   create: [
     auth.hashPassword(),
+    auth.verifyToken(),
+    auth.populateUser(),
+    auth.restrictToAuthenticated(),
     auth.restrictToRoles({
       roles: ['admin']
     })

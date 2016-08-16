@@ -68,4 +68,30 @@ describe('user service', function() {
   it('registered the users service', () => {
     assert.ok(app.service('users'));
   });
+  //test for post for /user to add user to mongodb
+  it('should post the user data', function(done) {
+    //setup a request
+    chai.request(app)
+      //request to /store
+      .post('/users')
+      .set('Accept', 'application/json')
+      .set('Authorization', 'Bearer '.concat(token))
+      //attach data to request
+      .send({
+        username: 'blah',
+        password: 'kablah',
+        roles: 'user'
+      })
+      //when finished do the following
+      .end(function(err, res) {
+        //check to see how many dinners were created under the table
+        res.should.have.status(201);
+        res.body.username.should.be.a('string');
+        res.body.username.should.equal('blah');
+        res.body.password.should.be.a('string');
+        res.body.password.should.not.equal('kablah');
+        done();
+
+      });
+  });
 });
