@@ -7,10 +7,8 @@ const assert = require('assert');
 const app = require('../../../src/app');
 var Menu = app.service('menus');
 var User = app.service('users');
-const service = require('feathers-mongoose');
 var authentication = require('feathers-authentication/client');
 const bodyParser = require('body-parser');
-var bcrypt = require('bcrypt');
 var token;
 //config for app to do authentication
 app
