@@ -57,11 +57,6 @@ describe('menu service', () => {
         price: 1.99,
         categories: ['drinks', 'soda']
       });
-      Menu.create({
-        name: 'fries',
-        price: 1.99,
-        categories: ['lunch', 'side']
-      });
       //create mock user
       User.create({
          'username': 'resposadmin',
@@ -90,8 +85,8 @@ describe('menu service', () => {
   //teardown after tests
   after((done) => {
     //delete contents of menu in mongodb
-    Menu.remove({}, () => {
-      User.remove({}, () => {
+    Menu.remove(null, () => {
+      User.remove(null, () => {
         //stop the server
         this.server.close(function() {});
         done();
@@ -101,6 +96,94 @@ describe('menu service', () => {
   });
   it('registered the menus service', () => {
     assert.ok(app.service('menus'));
+  });
+  it('should post the menuitem data', function(done) {
+      //setup a request
+      chai.request(app)
+          //request to /store
+          .post('/menus')
+          .set('Accept', 'application/json')
+          .set('Authorization', 'Bearer '.concat(token))
+          //attach data to request
+          .send({
+              name: 'shrimp fettuccine',
+              price: 12.99,
+              categories: 'dinner, pasta'
+          })
+          //when finished do the following
+          .end((err, res) => {
+              res.body.should.have.property('name');
+              res.body.name.should.equal('shrimp fettuccine');
+              res.body.should.have.property('price');
+              res.body.price.should.equal(12.99);
+              res.body.categories.should.be.an('array')
+                  .to.include.members(['dinner, pasta']);
+              done();
+          });
+  });
+  //test for put for /menuitem
+  it('should update the menuitem data', function(done) {
+      chai.request(app)
+          //request to /store
+          .get('/menus')
+          .set('Accept', 'application/json')
+          .set('Authorization', 'Bearer '.concat(token))
+          //when finished do the following
+          .end((err, res) => {
+            //setup a request
+            chai.request(app)
+                //request to /menuitem
+                .put('/menus/' + res.body.data[2]._id)
+                .set('Accept', 'application/json')
+                .set('Authorization', 'Bearer '.concat(token))
+                //attach data to request
+                .send({
+                      name: 'steak sub',
+                      price: 10.99,
+                      categories: 'dinner, sandwhich'
+                    }
+                )
+                //when finished do the following
+                .end(function(err, res) {
+                    res.body.should.have.property('name');
+                    res.body.name.should.equal('steak sub');
+                    res.body.should.have.property('price');
+                    res.body.price.should.equal(10.99);
+                    res.body.categories.should.be.an('array')
+                        .to.include.members(['dinner, sandwhich']);
+                    done();
+                });
+          });
+
+  });
+  //test to delete /menuitem
+  it('should delete the menu item data', function(done) {
+    chai.request(app)
+        //request to /store
+        .get('/menus')
+        .set('Accept', 'application/json')
+        .set('Authorization', 'Bearer '.concat(token))
+        //when finished do the following
+        .end((err, res) => {
+          //setup a request
+          chai.request(app)
+              //request to /menuitem
+              .delete('/menus/' + res.body.data[4]._id)
+              .set('Accept', 'application/json')
+              .set('Authorization', 'Bearer '.concat(token))
+              //when finished do the following
+              .end(function(err, res) {
+                  //check returned json against expected value
+                  res.body.name.should.be.a('string');
+                  res.body.name.should.equal('soft drink');
+                  res.body.price.should.be.a('number');
+                  res.body.price.should.equal(1.99);
+                  res.body.categories.should.be.an('array')
+                      .to.include.members(['drinks', 'soda']);
+                  done();
+              });
+        });
+
   });
   //test for /menu get request
   it('should get menu items', (done) => {
