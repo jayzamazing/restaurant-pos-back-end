@@ -1,4 +1,3 @@
-/*jshint esversion: 6 */
 'use strict';
 
 var chai = require('chai');
@@ -60,24 +59,26 @@ describe('menu service', () => {
          'username': 'resposadmin',
          'password': 'igzSwi7*Creif4V$',
          'roles': ['admin']
+      }, () => {
+        //setup a request to get authentication token
+        chai.request(app)
+            //request to /auth/local
+            .post('/auth/local')
+            //set header
+            .set('Accept', 'application/json')
+            //send credentials
+            .send({
+               'username': 'resposadmin',
+               'password': 'igzSwi7*Creif4V$'
+            })
+            //when finished
+            .end((err, res) => {
+              //set token for auth in other requests
+              token = res.body.token;
+              done();
+            });
       });
-      //setup a request to get authentication token
-      chai.request(app)
-          //request to /auth/local
-          .post('/auth/local')
-          //set header
-          .set('Accept', 'application/json')
-          //send credentials
-          .send({
-             'username': 'resposadmin',
-             'password': 'igzSwi7*Creif4V$'
-          })
-          //when finished
-          .end((err, res) => {
-            //set token for auth in other requests
-            token = res.body.token;
-            done();
-          });
+
     });
   });
   //teardown after tests

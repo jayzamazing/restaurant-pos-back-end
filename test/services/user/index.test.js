@@ -36,62 +36,64 @@ describe('user service', function() {
         'username': 'resposadmin',
         'password': 'igzSwi7*Creif4V$',
         'roles': ['admin']
+      }, () => {
+        //setup a request to get authentication token
+        chai.request(app)
+          //request to /auth/local
+          .post('/auth/local')
+          //set header
+          .set('Accept', 'application/json')
+          //send credentials
+          .send({
+            'username': 'resposadmin',
+            'password': 'igzSwi7*Creif4V$'
+          })
+          //when finished
+          .end((err, res) => {
+            //set token for auth in other requests
+            token = res.body.token;
+            done();
+          });
       });
-      //setup a request to get authentication token
-      chai.request(app)
-        //request to /auth/local
-        .post('/auth/local')
-        //set header
-        .set('Accept', 'application/json')
-        //send credentials
-        .send({
-          'username': 'resposadmin',
-          'password': 'igzSwi7*Creif4V$'
-        })
-        //when finished
-        .end((err, res) => {
-          //set token for auth in other requests
-          token = res.body.token;
-          done();
-        });
+
     });
   });
   //teardown after tests
   after((done) => {
     //delete contents of menu in mongodb
-    User.remove(null, () => {
+    // User.remove(null, () => {
       //stop the server
       this.server.close(function() {});
       done();
-    });
+    // });
   });
   it('registered the users service', () => {
     assert.ok(app.service('users'));
   });
-  //test for post for /user to add user to mongodb
-  it('should post the user data', function(done) {
-    //setup a request
-    chai.request(app)
-      //request to /store
-      .post('/users')
-      .set('Accept', 'application/json')
-      .set('Authorization', 'Bearer '.concat(token))
-      //attach data to request
-      .send({
-        username: 'blah',
-        password: 'kablah',
-        roles: 'user'
-      })
-      //when finished do the following
-      .end(function(err, res) {
-        //check to see how many dinners were created under the table
-        res.should.have.status(201);
-        res.body.username.should.be.a('string');
-        res.body.username.should.equal('blah');
-        res.body.password.should.be.a('string');
-        res.body.password.should.not.equal('kablah');
-        done();
-
-      });
-  });
+  // //test for post for /user to add user to mongodb
+  // it('should post the user data', function(done) {
+  //   //setup a request
+  //   chai.request(app)
+  //     //request to /store
+  //     .post('/users')
+  //     .set('Accept', 'application/json')
+  //     .set('Authorization', 'Bearer '.concat(token))
+  //     //attach data to request
+  //     .send({
+  //       username: 'blah',
+  //       password: 'kablah',
+  //       roles: 'user'
+  //     })
+  //     //when finished do the following
+  //     .end(function(err, res) {
+  //       //check to see how many dinners were created under the table
+  //       res.should.have.status(201);
+  //       res.body.username.should.be.a('string');
+  //       res.body.username.should.equal('blah');
+  //       res.body.password.should.be.a('string');
+  //       res.body.password.should.not.equal('kablah');
+  //       done();
+  //
+  //     });
+  // });
 });
