@@ -74,24 +74,30 @@ describe('table service', function() {
     assert.ok(app.service('tables'));
   });
   //test for post for /guest to add order data to a table and specific check
-  // it('should post the guest order data', function(done) {
-  //     //setup a request
-  //     chai.request(app)
-  //         //post to /order
-  //         .post('/tables')
-  //         .set('Accept', 'application/json')
-  //         .set('Authorization', 'Bearer '.concat(token))
-  //         //attach data to request
-  //         .send(
-  //           //TODO add when done with model
-  //         )
-  //         //when done do the following
-  //         .end(function(err, res) {
-  //           console.log(res.body.tables[0]);
-  //             //check server gives 201 response
-  //             res.should.have.status(201);
-  //             done();
-  //         });
-  //
-  // });
+  it('should post the guest order data', function(done) {
+    //setup a request
+    chai.request(app)
+      //post to /order
+      .post('/tables')
+      .set('Accept', 'application/json')
+      .set('Authorization', 'Bearer '.concat(token))
+      //attach data to request
+      .send({
+        tableId: 3,
+        checkNumber: 2,
+        order: [{
+          dish: 'cheeseburger',
+          notes: 'swiss cheese',
+          cost: '8.99'
+        }]
+      })
+      //when done do the following
+      .end(function(err, res) {
+        console.log(res.body);
+        //check server gives 201 response
+        res.should.have.status(201);
+        done();
+      });
+
+  });
 });

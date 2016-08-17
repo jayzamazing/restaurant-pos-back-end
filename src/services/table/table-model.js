@@ -10,7 +10,6 @@ const Schema = mongoose.Schema;
 const Menu = require('../menu/menu-model.js');
 
 const tableSchema = new Schema({
-  tables: {
     tableId: {
       type: Number,
       required: true
@@ -21,13 +20,17 @@ const tableSchema = new Schema({
     },
     order: [{
         dish: {
-          //TODO add menu items
+          type: String,
+          required: true
         },
         notes: {
           type: String
+        },
+        cost: {
+          type: Number,
+          required: true
         }
-    }]
-  },
+    }],
   createdAt: {
     type: Date,
     'default': Date.now
