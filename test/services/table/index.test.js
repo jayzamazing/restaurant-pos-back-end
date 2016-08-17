@@ -38,8 +38,7 @@ describe('table service', function() {
           dish: 'omlette',
           notes: 'cheddar, bacon only',
           cost: 4.99
-        },
-        {
+        }, {
           dish: 'coffee',
           notes: '',
           cost: 1.99
@@ -52,8 +51,7 @@ describe('table service', function() {
           dish: 'reuben',
           notes: 'provolone, side of coleslaw',
           cost: 7.99
-        },
-        {
+        }, {
           dish: 'soda',
           notes: '',
           cost: 1.99
@@ -66,8 +64,7 @@ describe('table service', function() {
           dish: 'chicken sandwhich',
           notes: 'munster, easy on mayo',
           cost: 7.99
-        },
-        {
+        }, {
           dish: 'tea',
           notes: '',
           cost: 1.99
@@ -154,7 +151,7 @@ describe('table service', function() {
         res.body.data[0].order[1].cost.should.equal(1.99);
         done();
       });
-    });
+  });
   //test for post for /guest to add order data to a table and specific check
   it('should post the guest order data', function(done) {
     //setup a request
@@ -175,7 +172,6 @@ describe('table service', function() {
       })
       //when done do the following
       .end(function(err, res) {
-        console.log(res.body);
         //check server gives 201 response
         res.should.have.status(201);
         res.body.tableId.should.be.a('number');
@@ -191,6 +187,53 @@ describe('table service', function() {
         res.body.order[0].cost.should.equal(8.99);
         done();
       });
-
+  });
+  //test for put for /tables
+  it('should update the guest data', function(done) {
+    chai.request(app)
+      //request to /tables
+      .get('/tables')
+      .set('Accept', 'application/json')
+      .set('Authorization', 'Bearer '.concat(token))
+      //when finished do the following
+      .end((err, res) => {
+        //setup a request
+        chai.request(app)
+          //request to /tables
+          .put('/tables/' + res.body.data[1]._id)
+          .set('Accept', 'application/json')
+          .set('Authorization', 'Bearer '.concat(token))
+          //attach data to request
+          .send({
+              tableId: 2,
+              checkNumber: 1,
+              order: [{
+                dish: 'reuben',
+                notes: 'provolone, side of coleslaw',
+                cost: 7.99
+              }, {
+                dish: 'soda',
+                notes: '',
+                cost: 1.99
+              },
+              {
+                dish: 'fries',
+                notes: '',
+                cost: 2.99
+              }]
+          })
+          //when finished do the following
+          .end(function(err, res) {
+            //check server gives 200 response
+            res.should.have.status(200);
+            res.body.order[2].dish.should.be.a('string');
+            res.body.order[2].dish.should.equal('fries');
+            res.body.order[2].notes.should.be.a('string');
+            res.body.order[2].notes.should.equal('');
+            res.body.order[2].cost.should.be.a('number');
+            res.body.order[2].cost.should.equal(2.99);
+            done();
+          });
+      });
   });
 });
