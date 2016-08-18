@@ -15,7 +15,6 @@
     "jshint2": "jshint src/. test/. --config",
     "start2": "node src/",
     "mocha2": "mocha test/ --recursive",
-
     "test": "mocha build/test-restaurant-pos.1.2.3.min.js",
     "mkdir": "mkdir -p build",
     "build": "npm run clean && npm run mkdir && npm run build:html && npm run build:css && npm run build:js",
@@ -63,6 +62,8 @@
   },
   "homepage": "https://github.com/jayzamazing/Restaurant-POS#readme",
   "dependencies": {
+    "angular": "^1.5.8",
+    "angular-route": "^1.5.8",
     "bcrypt": "0.8.7",
     "body-parser": "1.15.2",
     "bootstrap": "3.3.6",
