@@ -1,13 +1,16 @@
 'use strict';
 //set ngroute as dependency of app
-var viewModel = angular.module('viewModel', ['ngRoute']);
+var viewModel = angular.module('viewModel', ['ngRoute', 'storeAuth', 'serverAuth']);
 //use routeprovider to create different routes in the application
 viewModel.config(['$routeProvider', '$locationProvider',
   viewModel.config(function($routeProvider, $locationProvider) {
     $routeProvider
-      //when / is requested, set login.html
+      //when / is requested
       .when('/', {
-        templateUrl: 'login.html'
+        //set login.html and AuthUser controller
+        templateUrl: 'login.html',
+        controller: 'AuthUser'
+      //default fallback
       }).otherwise({
         redirectTo: '/index'
       });
@@ -18,6 +21,7 @@ viewModel.config(['$routeProvider', '$locationProvider',
     });
   })
 ]);
+//kickstart app
 viewModel.run(function (sendHead) {
   sendHead.init();
 });
