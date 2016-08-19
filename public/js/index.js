@@ -1,4 +1,7 @@
 'use strict';
+var angular = require('angular');
+var ngRoute = require('angular-route');
+
 var viewModel = angular.module('viewModel', ['ngRoute', 'storeAuth', 'serverAuth']);
     //use routeprovider to create different routes in the application
     viewModel.config(['$routeProvider', '$locationProvider',

@@ -1,5 +1,5 @@
 'use strict';
-
+var angular = require('angular');
 var storeAuth = angular.module('storeAuth', []);
 // storeAuth.controller('AuthUser', ['$scope', '$location', //'clientAuth',
 // function ($scope, $location//, clientAuth

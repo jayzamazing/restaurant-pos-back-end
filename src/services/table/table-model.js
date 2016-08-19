@@ -7,7 +7,6 @@
 
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const Menu = require('../menu/menu-model.js');
 
 const tableSchema = new Schema({
     tableId: {

@@ -1,4 +1,5 @@
 'use strict';
+var angular = require('angular');
 import io from 'socket.io-client';
 import feathers from 'feathers/client';
 import hooks from 'feathers-hooks';
