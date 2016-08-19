@@ -1,17 +1,17 @@
 'use strict';
 var angular = require('angular');
 var storeAuth = angular.module('storeAuth', []);
-// storeAuth.controller('AuthUser', ['$scope', '$location', //'clientAuth',
-// function ($scope, $location//, clientAuth
-// ) {
-//   //function to call login in serverauth
-//   $scope.login = function() {
-//     $scope.sub = true;
-//     var postData = {
-//       'username' : $scope.username,
-//       'storenumber' : $scope.storeNumber,
-//       'password' : $scope.password
-//     };
+storeAuth.controller('AuthUser', ['$scope', '$location', //'clientAuth',
+function ($scope, $location//, clientAuth
+) {
+  //function to call login in serverauth
+  $scope.login = function() {
+    $scope.sub = true;
+    var postData = {
+      'username' : $scope.username,
+      'storenumber' : $scope.storeNumber,
+      'password' : $scope.password
+    };
 //     clientAuth.auth({}, postData,
 //     function success(res) {
 //       if (res.userAuth === 'auth') {
@@ -26,5 +26,5 @@ var storeAuth = angular.module('storeAuth', []);
 //   function error(err) {
 //     console.error('Error: ' + JSON.stringify(err));
 //   });
-//   };
-// }]);
+  };
+}]);

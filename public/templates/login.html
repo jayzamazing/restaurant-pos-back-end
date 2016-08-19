@@ -1,16 +1,16 @@
 <div class="row">
-  <form>
-      <div class="form-group" name="loginForm">
-        <input type="text" placeholder="username" class="form-control">
+  <form name="loginForm" ng-controller="AuthUser">
+      <div class="form-group">
+        <input type="text" placeholder="username" ng-model="username" name="username" class="form-control">
       </div>
       <div class="form-group">
-        <input type="text" placeholder="store number" class="form-control">
+        <input type="text" placeholder="store number" ng-model="storeNumber" name="storeNumber" name="password" class="form-control">
       </div>
       <div class="form-group">
-        <input type="text" placeholder="password" class="form-control">
+        <input type="text" placeholder="password" ng-model="password" name="password" class="form-control">
       </div>
       <div class="form-group text-center">
-        <button class="btn btn-success">Login</button>
+        <button type="submit" ng-click="login()" class="btn btn-success">Login</button>
       </div>
   </form>
 </div>

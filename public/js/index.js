@@ -12,7 +12,7 @@ var viewModel = angular.module('viewModel', ['ngRoute', 'storeAuth', 'serverAuth
             //when / is requested
             .when('/', {
                 templateUrl: 'login.html',
-                //controller: 'AuthUser'
+                controller: 'AuthUser'
 
             })
             .otherwise({redirectTo:'/'});
