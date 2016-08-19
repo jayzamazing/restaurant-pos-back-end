@@ -3,16 +3,6 @@ var webpack = require('webpack');
 var packageData = require('./package.json');
 var minify = process.argv.indexOf('--minify') !== -1;
 var filename = [packageData.name, packageData.version, 'js'];
-var fs = require('fs');
-
-var nodeModules = {};
-fs.readdirSync('node_modules')
-  .filter(function(x) {
-    return ['.bin'].indexOf(x) === -1;
-  })
-  .forEach(function(mod) {
-    nodeModules[mod] = 'commonjs ' + mod;
-  });
 var plugins = [];
 if (minify) {
     filename.splice(filename.length - 1, 0, 'min');
@@ -38,7 +28,9 @@ module.exports = [
       ]
     },
     devtool: 'source-map',
-    externals: nodeModules,
-    plugins: plugins
+    plugins: [
+      new webpack.optimize.CommonsChunkPlugin(
+        'vendor', 'bundle.js')
+    ]
   }
 ];

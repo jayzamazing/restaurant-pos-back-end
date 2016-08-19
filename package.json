@@ -4,10 +4,9 @@
   "description": "Simple restaurant point of sale system",
   "main": "./public/js/index.js",
   "scripts": {
-    "test": "npm run jshint && npm run mocha",
+    "test": "mocha test/ --recursive",
     "jshint": "jshint src/. test/. --config",
     "start": "node src/",
-    "test": "mocha test/ --recursive",
     "mkdir": "mkdir -p build",
     "build": "npm run clean && npm run mkdir && npm run build:html && npm run build:css && npm run build:js",
     "watch": "npm run watch:html & npm run watch:css & npm run watch:js",
@@ -81,6 +80,8 @@
     "winston": "2.2.0"
   },
   "devDependencies": {
+    "angular": "^1.5.8",
+    "angular-route": "^1.5.8",
     "babel-core": "6.10.4",
     "babel-loader": "6.2.4",
     "babel-plugin-syntax-async-functions": "6.8.0",
