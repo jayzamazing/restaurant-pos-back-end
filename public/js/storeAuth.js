@@ -12,20 +12,30 @@ function ($scope, $location, clientAuth) {
       password: $scope.password
     };
     //call to server side authetication passing in postdata credentials
-    clientAuth(postData,
-    //callback
-    function success(res) {
-      if (res.userAuth === 'auth') {
-        // storeToken(res.token, new Date());
-        console.log('wuz up');
-        $location.path('');//TODO decide on path
-      } else {
-        $scope.error = 'Login Failed';
-      }
-      postData = null;
-    },
-  function error(err) {
-    console.error('Error: ' + JSON.stringify(err));
-  });
+    clientAuth(postData)
+    //if successful
+    .then(function(res) {
+      //call /main to have routeprovider load new page
+      $location.path('/tables');
+    //if there is an error
+    }).catch(function(err) {
+      //TODO add error page
+    });
+
+  //   ,
+  //   //callback
+  //   function success(res) {
+  //     if (res.userAuth === 'auth') {
+  //       // storeToken(res.token, new Date());
+  //       console.log('wuz up');
+  //       $location.path('');//TODO decide on path
+  //     } else {
+  //       $scope.error = 'Login Failed';
+  //     }
+  //     postData = null;
+  //   },
+  // function error(err) {
+  //   console.error('Error: ' + JSON.stringify(err));
+  // });
   };
 }]);
