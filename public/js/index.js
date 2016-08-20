@@ -17,7 +17,7 @@ var viewModel = angular.module('viewModel', ['ngRoute', 'storeAuth', 'serverAuth
                 controller: 'AuthUser'
             }).when('/tables', {
               //set as template
-              templateUrl: 'main.html'
+              templateUrl: 'tables.html'
             })
             .otherwise({redirectTo:'/'});
             //rewrite url so it does not have #
