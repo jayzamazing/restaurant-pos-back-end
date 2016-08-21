@@ -5,7 +5,9 @@ function ($scope, $location, getTable) {
   //function to call login in serverAuth
   $scope.table = function(table) {
     var postData = {
-      tableId: table.currentTarget.getAttribute('data-id')
+      query: {
+        tableId: parseInt(table.currentTarget.getAttribute('data-id'))
+      }
     };
     getTable(postData)
     .then(function(res) {
