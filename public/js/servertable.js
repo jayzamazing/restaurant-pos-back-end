@@ -6,8 +6,7 @@ import hooks from 'feathers-hooks';
 import socketio from 'feathers-socketio/client';
 import localstorage from 'feathers-localstorage';
 import authentication from 'feathers-authentication/client';
-//set module
-var serverAuth = angular.module('serverAuth', []);
+var serverTable = angular.module('serverTable', []);
 //set address and port
 const socket = io('http://localhost:3030/');
 //set up feathers client side
@@ -17,12 +16,15 @@ let app = feathers()
 .configure(authentication({
   storage: window.localStorage
 }));
-//factory singleton object dealing with authenticating user
-serverAuth.factory('clientAuth',
+
+var tables = app.service('tables');
+
+//factory singleton object dealing with getting a table
+serverTable.factory('getTable',
 function() {
-  var auth = function(postData) {
-    postData.type = 'local';
-    return app.authenticate(postData);
+  var table = function(id) {
+  
+    return null;//TODO
   };
-  return auth;
+  return table;
 });

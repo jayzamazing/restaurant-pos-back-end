@@ -1,10 +1,14 @@
 'use strict';
 var angular = require('angular');
 var ngRoute = require('angular-route');
-var storeAuth = require('./storeAuth');
-var serverAuth = require('./serverAuth');
+var storeAuth = require('./storeauth');
+var serverAuth = require('./serverauth');
+var storeTable = require('./storetable');
+var serverTable = require('./servertable');
 //set module and inject dependencies
-var viewModel = angular.module('viewModel', ['ngRoute', 'storeAuth', 'serverAuth']);
+var viewModel = angular.module('viewModel', ['ngRoute', 'storeAuth',
+'serverAuth', 'storeTable', 'serverTable'
+]);
     //use routeprovider to create different routes in the application
     viewModel.config(['$routeProvider', '$locationProvider',
         function($routeProvider, $locationProvider){
@@ -17,7 +21,9 @@ var viewModel = angular.module('viewModel', ['ngRoute', 'storeAuth', 'serverAuth
                 controller: 'AuthUser'
             }).when('/tables', {
               //set as template
-              templateUrl: 'tables.html'
+              templateUrl: 'tables.html',
+              //associate controller
+              controller: 'TableData'
             })
             .otherwise({redirectTo:'/'});
             //rewrite url so it does not have #
