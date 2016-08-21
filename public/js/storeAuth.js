@@ -21,21 +21,5 @@ function ($scope, $location, clientAuth) {
     }).catch(function(err) {
       //TODO add error page
     });
-
-  //   ,
-  //   //callback
-  //   function success(res) {
-  //     if (res.userAuth === 'auth') {
-  //       // storeToken(res.token, new Date());
-  //       console.log('wuz up');
-  //       $location.path('');//TODO decide on path
-  //     } else {
-  //       $scope.error = 'Login Failed';
-  //     }
-  //     postData = null;
-  //   },
-  // function error(err) {
-  //   console.error('Error: ' + JSON.stringify(err));
-  // });
   };
 }]);

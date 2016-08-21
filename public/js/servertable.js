@@ -16,15 +16,15 @@ let app = feathers()
 .configure(authentication({
   storage: window.localStorage
 }));
-
-var tables = app.service('tables');
-
 //factory singleton object dealing with getting a table
 serverTable.factory('getTable',
 function() {
-  var table = function(id) {
-  
-    return null;//TODO
+  //function to get specific table with guests
+  var table = function(postData) {
+    //authenticate using stored token
+    app.authenticate();
+    //return function for caller to use
+    return app.service('tables').find(postData);
   };
   return table;
 });
