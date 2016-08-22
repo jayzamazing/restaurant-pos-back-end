@@ -99,7 +99,7 @@ describe('menu service', () => {
   it('should post the menuitem data', function(done) {
       //setup a request
       chai.request(app)
-          //request to /store
+          //request to /menus
           .post('/menus')
           .set('Accept', 'application/json')
           .set('Authorization', 'Bearer '.concat(token))
@@ -123,7 +123,7 @@ describe('menu service', () => {
   //test for put for /menuitem
   it('should update the menuitem data', function(done) {
       chai.request(app)
-          //request to /store
+          //request to /menus
           .get('/menus')
           .set('Accept', 'application/json')
           .set('Authorization', 'Bearer '.concat(token))
@@ -158,7 +158,7 @@ describe('menu service', () => {
   //test to delete /menuitem
   it('should delete the menu item data', function(done) {
     chai.request(app)
-        //request to /store
+        //request to /menus
         .get('/menus')
         .set('Accept', 'application/json')
         .set('Authorization', 'Bearer '.concat(token))
