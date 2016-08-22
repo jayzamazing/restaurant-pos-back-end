@@ -13,7 +13,7 @@ function ($scope, $location, getTable) {
     .then(function(res) {
     console.log(res);
     //call /orders to have routeprovider load new page
-    $location.path('/orders');
+    $location.path('/orders/' + res);
     }).catch(function(err) {
       console.log(err);
       //TODO add error page

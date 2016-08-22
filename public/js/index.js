@@ -5,9 +5,10 @@ var storeAuth = require('./storeauth');
 var serverAuth = require('./serverauth');
 var storeTable = require('./storetable');
 var serverTable = require('./servertable');
+var storeOrders = require('./storeorders')
 //set module and inject dependencies
 var viewModel = angular.module('viewModel', ['ngRoute', 'storeAuth',
-'serverAuth', 'storeTable', 'serverTable'
+'serverAuth', 'storeTable', 'serverTable', 'storeOrders'
 ]);
     //use routeprovider to create different routes in the application
     viewModel.config(['$routeProvider', '$locationProvider',
@@ -24,9 +25,11 @@ var viewModel = angular.module('viewModel', ['ngRoute', 'storeAuth',
               templateUrl: 'tables.html',
               //associate controller
               controller: 'TableData'
-            }).when('/orders', {
+            }).when('/orders/:tabledata', {
               //set as template
-              templateUrl: 'orders.html'
+              templateUrl: 'orders.html',
+              //associate controller
+              controller: 'OrderData'
             })
             .otherwise({redirectTo:'/'});
             //rewrite url so it does not have #
