@@ -11,7 +11,7 @@ function ($scope, $location, getTable) {
     };
     getTable(postData)
     .then(function(res) {
-    console.log(res);
+    //console.log(res);
     //call /orders to have routeprovider load new page
     $location.path('/orders/' + res);
     }).catch(function(err) {

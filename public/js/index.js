@@ -17,17 +17,17 @@ var viewModel = angular.module('viewModel', ['ngRoute', 'storeAuth',
             //when / is requested
             .when('/', {
                 //set as template
-                templateUrl: 'login.html',
+                templateUrl: '/login.html',
                 //associate controller
                 controller: 'AuthUser'
             }).when('/tables', {
               //set as template
-              templateUrl: 'tables.html',
+              templateUrl: '/tables.html',
               //associate controller
               controller: 'TableData'
             }).when('/orders/:tabledata', {
               //set as template
-              templateUrl: 'orders.html',
+              templateUrl: '/orders.html',
               //associate controller
               controller: 'OrderData'
             })
