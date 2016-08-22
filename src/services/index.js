@@ -1,4 +1,5 @@
 'use strict';
+const categories = require('./categories');
 const table = require('./table');
 const store = require('./store');
 const menu = require('./menu');
@@ -16,4 +17,5 @@ module.exports = function() {
   app.configure(menu);
   app.configure(store);
   app.configure(table);
+  app.configure(categories);
 };

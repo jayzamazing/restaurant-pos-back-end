@@ -15,7 +15,7 @@ function ($scope, $location, clientAuth) {
     clientAuth(postData)
     //if successful
     .then(function(res) {
-      //call /main to have routeprovider load new page
+      //call /tables to have routeprovider load new page
       $location.path('/tables');
     //if there is an error
     }).catch(function(err) {

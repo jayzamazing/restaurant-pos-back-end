@@ -24,6 +24,9 @@ var viewModel = angular.module('viewModel', ['ngRoute', 'storeAuth',
               templateUrl: 'tables.html',
               //associate controller
               controller: 'TableData'
+            }).when('/orders', {
+              //set as template
+              templateUrl: 'orders.html'
             })
             .otherwise({redirectTo:'/'});
             //rewrite url so it does not have #

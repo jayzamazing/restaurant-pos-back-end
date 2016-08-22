@@ -12,7 +12,8 @@ function ($scope, $location, getTable) {
     getTable(postData)
     .then(function(res) {
     console.log(res);
-    //if there is an error
+    //call /orders to have routeprovider load new page
+    $location.path('/orders');
     }).catch(function(err) {
       console.log(err);
       //TODO add error page
