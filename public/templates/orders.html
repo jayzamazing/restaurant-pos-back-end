@@ -1,0 +1,19 @@
+<div class="row">
+  <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8" ng-init="categories=['breakfast', 'lunch', 'dinner']">
+      <button ng-repeat="category in categories" data-id="{{category}}">{{category}}</button>
+  </div>
+  <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4"
+  ng-init="items=[{dish: 'burger', cost: 7.99},
+  {dish: 'fries', cost: 1.99},
+  {dish: 'drink', cost: 1.99}]">
+    <ul class="list-group">
+      <li class="list-group-item" ng-repeat="item in items"
+      data-id="{{item.dish}}">
+      <div class="full-clear">
+        <p class="inline-block">{{item.dish}}</p>
+        <p class="inline-block right-align">{{item.cost}}</p>
+      </div>
+      </li>
+    </ul>
+  </div>
+</div>
