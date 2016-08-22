@@ -28,3 +28,19 @@ function() {
   };
   return table;
 });
+//factory singleton object for storage of data between controllers
+serverTable.factory('dataStore', function() {
+  var storeData = {};
+  //setter for this factory to store the data
+  function set(data) {
+    storeData = data;
+  }
+  //getter for this factory to return data
+  function get() {
+    return storeData;
+  }
+  return {
+    set: set,
+    get: get
+  }
+});

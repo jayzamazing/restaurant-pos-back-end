@@ -1,8 +1,8 @@
 'use strict';
 //set module and inject dependencies
 var storeAuth = angular.module('storeAuth', []);
-storeAuth.controller('AuthUser', ['$scope', '$location', 'clientAuth',
-function ($scope, $location, clientAuth) {
+storeAuth.controller('AuthUser', ['$scope', '$location', '$route', 'clientAuth',
+function ($scope, $location, $route, clientAuth) {
   //function to call login in serverAuth
   $scope.login = function() {
     //variable to pass user credentials to server
@@ -17,6 +17,7 @@ function ($scope, $location, clientAuth) {
     .then(function(res) {
       //call /tables to have routeprovider load new page
       $location.path('/tables');
+      $route.reload();
     //if there is an error
     }).catch(function(err) {
       //TODO add error page

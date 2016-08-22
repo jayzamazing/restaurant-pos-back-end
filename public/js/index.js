@@ -25,7 +25,7 @@ var viewModel = angular.module('viewModel', ['ngRoute', 'storeAuth',
               templateUrl: '/tables.html',
               //associate controller
               controller: 'TableData'
-            }).when('/orders/:tabledata', {
+            }).when('/orders', {
               //set as template
               templateUrl: '/orders.html',
               //associate controller
