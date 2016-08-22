@@ -1,5 +1,5 @@
 @dark-orange: hsl(20, 100%, 35%);
-@light-orange: hsl(21, 100%, 55%);
+@light-orange: hsl(19, 100%, 90%);
 @orange: hsl(21, 100%, 50%);
 @dark-blue: hsl(178, 100%, 35%);
 @light-blue: hsl(177, 100%, 65%);
@@ -11,6 +11,9 @@
     background-size: cover;
     overflow: hidden;
     color: @dark-orange;
+}
+body {
+  background-color: @light-orange;
 }
 .row-margin {
   margin-top: 5rem;
@@ -35,11 +38,12 @@ figure {
          right: 45%
      }
 }
-.left-align {
+.inline-block {
   display: inline-block;
-  .right-align {
-    float: right;
-  }
+}
+.right-align {
+  .inline-block;
+  float: right;
 }
 .full-clear {
   clear: both;
