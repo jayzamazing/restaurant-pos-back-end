@@ -1,11 +1,11 @@
 'use strict';
 var angular = require('angular');
 var ngRoute = require('angular-route');
-var storeAuth = require('./storeauth.js');
-var serverAuth = require('./serverauth.js');
-var storeTable = require('./storetable.js');
-var serverTable = require('./servertable.js');
-var storeOrders = require('./storeorders.js');
+var storeAuth = require('./storeauth');
+var serverAuth = require('./serverauth');
+var storeTable = require('./storetable');
+var serverTable = require('./servertable');
+var storeOrders = require('./storeorders');
 //set module and inject dependencies
 var viewModel = angular.module('viewModel', ['ngRoute', 'storeAuth',
 'serverAuth', 'storeTable', 'serverTable', 'storeOrders'
