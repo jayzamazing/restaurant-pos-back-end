@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="viewModel">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Restaurant POS</title>
+  <link rel="shortcut icon" type="image/x-icon" href="restaurant.ico?v=1" />
+  <link rel="stylesheet" href="scripts/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.0/gh-fork-ribbon.min.css" />
+  <!--[if lt IE 9]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.0/gh-fork-ribbon.ie.min.css" />
+  <![endif]-->
+  <link rel="stylesheet" href="restaurant-pos.3.0.2.css">
+</head>
+
+<body>
+  <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span></button>
+      </div>
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+      </div>
+    </div>
+  </nav>
+  <header class="container-fluid">
+    <div class="jumbotron">
+      <h1>Restaurant POS</h1>
+    </div>
+  </header>
+  <section ng-view class="col-xs-12 col-sm-12 col-md-12 col-md-8 col-md-offset-2 col-lg-8 col-lg-offset-2 container">
+
+  </section>
+  <section class="container main">
+  </section>
+  <a class="github-fork-ribbon right-top" href="https://github.com/jayzamazing/Restaurant-POS" title="Fork me on GitHub">Fork me on GitHub</a>
+  <script src="scripts/jquery/dist/jquery.min.js"></script>
+  <script> src="scripts/bootstrap/dist/css/bootstrap.min.js"</script>
+  <script src="bundle.js"></script>
+  <script src="restaurant-pos.3.0.2.js"></script>
+</body>
+
+</html>

@@ -1,6 +1,5 @@
-/*jshint esversion: 6 */
 (function() {
-    "use strict";
+    'use strict';
     var bcrypt = require('bcrypt');
     //import mongoose
     var mongoose = require('mongoose');
