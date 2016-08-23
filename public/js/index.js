@@ -5,7 +5,7 @@ var storeAuth = require('./storeauth');
 var serverAuth = require('./serverauth');
 var storeTable = require('./storetable');
 var serverTable = require('./servertable');
-var storeOrders = require('./storeorders')
+var storeOrders = require('./storeorders');
 //set module and inject dependencies
 var viewModel = angular.module('viewModel', ['ngRoute', 'storeAuth',
 'serverAuth', 'storeTable', 'serverTable', 'storeOrders'

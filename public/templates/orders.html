@@ -1,19 +1,29 @@
 <div class="row">
-  <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8" ng-init="categories=['breakfast', 'lunch', 'dinner']">
-      <button ng-repeat="category in categories" data-id="{{category}}">{{category}}</button>
-  </div>
-  <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4"
-  ng-init="items=[{dish: 'burger', cost: 7.99},
-  {dish: 'fries', cost: 1.99},
-  {dish: 'drink', cost: 1.99}]">
-    <ul class="list-group">
-      <li class="list-group-item" ng-repeat="item in items"
-      data-id="{{item.dish}}">
-      <div class="full-clear">
-        <p class="inline-block">{{item.dish}}</p>
-        <p class="inline-block right-align">{{item.cost}}</p>
-      </div>
-      </li>
-    </ul>
-  </div>
+    <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 order-screen">
+        <button type="button" class="btn btn-default categories" ng-repeat="category in categories" data-id="{{category.name}}">{{category.name}}</button>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 order-screen">
+        <div class="arrows">
+          <button type="button" class="btn btn-default left-chev" aria-label="Left Align">
+              <span class="glyphicon glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+          </button>
+          Table# {{tableNumber}} Guest # {{checkNumber}}
+          <button type="button" class="btn btn-default right-chev" aria-label="Right Align">
+              <span class="glyphicon glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+          </button>
+        </div>
+
+        <ul class="list-group">
+            <li class="list-group-item" ng-repeat="item in items"
+            data-id="{{item.dish}}" ng-class="{active: isActive(item)}"
+            ng-click="select(item)">
+                <div class="full-clear">
+                    <p class="inline-block">{{item.dish}}</p>
+                    <p class="inline-block right-align">{{item.cost}}</p>
+                    <p ng-if="notes != ''">{{item.notes}}</div>
+                </div>
+            </li>
+        </ul>
+
+    </div>
 </div>

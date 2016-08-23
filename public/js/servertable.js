@@ -17,19 +17,34 @@ let app = feathers()
   storage: window.localStorage
 }));
 //factory singleton object dealing with getting a table
-serverTable.factory('getTable',
+serverTable.factory('Table',
 function() {
   //function to get specific table with guests
-  var table = function(postData) {
+  function getTable(postData) {
     //authenticate using stored token
     app.authenticate();
-    //return function for caller to use
+    //return function for caller to use, gets table based on query passed in
     return app.service('tables').find(postData);
+  }
+  return {
+    get: getTable
   };
-  return table;
+});
+//factory singleton object dealing with categories
+serverTable.factory('Categories',
+function () {
+  //get all categories
+  function getCategories() {
+    //authenticate using stored token
+    app.authenticate();
+    return app.service('categories').find();
+  }
+  return {
+    get: getCategories
+  };
 });
 //factory singleton object for storage of data between controllers
-serverTable.factory('dataStore', function() {
+serverTable.factory('DataStore', function() {
   var storeData = {};
   //setter for this factory to store the data
   function set(data) {
@@ -42,5 +57,5 @@ serverTable.factory('dataStore', function() {
   return {
     set: set,
     get: get
-  }
+  };
 });

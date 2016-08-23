@@ -1,6 +1,6 @@
 {
   "name": "restaurant-pos",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Simple restaurant point of sale system",
   "main": "./public/js/index.js",
   "scripts": {

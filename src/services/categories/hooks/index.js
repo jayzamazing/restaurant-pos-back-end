@@ -12,7 +12,7 @@ exports.before = {
   ],
   find: [
     auth.restrictToRoles({
-      roles: ['admin']
+      roles: ['admin', 'user']
     })
   ],
   get: [
@@ -22,22 +22,22 @@ exports.before = {
   ],
   create: [
     auth.restrictToRoles({
-      roles: ['admin']
+      roles: ['admin', 'user']
     })
   ],
   update: [
     auth.restrictToRoles({
-      roles: ['admin']
+      roles: ['admin', 'user']
     })
   ],
   patch: [
     auth.restrictToRoles({
-      roles: ['admin']
+      roles: ['admin', 'user']
     })
   ],
   remove: [
     auth.restrictToRoles({
-      roles: ['admin']
+      roles: ['admin', 'user']
     })
   ]
 };
