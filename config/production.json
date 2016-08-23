@@ -1,5 +1,5 @@
 {
-  "host": "feathers-test-app.feathersjs.com",
+  "host": "HOST",
   "port": 80,
   "mongodb": "DATABASE_URL",
   "public": "../public/",
