@@ -13,7 +13,7 @@ addons:
     - mongodb-org-server
     - g++-4.8
 before_script:
-  - npm run heroku-prebuild
+  - npm run build
 deploy:
   provider: heroku
   api_key:
