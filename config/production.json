@@ -1,6 +1,6 @@
 {
   "host": "HOST",
-  "port": 8080,
+  "port": "process.env.PORT",
   "mongodb": "DATABASE_URL",
   "public": "../public/",
   "auth": {
