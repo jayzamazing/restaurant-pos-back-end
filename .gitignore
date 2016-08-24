@@ -31,3 +31,4 @@ lib/
 data/
 run_mongod
 build/
+mongodbscript.txt
