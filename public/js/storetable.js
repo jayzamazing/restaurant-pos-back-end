@@ -2,7 +2,6 @@
 var storeTable = angular.module('storeTable', []);
 storeTable.controller('TableData', ['$scope', '$location', '$route', 'Table', 'DataStore',
 function ($scope, $location, $route, Table, DataStore) {
-  Table.setup();
   //function to call login in serverAuth
   $scope.table = function(table) {
     var postData = {

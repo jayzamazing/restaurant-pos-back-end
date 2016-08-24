@@ -27,9 +27,13 @@ function($location) {
     postData.type = 'local';
     return app.authenticate(postData);
   };
+  var getApp = function() {
+    return app;
+  };
   return {
     setup: setup,
-    auth: auth
+    auth: auth,
+    get: getApp
   };
 
 });
