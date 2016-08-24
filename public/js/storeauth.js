@@ -3,6 +3,7 @@
 var storeAuth = angular.module('storeAuth', []);
 storeAuth.controller('AuthUser', ['$scope', '$location', '$route', 'clientAuth',
 function ($scope, $location, $route, clientAuth) {
+  clientAuth.setup();
   //function to call login in serverAuth
   $scope.login = function() {
     //variable to pass user credentials to server
@@ -11,8 +12,10 @@ function ($scope, $location, $route, clientAuth) {
       storenumber: $scope.storeNumber,
       password: $scope.password
     };
+
     //call to server side authetication passing in postdata credentials
-    clientAuth(postData)
+    clientAuth.auth(postData)
+
     //if successful
     .then(function(res) {
       //call /tables to have routeprovider load new page

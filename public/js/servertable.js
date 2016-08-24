@@ -11,23 +11,27 @@ var host, app;
 //factory singleton object dealing with getting a table
 serverTable.factory('Table',
 function($location) {
-  //set address and port
-  host = $location.$$protocol + '://' + $location.$$host + ':' + $location.port();
-  //set up feathers client side
-  app = feathers()
-  .configure(rest(host).fetch(window.fetch.bind(window)))
-  .configure(hooks())
-  .configure(authentication({
-    storage: window.localStorage
-  }));
-  //function to get specific table with guests
-  function getTable(postData) {
+  var setup = function() {
+    //set address and port
+    host = $location.$$protocol + '://' + $location.$$host + ':' + $location.port();
+    console.log(host);
+    //set up feathers client side
+    app = feathers()
+    .configure(rest(host).fetch(window.fetch.bind(window)))
+    .configure(hooks())
+    .configure(authentication({
+      storage: window.localStorage
+    }));
     //authenticate using stored token
     app.authenticate();
+  };
+  //function to get specific table with guests
+  function getTable(postData) {
     //return function for caller to use, gets table based on query passed in
     return app.service('tables').find(postData);
   }
   return {
+    setup: setup,
     get: getTable
   };
 });
