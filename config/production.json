@@ -1,6 +1,6 @@
 {
   "host": "HOST",
-  "port": "process.env.PORT",
+  "port": "PORT",
   "mongodb": "DATABASE_URL",
   "public": "../public/",
   "auth": {
