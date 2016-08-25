@@ -6,24 +6,17 @@ import hooks from 'feathers-hooks';
 import rest from 'feathers-rest/client';
 import localstorage from 'feathers-localstorage';
 import authentication from 'feathers-authentication/client';
+var app;
 var serverTable = angular.module('serverTable', []);
-var host, app;
+
 //factory singleton object dealing with getting a table
 serverTable.factory('Table',
-function($location) {
-  //set address and port
-  host = $location.$$protocol + '://' + $location.$$host + ':' + $location.port();
-  //set up feathers client side
-  app = feathers()
-  .configure(rest(host).fetch(window.fetch.bind(window)))
-  .configure(hooks())
-  .configure(authentication({
-    storage: window.localStorage
-  }));
-  //function to get specific table with guests
-  function getTable(postData) {
+function(clientAuth) {
+    app = clientAuth.get();
     //authenticate using stored token
     app.authenticate();
+  //function to get specific table with guests
+  function getTable(postData) {
     //return function for caller to use, gets table based on query passed in
     return app.service('tables').find(postData);
   }
@@ -57,6 +50,16 @@ serverTable.factory('DataStore', function() {
   }
   return {
     set: set,
+    get: get
+  };
+});
+//factory singleton object that deals with menu
+serverTable.factory('Menus', function() {
+  function get(postData) {
+    //query for data using postdata
+    return app.service('menus').find(postData);
+  }
+  return {
     get: get
   };
 });

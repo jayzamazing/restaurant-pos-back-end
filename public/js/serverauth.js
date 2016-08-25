@@ -11,19 +11,29 @@ var serverAuth = angular.module('serverAuth', []);
 //factory singleton object dealing with authenticating user
 serverAuth.factory('clientAuth',
 function($location) {
-  //set address and port
-  host = $location.$$protocol + '://' + $location.$$host + ':' + $location.port();
-  console.log(host);
-  //set up feathers client side
-  app = feathers()
-  .configure(rest(host).fetch(window.fetch.bind(window)))
-  .configure(hooks())
-  .configure(authentication({
-    storage: window.localStorage
-  }));
+  var setup = function() {
+    //set address and port
+    host = $location.$$protocol + '://' + $location.$$host + ':' + $location.port();
+    console.log(host);
+    //set up feathers client side
+    app = feathers()
+    .configure(rest(host).fetch(window.fetch.bind(window)))
+    .configure(hooks())
+    .configure(authentication({
+      storage: window.localStorage
+    }));
+  };
   var auth = function(postData) {
     postData.type = 'local';
     return app.authenticate(postData);
   };
-  return auth;
+  var getApp = function() {
+    return app;
+  };
+  return {
+    setup: setup,
+    auth: auth,
+    get: getApp
+  };
+
 });

@@ -1,29 +1,31 @@
 <div class="row">
-    <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 order-screen">
-        <button type="button" class="btn btn-default categories" ng-repeat="category in categories" data-id="{{category.name}}">{{category.name}}</button>
+  <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 order-screen">
+    <button type="button" ng-show="menu" ng-click="selectTable()" class="btn btn-default choices">Table Select</button>
+    <button type="button" ng-hide="menu" ng-click="categorySelect()" class="btn btn-default choices">Main Menu</button>
+    <button type="button" class="btn btn-default choices" ng-click="menuItems($event)" ng-repeat="item in choices" data-id="{{item.name}}">{{item.name}}</button>
+  </div>
+  <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 order-screen">
+    <div class="arrows">
+      <button type="button" class="btn btn-default left-chev" aria-label="Left Align">
+        <span class="glyphicon glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+      </button>
+      Table# {{tableNumber}} Guest # {{checkNumber}}
+      <button type="button" class="btn btn-default right-chev" aria-label="Right Align">
+        <span class="glyphicon glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+      </button>
     </div>
-    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 order-screen">
-        <div class="arrows">
-          <button type="button" class="btn btn-default left-chev" aria-label="Left Align">
-              <span class="glyphicon glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-          </button>
-          Table# {{tableNumber}} Guest # {{checkNumber}}
-          <button type="button" class="btn btn-default right-chev" aria-label="Right Align">
-              <span class="glyphicon glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-          </button>
+
+    <ul class="list-group">
+      <li class="list-group-item" ng-repeat="item in items" data-id="{{item._id}}" ng-class="{active: isActive(item)}" ng-click="select(item)">
+        <div class="full-clear">
+          <p class="inline-block">{{item.dish}}</p>
+          <p class="inline-block right-align">{{item.cost}}</p>
+          <p ng-if="notes != ''">{{item.notes}}</p>
         </div>
 
-        <ul class="list-group">
-            <li class="list-group-item" ng-repeat="item in items"
-            data-id="{{item.dish}}" ng-class="{active: isActive(item)}"
-            ng-click="select(item)">
-                <div class="full-clear">
-                    <p class="inline-block">{{item.dish}}</p>
-                    <p class="inline-block right-align">{{item.cost}}</p>
-                    <p ng-if="notes != ''">{{item.notes}}</div>
-                </div>
-            </li>
-        </ul>
+  </div>
+  </li>
+  </ul>
 
-    </div>
+</div>
 </div>

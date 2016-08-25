@@ -12,7 +12,7 @@ exports.before = {
   ],
   find: [
     auth.restrictToRoles({
-      roles: ['admin']
+      roles: ['admin', 'user']
     })
   ],
   get: [

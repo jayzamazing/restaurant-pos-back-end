@@ -24,61 +24,11 @@ var should = chai.should();
  * All tests that should be run
  */
 describe('table service', function() {
-  //setup
   before((done) => {
     //start the server
     this.server = app.listen(3030);
     //once listening do the following
     this.server.once('listening', () => {
-      //go through mongoose and create some mock items for testing
-      Table.create({
-        tableId: 1,
-        checkNumber: 1,
-        order: [{
-          dish: 'omlette',
-          notes: 'cheddar, bacon only',
-          cost: 4.99
-        }, {
-          dish: 'coffee',
-          notes: '',
-          cost: 1.99
-        }]
-      });
-      Table.create({
-        tableId: 2,
-        checkNumber: 1,
-        order: [{
-          dish: 'reuben',
-          notes: 'provolone, side of coleslaw',
-          cost: 7.99
-        }, {
-          dish: 'soda',
-          notes: '',
-          cost: 1.99
-        }]
-      });
-      Table.create({
-        tableId: 3,
-        checkNumber: 1,
-        order: [{
-          dish: 'chicken sandwhich',
-          notes: 'munster, easy on mayo',
-          cost: 7.99
-        }, {
-          dish: 'tea',
-          notes: '',
-          cost: 1.99
-        }]
-      });
-      Table.create({
-        tableId: 3,
-        checkNumber: 2,
-        order: [{
-          dish: 'fish n chips',
-          notes: 'to-go',
-          cost: 8.99
-        }]
-      });
       //create mock user
       User.create({
         'username': 'resposadmin',
@@ -103,18 +53,72 @@ describe('table service', function() {
             done();
           });
       });
-
     });
+  });
+  //setup
+  beforeEach((done) => {
+    //go through mongoose and create some mock items for testing
+    Table.create({
+      tableId: 1,
+      checkNumber: 1,
+      order: [{
+        dish: 'omlette',
+        notes: 'cheddar, bacon only',
+        cost: 4.99
+      }, {
+        dish: 'coffee',
+        notes: '',
+        cost: 1.99
+      }]
+    });
+    Table.create({
+      tableId: 2,
+      checkNumber: 1,
+      order: [{
+        dish: 'reuben',
+        notes: 'provolone, side of coleslaw',
+        cost: 7.99
+      }, {
+        dish: 'soda',
+        notes: '',
+        cost: 1.99
+      }]
+    });
+    Table.create({
+      tableId: 3,
+      checkNumber: 1,
+      order: [{
+        dish: 'chicken sandwhich',
+        notes: 'munster, easy on mayo',
+        cost: 7.99
+      }, {
+        dish: 'tea',
+        notes: '',
+        cost: 1.99
+      }]
+    });
+    Table.create({
+      tableId: 3,
+      checkNumber: 2,
+      order: [{
+        dish: 'fish n chips',
+        notes: 'to-go',
+        cost: 8.99
+      }]
+    }, done);
   });
   //teardown after tests
   after((done) => {
+    User.remove(null, () => {
+      //stop the server
+      this.server.close(function() {});
+      done();
+    });
+  });
+  afterEach((done) => {
     //delete contents of menu in mongodb
     Table.remove(null, () => {
-      User.remove(null, () => {
-        //stop the server
-        this.server.close(function() {});
-        done();
-      });
+      done();
     });
   });
   it('registered the tables service', () => {
@@ -128,6 +132,13 @@ describe('table service', function() {
       .get('/tables')
       .set('Accept', 'application/json')
       .set('Authorization', 'Bearer '.concat(token))
+      .send({
+        query: {
+          $sort: {
+            _id: 1
+          }
+        }
+      })
       //when finished do the following
       .end(function(err, res) {
         //check server gives 201 response and the data sent back from the server
@@ -195,6 +206,13 @@ describe('table service', function() {
       .get('/tables')
       .set('Accept', 'application/json')
       .set('Authorization', 'Bearer '.concat(token))
+      .send({
+        query: {
+          $sort: {
+            _id: 1
+          }
+        }
+      })
       //when finished do the following
       .end((err, res) => {
         //setup a request
@@ -205,22 +223,21 @@ describe('table service', function() {
           .set('Authorization', 'Bearer '.concat(token))
           //attach data to request
           .send({
-              tableId: 2,
-              checkNumber: 1,
-              order: [{
-                dish: 'reuben',
-                notes: 'provolone, side of coleslaw',
-                cost: 7.99
-              }, {
-                dish: 'soda',
-                notes: '',
-                cost: 1.99
-              },
-              {
-                dish: 'fries',
-                notes: '',
-                cost: 2.99
-              }]
+            tableId: 2,
+            checkNumber: 1,
+            order: [{
+              dish: 'reuben',
+              notes: 'provolone, side of coleslaw',
+              cost: 7.99
+            }, {
+              dish: 'soda',
+              notes: '',
+              cost: 1.99
+            }, {
+              dish: 'fries',
+              notes: '',
+              cost: 2.99
+            }]
           })
           //when finished do the following
           .end(function(err, res) {
