@@ -108,6 +108,11 @@ describe('categories service', function() {
           .get('/categories')
           .set('Accept', 'application/json')
           .set('Authorization', 'Bearer '.concat(token))
+          .send({
+            query: {
+              $sort: { _id: 1 }
+            }
+          })
           //when finished do the following
           .end((err, res) => {
             //setup a request
@@ -137,6 +142,11 @@ describe('categories service', function() {
         .get('/categories')
         .set('Accept', 'application/json')
         .set('Authorization', 'Bearer '.concat(token))
+        .send({
+          query: {
+            $sort: { _id: 1 }
+          }
+        })
         //when finished do the following
         .end((err, res) => {
           //setup a request
@@ -163,6 +173,11 @@ describe('categories service', function() {
             .get('/categories')
             .set('Accept', 'application/json')
             .set('Authorization', 'Bearer '.concat(token))
+            .send({
+              query: {
+                $sort: { _id: 1 }
+              }
+            })
             //when finished do the following
             .end((err, res) => {
                 if (err) {

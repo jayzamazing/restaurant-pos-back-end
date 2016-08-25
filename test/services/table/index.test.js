@@ -128,6 +128,11 @@ describe('table service', function() {
       .get('/tables')
       .set('Accept', 'application/json')
       .set('Authorization', 'Bearer '.concat(token))
+      .send({
+        query: {
+          $sort: { _id: 1 }
+        }
+      })
       //when finished do the following
       .end(function(err, res) {
         //check server gives 201 response and the data sent back from the server
@@ -195,6 +200,11 @@ describe('table service', function() {
       .get('/tables')
       .set('Accept', 'application/json')
       .set('Authorization', 'Bearer '.concat(token))
+      .send({
+        query: {
+          $sort: { _id: 1 }
+        }
+      })
       //when finished do the following
       .end((err, res) => {
         //setup a request
