@@ -1,9 +1,10 @@
 <div class="row">
   <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 order-screen">
+    <button type="button" ng-show="menu" ng-click="selectTable()" class="btn btn-default choices">Table Select</button>
+    <button type="button" ng-hide="menu" ng-click="categorySelect()" class="btn btn-default choices">Main Menu</button>
     <button type="button" class="btn btn-default choices" ng-click="menuItems($event)" ng-repeat="item in choices" data-id="{{item.name}}">{{item.name}}</button>
   </div>
   <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 order-screen">
-    <input ng-hide="menu" type="text" placeholder="notes" ng-model="notes" name="notes">
     <div class="arrows">
       <button type="button" class="btn btn-default left-chev" aria-label="Left Align">
         <span class="glyphicon glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
@@ -15,7 +16,7 @@
     </div>
 
     <ul class="list-group">
-      <li class="list-group-item" ng-repeat="item in items" data-id="{{item.dish}}" ng-class="{active: isActive(item)}" ng-click="select(item)">
+      <li class="list-group-item" ng-repeat="item in items" data-id="{{item._id}}" ng-class="{active: isActive(item)}" ng-click="select(item)">
         <div class="full-clear">
           <p class="inline-block">{{item.dish}}</p>
           <p class="inline-block right-align">{{item.cost}}</p>

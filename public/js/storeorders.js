@@ -1,8 +1,8 @@
 'use strict';
 var storeOrders = angular.module('storeOrders', []);
-storeOrders.controller('OrderData', ['$scope', '$location', 'DataStore', 'Categories',
+storeOrders.controller('OrderData', ['$scope', '$location', '$route', 'DataStore', 'Categories',
 'Menus',
-function ($scope, $location, DataStore, Categories, Menus) {
+function ($scope, $location, $route, DataStore, Categories, Menus) {
   //variable that tells whether it is in menu categories or menu items
   var menu = true;
   $scope.menu = menu;
@@ -32,9 +32,8 @@ function ($scope, $location, DataStore, Categories, Menus) {
   $scope.menuItems = function(item) {
     //only run if looking at categories, not specific menu items
     if (menu) {
-      //hides notes input
-      $scope.menu = menu;
       menu = false;
+      $scope.menu = menu;
       //create query for specific categories
       var postData = {
         query: {
@@ -43,7 +42,7 @@ function ($scope, $location, DataStore, Categories, Menus) {
       };
       //send request for menu items matching category
       Menus.get(postData)
-      .then(function(res){
+      .then((res) => {
         //set choices in scope
         $scope.choices = res.data;
         //force update to occur in view
@@ -54,5 +53,17 @@ function ($scope, $location, DataStore, Categories, Menus) {
       $scope.menu = menu;
       menu = true;
     }
+  };
+  //function that returns to showing the tables
+  $scope.selectTable = function() {
+    //call /orders to have routeprovider load new page
+    $location.path('/tables');
+    $route.reload();
+  };
+  //function that returns to showing the categories
+  $scope.categorySelect = function() {
+    //call /orders to have routeprovider load new page
+    $location.path('/orders');
+    $route.reload();
   };
 }]);
