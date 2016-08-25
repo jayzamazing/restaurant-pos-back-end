@@ -5,6 +5,7 @@ storeOrders.controller('OrderData', ['$scope', '$location', 'DataStore', 'Catego
 function ($scope, $location, DataStore, Categories, Menus) {
   //variable that tells whether it is in menu categories or menu items
   var menu = true;
+  $scope.menu = menu;
   //initially show guest 1
   $scope.items = DataStore.get().data[0].order;
   //set table number
@@ -31,6 +32,8 @@ function ($scope, $location, DataStore, Categories, Menus) {
   $scope.menuItems = function(item) {
     //only run if looking at categories, not specific menu items
     if (menu) {
+      //hides notes input
+      $scope.menu = menu;
       menu = false;
       //create query for specific categories
       var postData = {
@@ -46,6 +49,10 @@ function ($scope, $location, DataStore, Categories, Menus) {
         //force update to occur in view
         $scope.$apply();
       });
+    } else {
+      //shows notes input
+      $scope.menu = menu;
+      menu = true;
     }
   };
 }]);
