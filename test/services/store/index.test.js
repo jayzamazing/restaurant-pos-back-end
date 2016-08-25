@@ -24,12 +24,39 @@ var should = chai.should();
  * All tests that should be run
  */
 describe('store service', () => {
-  //setup
   before((done) => {
     //start the server
     this.server = app.listen(3030);
     //once listening do the following
     this.server.once('listening', () => {
+      //create mock user
+      User.create({
+        'username': 'resposadmin',
+        'password': 'igzSwi7*Creif4V$',
+        'roles': ['admin']
+      }, () => {
+        //setup a request to get authentication token
+        chai.request(app)
+          //request to /auth/local
+          .post('/auth/local')
+          //set header
+          .set('Accept', 'application/json')
+          //send credentials
+          .send({
+            'username': 'resposadmin',
+            'password': 'igzSwi7*Creif4V$'
+          })
+          //when finished
+          .end((err, res) => {
+            //set token for auth in other requests
+            token = res.body.token;
+            done();
+          });
+      });
+    });
+  });
+  //setup
+  beforeEach((done) => {
       //go through mongoose and create some mock items for testing
       Store.create({
         storeNumber: 1,
@@ -70,45 +97,21 @@ describe('store service', () => {
         zipCode: '45324',
         stateTax: 4,
         recommendedTip: 12
-      });
-      //create mock user
-      User.create({
-        'username': 'resposadmin',
-        'password': 'igzSwi7*Creif4V$',
-        'roles': ['admin']
-      }, () => {
-        //setup a request to get authentication token
-        chai.request(app)
-          //request to /auth/local
-          .post('/auth/local')
-          //set header
-          .set('Accept', 'application/json')
-          //send credentials
-          .send({
-            'username': 'resposadmin',
-            'password': 'igzSwi7*Creif4V$'
-          })
-          //when finished
-          .end((err, res) => {
-            //set token for auth in other requests
-            token = res.body.token;
-            done();
-          });
-      });
-
-    });
+      }, done);
   });
   //teardown after tests
   after((done) => {
-    //delete contents of menu in mongodb
-    Store.remove(null, () => {
       User.remove(null, () => {
         //stop the server
         this.server.close(function() {});
         done();
       });
-    });
-
+  });
+  afterEach((done) => {
+    //delete contents of menu in mongodb
+    Store.remove(null, () => {
+      done();
+      });
   });
   it('registered the stores service', () => {
     assert.ok(app.service('stores'));
