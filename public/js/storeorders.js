@@ -1,8 +1,8 @@
 'use strict';
 var storeOrders = angular.module('storeOrders', []);
 storeOrders.controller('OrderData', ['$scope', '$location', '$route', 'DataStore', 'Categories',
-'Menus',
-function ($scope, $location, $route, DataStore, Categories, Menus) {
+'Menus', 'Tables',
+function ($scope, $location, $route, DataStore, Categories, Menus, Tables) {
   //variable that tells whether it is in menu categories or menu items
   var menu = true;
   $scope.menu = menu;
@@ -13,7 +13,7 @@ function ($scope, $location, $route, DataStore, Categories, Menus) {
   //set default guest number
   $scope.checkNumber = 1;
   //get the categories
-  Categories.get()
+  Categories.find()
   .then(function(res) {
     //set choices in scope
     $scope.choices = res.data;
@@ -41,7 +41,7 @@ function ($scope, $location, $route, DataStore, Categories, Menus) {
         }
       };
       //send request for menu items matching category
-      Menus.get(postData)
+      Menus.find(postData)
       .then((res) => {
         //set choices in scope
         $scope.choices = res.data;
@@ -49,9 +49,25 @@ function ($scope, $location, $route, DataStore, Categories, Menus) {
         $scope.$apply();
       });
     } else {
-      //shows notes input
       $scope.menu = menu;
       menu = true;
+      var tableId = DataStore.get().data[0]._id;
+      if (tableId) {
+        var postData2 = {
+          query: {
+            name: item.currentTarget.getAttribute('data-id')
+          }
+        };
+        // Tables.update(tableId, postData2)
+        // .then((res) => {
+        //   //set choices in scope
+        //   $scope.items = res.data;
+        //   //force update to occur in view
+        //   $scope.$apply();
+        // });
+      } else {
+
+      }
     }
   };
   //function that returns to showing the tables

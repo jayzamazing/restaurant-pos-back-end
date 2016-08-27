@@ -1,7 +1,7 @@
 'use strict';
 var storeTable = angular.module('storeTable', []);
-storeTable.controller('TableData', ['$scope', '$location', '$route', 'Table', 'DataStore',
-function ($scope, $location, $route, Table, DataStore) {
+storeTable.controller('TableData', ['$scope', '$location', '$route', 'Tables', 'DataStore',
+function ($scope, $location, $route, Tables, DataStore) {
   //function to call login in serverAuth
   $scope.table = function(table) {
     //setup query
@@ -11,7 +11,7 @@ function ($scope, $location, $route, Table, DataStore) {
       }
     };
     //get tables checks
-    Table.get(postData)
+    Tables.find(postData)
     //then with the result
     .then(function(res) {
     //add the table id to res object

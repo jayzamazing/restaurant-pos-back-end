@@ -10,31 +10,39 @@ var app;
 var serverTable = angular.module('serverTable', []);
 
 //factory singleton object dealing with getting a table
-serverTable.factory('Table',
+serverTable.factory('Tables',
 function(clientAuth) {
     app = clientAuth.get();
     //authenticate using stored token
     app.authenticate();
-  //function to get specific table with guests
-  function getTable(postData) {
+  //function to find specific table with guests using query
+  function find(postData) {
     //return function for caller to use, gets table based on query passed in
     return app.service('tables').find(postData);
   }
+  function create(postData) {
+    return app.service('tables').create(postData);
+  }
+  function update(_id, postData) {
+    return app.service('tables').update(_id, postData);
+  }
   return {
-    get: getTable
+    find: find,
+    create: create,
+    update: update
   };
 });
 //factory singleton object dealing with categories
 serverTable.factory('Categories',
 function () {
   //get all categories
-  function getCategories() {
+  function find() {
     //authenticate using stored token
     app.authenticate();
     return app.service('categories').find();
   }
   return {
-    get: getCategories
+    find: find
   };
 });
 //factory singleton object for storage of data between controllers
@@ -55,11 +63,11 @@ serverTable.factory('DataStore', function() {
 });
 //factory singleton object that deals with menu
 serverTable.factory('Menus', function() {
-  function get(postData) {
+  function find(postData) {
     //query for data using postdata
     return app.service('menus').find(postData);
   }
   return {
-    get: get
+    find: find
   };
 });
