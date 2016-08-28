@@ -67,7 +67,11 @@ serverTable.factory('Menus', function() {
     //query for data using postdata
     return app.service('menus').find(postData);
   }
+  function get(_id) {
+    return app.service('menus').get(_id);
+  }
   return {
-    find: find
+    find: find,
+    get: get
   };
 });
