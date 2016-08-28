@@ -7,17 +7,20 @@ function ($scope, $location, $route, Tables, DataStore) {
     //setup query
     var postData = {
       query: {
-        tableId: parseInt(table.currentTarget.getAttribute('data-id'))
+        tableId: parseInt(table.currentTarget.getAttribute('data-id')),
+        checkNumber: 1
       }
     };
-    //get tables checks
+    //get tables first check
     Tables.find(postData)
     //then with the result
     .then(function(res) {
-    //add the table id to res object
-    res.tableId = parseInt(table.currentTarget.getAttribute('data-id'));
+    var data = res.data;
+    //add the table id and checknumber to data object
+    data.tableId = parseInt(table.currentTarget.getAttribute('data-id'));
+    data.checkNumber = 1;
     //add results to store in service
-    DataStore.set(res);
+    DataStore.set(data);
     //call /orders to have routeprovider load new page
     $location.path('/orders');
     $route.reload();

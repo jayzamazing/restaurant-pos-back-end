@@ -10,11 +10,11 @@ storeOrders.controller('OrderData', ['$scope', '$location', '$route', 'DataStore
     //set table number
     $scope.tableNumber = tableChecks.tableId;
     //set default guest number
-    $scope.checkNumber = 1;
+    $scope.checkNumber = tableChecks.checkNumber;
     //if table has a check
-    if (tableChecks.data.length > 0) {
+    if (tableChecks.length > 0) {
       //initially show guest 1
-      $scope.items = tableChecks.data[0].order;
+      $scope.items = tableChecks[0].order;
       //otherwise
     } else {
       //create an empty check
@@ -25,7 +25,7 @@ storeOrders.controller('OrderData', ['$scope', '$location', '$route', 'DataStore
         })
         .then((res) => {
           //store the new check as the current check
-          DataStore.set(res);//TODO
+          DataStore.set(res);
           //set choices in scope
           $scope.items = res.data;
           //force update to occur in view
@@ -102,7 +102,7 @@ storeOrders.controller('OrderData', ['$scope', '$location', '$route', 'DataStore
               order: orders
             };
             //update the tables check
-            Tables.update(DataStore.get().data[0]._id, postData)//TODO
+            Tables.update(DataStore.get()[0]._id, postData)
               .then((res) => {
                 //set choices in scope
                 $scope.items = res.order;
