@@ -8,14 +8,28 @@ function ($scope, $location, $route, Tables, DataStore) {
     var postData = {
       query: {
         tableId: parseInt(table.currentTarget.getAttribute('data-id')),
-        checkNumber: 1
       }
     };
     //get tables first check
     Tables.find(postData)
     //then with the result
     .then(function(res) {
-    var data = res.data;
+      var count = 0, data;
+      //get a count for the amount of check numbers at a table
+      res.data.forEach(() => {
+        count++;
+      });
+      //return the first check for table
+      data = res.data.find((item) => {
+        if (item.checkNumber === 1) {
+          return item;
+        }
+      });
+      //if data is undefined
+      if (!data) {
+        data = {};
+      }
+      data.count = count;
     //add the table id and checknumber to data object
     data.tableId = parseInt(table.currentTarget.getAttribute('data-id'));
     data.checkNumber = 1;

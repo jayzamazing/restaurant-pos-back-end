@@ -12,9 +12,9 @@ storeOrders.controller('OrderData', ['$scope', '$location', '$route', 'DataStore
     //set default guest number
     $scope.checkNumber = tableChecks.checkNumber;
     //if table has a check
-    if (tableChecks.length > 0) {
+    if (tableChecks.count > 0) {
       //initially show guest 1
-      $scope.items = tableChecks[0].order;
+      $scope.items = tableChecks.order;
       //otherwise
     } else {
       //create an empty check
@@ -102,7 +102,7 @@ storeOrders.controller('OrderData', ['$scope', '$location', '$route', 'DataStore
               order: orders
             };
             //update the tables check
-            Tables.update(DataStore.get()[0]._id, postData)
+            Tables.update(DataStore.get()._id, postData)
               .then((res) => {
                 //set choices in scope
                 $scope.items = res.order;
@@ -124,5 +124,14 @@ storeOrders.controller('OrderData', ['$scope', '$location', '$route', 'DataStore
       $location.path('/orders');
       $route.reload();
     };
-  }
-]);
+    $scope.nextTable = function(item) {
+      var currentTable;
+      //if left arrow is clicked
+      if(item.currentTarget.getAttribute('data-id') === 'left') {
+
+      //otherwise right arrow is clicked
+      } else {
+
+      }
+    };
+  }]);
