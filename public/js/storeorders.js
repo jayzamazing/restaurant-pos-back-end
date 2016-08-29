@@ -125,13 +125,50 @@ storeOrders.controller('OrderData', ['$scope', '$location', '$route', 'DataStore
       $route.reload();
     };
     $scope.nextTable = function(item) {
-      var currentTable;
-      //if left arrow is clicked
-      if(item.currentTarget.getAttribute('data-id') === 'left') {
-
-      //otherwise right arrow is clicked
-      } else {
-
+      if (tableChecks.count > 1) {
+        tableChecks = DataStore.get();
+        var min = 1, max = tableChecks.count;
+        var currentCheck = tableChecks.checkNumber;
+        //if left arrow is clicked
+        var temp = item.currentTarget.getAttribute('data-id');
+        if(item.currentTarget.getAttribute('data-id') === 'left') {
+          if (currentCheck - 1 < min){
+            currentCheck = max;
+          } else {
+            currentCheck--;
+          }
+        //otherwise right arrow is clicked
+        } else {
+          if (currentCheck + 1 > max){
+            currentCheck = min;
+          } else {
+            currentCheck++;
+          }
+        }
+        var postData = {
+          query: {
+            tableId: parseInt(tableChecks.tableId),
+            checkNumber: currentCheck
+          }
+        };
+        //get tables next check
+        Tables.find(postData)
+        //then with the result
+        .then(function(res) {
+          var data = res.data[0];
+          data.count = tableChecks.count;
+          //add results to store in service
+          DataStore.set(data);
+          //set choices in scope
+          $scope.items = data.order;
+          //set table number
+          $scope.tableNumber = data.tableId;
+          //set default guest number
+          $scope.checkNumber = data.checkNumber;
+          //force update to occur in view
+          $scope.$apply();
+        });
       }
+
     };
   }]);

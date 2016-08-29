@@ -28,11 +28,11 @@ function ($scope, $location, $route, Tables, DataStore) {
       //if data is undefined
       if (!data) {
         data = {};
+        //add the table id and checknumber to data object
+        data.tableId = parseInt(table.currentTarget.getAttribute('data-id'));
+        data.checkNumber = 1;
       }
       data.count = count;
-    //add the table id and checknumber to data object
-    data.tableId = parseInt(table.currentTarget.getAttribute('data-id'));
-    data.checkNumber = 1;
     //add results to store in service
     DataStore.set(data);
     //call /orders to have routeprovider load new page
