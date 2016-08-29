@@ -7,7 +7,6 @@ storeOrders.controller('OrderData', ['$scope', '$location', '$route', 'DataStore
     var menu = true;
     var tableChecks = DataStore.get();
     $scope.deleteStatus = true;
-    $scope.addCheckStatus = true;
     $scope.menu = menu;
     //set table number
     $scope.tableNumber = tableChecks.tableId;
@@ -69,7 +68,6 @@ storeOrders.controller('OrderData', ['$scope', '$location', '$route', 'DataStore
         //send request for menu items matching category
         Menus.find(postData)
           .then((res) => {
-            //TODO
             //set choices in scope
             $scope.choices = res.data;
             //force update to occur in view
@@ -93,7 +91,7 @@ storeOrders.controller('OrderData', ['$scope', '$location', '$route', 'DataStore
               }
             };
             //update the tables check
-            Tables.update(DataStore.get()._id, postData)//TODO fix to use $push
+            Tables.update(DataStore.get()._id, postData)
               .then((res) => {
                 var data = res;
                 data.count = tableChecks.count;
@@ -196,7 +194,31 @@ storeOrders.controller('OrderData', ['$scope', '$location', '$route', 'DataStore
           $scope.checkNumber = data.checkNumber;
           //force update to occur in view
           $scope.$apply();
-          //TODO
+        });
+    };
+    $scope.addCheck = function() {
+      tableChecks.count++;
+      //create an empty check
+      Tables.create({
+          tableId: $scope.tableNumber,
+          checkNumber: tableChecks.count,
+          order: []
+        })
+        .then((res) => {
+          var data = res;
+          data.count = tableChecks.count;
+          //show amount of checks
+          $scope.count = tableChecks.count;
+          //add results to store in service
+          DataStore.set(data);
+          //set choices in scope
+          $scope.items = data.order;
+          //set table number
+          $scope.tableNumber = data.tableId;
+          //set default guest number
+          $scope.checkNumber = data.checkNumber;
+          //force update to occur in view
+          $scope.$apply();
         });
     };
   }]);
