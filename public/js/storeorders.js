@@ -11,6 +11,8 @@ storeOrders.controller('OrderData', ['$scope', '$location', '$route', 'DataStore
     $scope.tableNumber = tableChecks.tableId;
     //set default guest number
     $scope.checkNumber = tableChecks.checkNumber;
+    //show amount of checks
+    $scope.count = tableChecks.count;
     //if table has a check
     if (tableChecks.count > 0) {
       //initially show guest 1
