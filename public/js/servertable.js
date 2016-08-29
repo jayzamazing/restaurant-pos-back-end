@@ -26,10 +26,14 @@ function(clientAuth) {
   function update(_id, postData) {
     return app.service('tables').update(_id, postData);
   }
+  function remove(_id) {
+    return app.service('tables').remove(_id);
+  }
   return {
     find: find,
     create: create,
-    update: update
+    update: update,
+    remove: remove
   };
 });
 //factory singleton object dealing with categories

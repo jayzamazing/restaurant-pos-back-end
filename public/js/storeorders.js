@@ -221,4 +221,49 @@ storeOrders.controller('OrderData', ['$scope', '$location', '$route', 'DataStore
           $scope.$apply();
         });
     };
+    //delete check for removal of empty checks
+    $scope.deleteCheck = function() {
+      //if table has more than one check and current guest does not have associated orders
+      if (tableChecks.count > 0 && $scope.items.length === 0) {
+        $scope.count--;
+        //remove the table from the database
+        Tables.remove(DataStore.get()._id)
+        .then(() => {
+          //decrement table checks count
+          tableChecks.count--;
+          //return to the first check for the table
+          if (tableChecks.count >= 1) {
+            var postData = {
+              query: {
+                tableId: parseInt(tableChecks.tableId),
+                checkNumber: 1
+              }
+            };
+            //get tables next check
+            Tables.find(postData)
+            //then with the result
+            .then(function(res) {
+              var data = res.data[0];
+              data.count = tableChecks.count;
+              //add results to store in service
+              DataStore.set(data);
+              //set choices in scope
+              $scope.items = data.order;
+              //set table number
+              $scope.tableNumber = data.tableId;
+              //set default guest number
+              $scope.checkNumber = data.checkNumber;
+              //force update to occur in view
+              $scope.$apply();
+            });
+          //otherwise if there are no other checks for table
+          } else {
+            //empty all fields
+            $scope.items = '';
+            $scope.checkNumber = 1;
+            $scope.count = 0;
+          }
+        });
+      }
+    };
   }]);
