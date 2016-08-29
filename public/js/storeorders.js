@@ -69,6 +69,7 @@ storeOrders.controller('OrderData', ['$scope', '$location', '$route', 'DataStore
         //send request for menu items matching category
         Menus.find(postData)
           .then((res) => {
+            //TODO
             //set choices in scope
             $scope.choices = res.data;
             //force update to occur in view
@@ -81,38 +82,32 @@ storeOrders.controller('OrderData', ['$scope', '$location', '$route', 'DataStore
         //get the menu item based on button clicked
         Menus.get(item.currentTarget.getAttribute('data-id'))
           .then((res) => {
-            //get checknumber orders
-            var orders = $scope.items;
-            //if there is an existing order
-            if (orders) {
-              //add to the end of the ticket
-              orders.push({
-                dish: res.name,
-                notes: '',
-                cost: res.price
-              });
-            //otherwise
-            } else {
-              //create a new order
-              orders = [{
-                dish: res.name,
-                notes: '',
-                cost: res.price
-              }];
-            }
-            //put all the data together
+            //push the data into the documents array
             postData = {
-              tableId: $scope.tableNumber,
-              checkNumber: $scope.checkNumber,
-              order: orders
+              $push: {
+                order: {
+                  dish: res.name,
+                  notes: '',
+                  cost: res.price
+                }
+              }
             };
             //update the tables check
-            Tables.update(DataStore.get()._id, postData)
+            Tables.update(DataStore.get()._id, postData)//TODO fix to use $push
               .then((res) => {
+                var data = res;
+                data.count = tableChecks.count;
+                //add results to store in service
+                DataStore.set(data);
                 //set choices in scope
-                $scope.items = res.order;
+                $scope.items = data.order;
+                //set table number
+                $scope.tableNumber = data.tableId;
+                //set default guest number
+                $scope.checkNumber = data.checkNumber;
                 //force update to occur in view
                 $scope.$apply();
+
               });
           });
       }
@@ -189,10 +184,19 @@ storeOrders.controller('OrderData', ['$scope', '$location', '$route', 'DataStore
       //update the tables check
       Tables.update(DataStore.get()._id, postData)
         .then((res) => {
+          var data = res;
+          data.count = tableChecks.count;
+          //add results to store in service
+          DataStore.set(data);
           //set choices in scope
-          $scope.items = res.order;
+          $scope.items = data.order;
+          //set table number
+          $scope.tableNumber = data.tableId;
+          //set default guest number
+          $scope.checkNumber = data.checkNumber;
           //force update to occur in view
           $scope.$apply();
+          //TODO
         });
     };
   }]);
