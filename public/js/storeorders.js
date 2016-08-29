@@ -6,6 +6,8 @@ storeOrders.controller('OrderData', ['$scope', '$location', '$route', 'DataStore
     //variable that tells whether it is in menu categories or menu items
     var menu = true;
     var tableChecks = DataStore.get();
+    $scope.deleteStatus = true;
+    $scope.addCheckStatus = true;
     $scope.menu = menu;
     //set table number
     $scope.tableNumber = tableChecks.tableId;
@@ -45,6 +47,7 @@ storeOrders.controller('OrderData', ['$scope', '$location', '$route', 'DataStore
     //set the selected item for later use
     $scope.select = function(item) {
       $scope.selected = item;
+      $scope.deleteStatus = false;
     };
     //sets the highlight on the item
     $scope.isActive = function(item) {
@@ -171,6 +174,25 @@ storeOrders.controller('OrderData', ['$scope', '$location', '$route', 'DataStore
           $scope.$apply();
         });
       }
-
+    };
+    //function to delete item from a check
+    $scope.deleteItem = function() {
+      //disable the button
+      $scope.deleteStatus = false;
+      var postData = {
+        $pull: {
+          order: {
+            _id: $scope.selected._id
+          }
+        }
+      };
+      //update the tables check
+      Tables.update(DataStore.get()._id, postData)
+        .then((res) => {
+          //set choices in scope
+          $scope.items = res.order;
+          //force update to occur in view
+          $scope.$apply();
+        });
     };
   }]);

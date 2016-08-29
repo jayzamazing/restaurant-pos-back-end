@@ -3,6 +3,8 @@
     <button type="button" ng-show="menu" ng-click="selectTable()" class="btn btn-default choices">Table Select</button>
     <button type="button" ng-hide="menu" ng-click="categorySelect()" class="btn btn-default choices">Main Menu</button>
     <button type="button" class="btn btn-default choices" ng-click="menuItems($event)" ng-repeat="item in choices" data-id="{{item._id}}">{{item.name}}</button>
+    <button type="button" disabled ng-click="deleteItem()" ng-disabled="deleteStatus" class="btn btn-default choices">Delete Item</button>
+    <button type="button" disabled ng-click="addCheck()" ng-disabled="addCheckStatus" class="btn btn-default choices">Add Check</button>
   </div>
   <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 order-screen">
     <div class="arrows">
