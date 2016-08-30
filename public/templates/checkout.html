@@ -1,5 +1,10 @@
 <div class="row">
   <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 order-screen">
+    <div class="store">
+      <p>{{storeName}}</p>
+      <p>{{address}}</p>
+      <p>{{city}}, {{state}} {{zipCode}}</p>
+    </div>
     <ul class="list-group">
       <li class="list-group-item" ng-repeat="item in items">
         <div class="full-clear">
@@ -7,14 +12,21 @@
           <p class="inline-block right-align">{{item.cost}}</p>
           <p ng-if="notes != ''">{{item.notes}}</p>
         </div>
-        <div class="arrows">
-          Recommended Tip: {{tip}} Total: {{total}}
-        </div>
+      </li>
+      <div class="totals">
+        <p>Tax: {{tax}}</p>
+        <p>Total: {{total}}</p>
+        <p>Recommended Tip: {{tip}}</p>
+        <p>Total with Tip: {{recommendedTotal}}</p>
+      </div>
   </div>
   <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 order-screen">
-    <<input type="text">
-    <button type="button" ng-click="cash()" class="btn btn-default choices">Cash</button>
-    <button type="button" disabled class="btn btn-default choices">Credit Card</button>
+    <input type="text">
+    <div>
+      <button type="button" ng-click="cash()" class="btn btn-default choices">Cash</button>
+      <button type="button" disabled class="btn btn-default choices">Credit Card</button>
+      <button type="button" disabled class="btn btn-default choices">Print Invididual Check</button>
+    </div>
   </div>
   </li>
   </ul>

@@ -26,7 +26,6 @@ storeOrders.controller('OrderData', ['$scope', '$location', '$route', 'DataStore
             }
           });
           tableChecks.count = res1.total;
-          //initially show guest 1
           $scope.items = tableChecks.order;
           //set table number
           $scope.tableNumber = tableChecks.tableId;
