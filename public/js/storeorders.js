@@ -5,43 +5,71 @@ storeOrders.controller('OrderData', ['$scope', '$location', '$route', 'DataStore
   function($scope, $location, $route, DataStore, Categories, Menus, Tables) {
     //variable that tells whether it is in menu categories or menu items
     var menu = true;
-    var tableChecks = DataStore.get();
     $scope.deleteStatus = true;
     $scope.menu = menu;
-    //set table number
-    $scope.tableNumber = tableChecks.tableId;
-    //set default guest number
-    $scope.checkNumber = tableChecks.checkNumber;
-    //show amount of checks
-    $scope.count = tableChecks.count;
-    //if table has a check
-    if (tableChecks.count > 0) {
-      //initially show guest 1
-      $scope.items = tableChecks.order;
-      //otherwise
-    } else {
-      //create an empty check
-      Tables.create({
-          tableId: $scope.tableNumber,
-          checkNumber: $scope.checkNumber,
-          order: []
-        })
-        .then((res) => {
-          //store the new check as the current check
-          DataStore.set(res);
-          //set choices in scope
-          $scope.items = res.data;
-          //force update to occur in view
+    var tableChecks = DataStore.get();
+    //setup query
+    var postData = {
+      query: {
+        tableId: parseInt(tableChecks.tableId)
+      }
+    };
+    //get amount of tables
+    Tables.find(postData)
+      //then with the result
+      .then(function(res1) {
+        if (res1.total > 0) {
+          //get the first check for table
+          tableChecks = res1.data.find((item) => {
+            if (item.checkNumber === 1) {
+              return item;
+            }
+          });
+          tableChecks.count = res1.total;
+          //initially show guest 1
+          $scope.items = tableChecks.order;
+          //set table number
+          $scope.tableNumber = tableChecks.tableId;
+          //set default guest number
+          $scope.checkNumber = tableChecks.checkNumber;
+          //show amount of checks
+          $scope.count = tableChecks.count;
+          DataStore.set(tableChecks);
           $scope.$apply();
-        });
-    }
-    //get the categories
-    Categories.find()
-      .then(function(res) {
-        //set choices in scope
-        $scope.choices = res.data;
-        //force update to occur in view
-        $scope.$apply();
+          //otherwise
+        } else {
+          //create an empty check
+          Tables.create({
+              tableId: tableChecks.tableId,
+              checkNumber: 1,
+              order: []
+            })
+            .then((res) => {
+              tableChecks = res;
+              tableChecks.count = 1;
+              //initially show guest 1
+              $scope.items = tableChecks.order;
+              //set table number
+              $scope.tableNumber = tableChecks.tableId;
+              //set default guest number
+              $scope.checkNumber = tableChecks.checkNumber;
+              //show amount of checks
+              $scope.count = tableChecks.count;
+              DataStore.set(tableChecks);
+              $scope.$apply();
+            });
+        }
+        //get the categories
+        Categories.find()
+          .then(function(res) {
+            //set choices in scope
+            $scope.choices = res.data;
+            //force update to occur in view
+            $scope.$apply();
+          });
+      }).catch(function(err) {
+        console.log(err);
+        //TODO add error page
       });
     //set the selected item for later use
     $scope.select = function(item) {
@@ -113,31 +141,32 @@ storeOrders.controller('OrderData', ['$scope', '$location', '$route', 'DataStore
     //function that returns to showing the tables
     $scope.selectTable = function() {
       //call /orders to have routeprovider load new page
-      $location.path('/tables');
+      $location.path('/tables');//TODO change so there is no reload
       $route.reload();
     };
     //function that returns to showing the categories
     $scope.categorySelect = function() {
       //call /orders to have routeprovider load new page
-      $location.path('/orders');
+      $location.path('/orders');//TODO change so there is no reload
       $route.reload();
     };
     $scope.nextTable = function(item) {
       if (tableChecks.count > 1) {
         tableChecks = DataStore.get();
-        var min = 1, max = tableChecks.count;
+        var min = 1,
+          max = tableChecks.count;
         var currentCheck = tableChecks.checkNumber;
         //if left arrow is clicked
         var temp = item.currentTarget.getAttribute('data-id');
-        if(item.currentTarget.getAttribute('data-id') === 'left') {
-          if (currentCheck - 1 < min){
+        if (item.currentTarget.getAttribute('data-id') === 'left') {
+          if (currentCheck - 1 < min) {
             currentCheck = max;
           } else {
             currentCheck--;
           }
-        //otherwise right arrow is clicked
+          //otherwise right arrow is clicked
         } else {
-          if (currentCheck + 1 > max){
+          if (currentCheck + 1 > max) {
             currentCheck = min;
           } else {
             currentCheck++;
@@ -151,21 +180,21 @@ storeOrders.controller('OrderData', ['$scope', '$location', '$route', 'DataStore
         };
         //get tables next check
         Tables.find(postData)
-        //then with the result
-        .then(function(res) {
-          var data = res.data[0];
-          data.count = tableChecks.count;
-          //add results to store in service
-          DataStore.set(data);
-          //set choices in scope
-          $scope.items = data.order;
-          //set table number
-          $scope.tableNumber = data.tableId;
-          //set default guest number
-          $scope.checkNumber = data.checkNumber;
-          //force update to occur in view
-          $scope.$apply();
-        });
+          //then with the result
+          .then(function(res) {
+            var data = res.data[0];
+            data.count = tableChecks.count;
+            //add results to store in service
+            DataStore.set(data);
+            //set choices in scope
+            $scope.items = data.order;
+            //set table number
+            $scope.tableNumber = data.tableId;
+            //set default guest number
+            $scope.checkNumber = data.checkNumber;
+            //force update to occur in view
+            $scope.$apply();
+          });
       }
     };
     //function to delete item from a check
@@ -228,42 +257,44 @@ storeOrders.controller('OrderData', ['$scope', '$location', '$route', 'DataStore
         $scope.count--;
         //remove the table from the database
         Tables.remove(DataStore.get()._id)
-        .then(() => {
-          //decrement table checks count
-          tableChecks.count--;
-          //return to the first check for the table
-          if (tableChecks.count >= 1) {
-            var postData = {
-              query: {
-                tableId: parseInt(tableChecks.tableId),
-                checkNumber: 1
-              }
-            };
-            //get tables next check
-            Tables.find(postData)
-            //then with the result
-            .then(function(res) {
-              var data = res.data[0];
-              data.count = tableChecks.count;
-              //add results to store in service
-              DataStore.set(data);
-              //set choices in scope
-              $scope.items = data.order;
-              //set table number
-              $scope.tableNumber = data.tableId;
-              //set default guest number
-              $scope.checkNumber = data.checkNumber;
-              //force update to occur in view
-              $scope.$apply();
-            });
-          //otherwise if there are no other checks for table
-          } else {
-            //empty all fields
-            $scope.items = '';
-            $scope.checkNumber = 1;
-            $scope.count = 0;
-          }
-        });
+          .then(() => {
+            //decrement table checks count
+            tableChecks.count--;
+            //return to the first check for the table
+            if (tableChecks.count >= 1) {
+              var postData = {
+                query: {
+                  tableId: parseInt(tableChecks.tableId),
+                  checkNumber: 1
+                }
+              };
+              //get tables next check
+              Tables.find(postData)
+                //then with the result
+                .then(function(res) {
+                  var data = res.data[0];
+                  data.count = tableChecks.count;
+                  //add results to store in service
+                  DataStore.set(data);
+                  //set choices in scope
+                  $scope.items = data.order;
+                  //set table number
+                  $scope.tableNumber = data.tableId;
+                  //set default guest number
+                  $scope.checkNumber = data.checkNumber;
+                  //force update to occur in view
+                  $scope.$apply();
+                });
+              //otherwise if there are no other checks for table
+            } else {
+              //empty all fields
+              $scope.items = '';
+              $scope.checkNumber = 1;
+              $scope.count = 0;
+            }
+          });
       }
     };
-  }]);
+
+  }
+]);
