@@ -30,31 +30,27 @@ describe('user service', function() {
     //once listening do the following
     this.server.once('listening', () => {
       //go through mongoose and create some mock items for testing
-      User.create({
-        'username': 'amy',
-        'password': 'igdfsc#@vsdf$',
-        'roles': ['user']
-      });
-      User.create({
-        'username': 'jack',
-        'password': 'ifts(8@3re)$',
-        'roles': ['user']
-      });
-      User.create({
-        'username': 'someone',
-        'password': '#$deEfdsdg%#df',
-        'roles': ['cook']
-      });
-      User.create({
-        'username': 'jim',
-        'password': 'df#5igzSwsdf4V$',
-        'roles': ['admin', 'gm']
-      });
-      User.create({
-        'username': 'resposadmin',
-        'password': 'igzSwi7*Creif4V$',
-        'roles': ['admin']
-      }, () => {
+      User.create([{
+          'username': 'amy',
+          'password': 'igdfsc#@vsdf$',
+          'roles': ['user']
+        }, {
+          'username': 'jack',
+          'password': 'ifts(8@3re)$',
+          'roles': ['user']
+        }, {
+          'username': 'someone',
+          'password': '#$deEfdsdg%#df',
+          'roles': ['cook']
+        }, {
+          'username': 'jim',
+          'password': 'df#5igzSwsdf4V$',
+          'roles': ['admin', 'gm']
+        }, {
+          'username': 'resposadmin',
+          'password': 'igzSwi7*Creif4V$',
+          'roles': ['admin']
+        }], () => {
         //setup a request to get authentication token
         chai.request(app)
           //request to /auth/local

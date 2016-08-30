@@ -59,32 +59,33 @@ describe('menu service', () => {
   beforeEach((done) => {
 
     //create some mock menu items
-    Menu.create({
+    Menu.create([
+      {
       name: 'hamburger',
       price: 7.99,
       categories: ['lunch', 'burgers', 'dinner']
-    });
-    Menu.create({
+    },
+    {
       name: 'spinach omlete',
       price: 4.99,
       categories: ['breakfast', 'omlete']
-    });
-    Menu.create({
+    },
+    {
       name: 'steak',
       price: 12.99,
       categories: ['dinner', 'entree']
-    });
-    Menu.create({
+    },
+    {
       name: 'reuben',
       price: 6.99,
       categories: ['lunch', 'sandwhich']
-    });
-    Menu.create({
+    },
+    {
       name: 'soft drink',
       price: 1.99,
       categories: ['drinks', 'soda']
-    }, done);
-
+    }
+  ], done);
   });
   //teardown after tests
   after((done) => {

@@ -58,7 +58,8 @@ describe('table service', function() {
   //setup
   beforeEach((done) => {
     //go through mongoose and create some mock items for testing
-    Table.create({
+    Table.create([
+      {
       tableId: 1,
       checkNumber: 1,
       order: [{
@@ -70,8 +71,8 @@ describe('table service', function() {
         notes: '',
         cost: 1.99
       }]
-    });
-    Table.create({
+    },
+    {
       tableId: 2,
       checkNumber: 1,
       order: [{
@@ -83,8 +84,8 @@ describe('table service', function() {
         notes: '',
         cost: 1.99
       }]
-    });
-    Table.create({
+    },
+    {
       tableId: 3,
       checkNumber: 1,
       order: [{
@@ -96,8 +97,8 @@ describe('table service', function() {
         notes: '',
         cost: 1.99
       }]
-    });
-    Table.create({
+    },
+    {
       tableId: 3,
       checkNumber: 2,
       order: [{
@@ -105,7 +106,8 @@ describe('table service', function() {
         notes: 'to-go',
         cost: 8.99
       }]
-    }, done);
+    }
+  ], done);
   });
   //teardown after tests
   after((done) => {
