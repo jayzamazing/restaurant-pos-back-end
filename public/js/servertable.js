@@ -1,11 +1,4 @@
 'use strict';
-//get dependencies
-import io from 'socket.io-client';
-import feathers from 'feathers/client';
-import hooks from 'feathers-hooks';
-import rest from 'feathers-rest/client';
-import localstorage from 'feathers-localstorage';
-import authentication from 'feathers-authentication/client';
 var app;
 var serverTable = angular.module('serverTable', []);
 
