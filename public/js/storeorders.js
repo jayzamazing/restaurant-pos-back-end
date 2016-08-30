@@ -295,6 +295,10 @@ storeOrders.controller('OrderData', ['$scope', '$location', '$route', 'DataStore
           });
       }
     };
-
+    $scope.checkout = function() {
+      //call /checkout to have routeprovider load new page
+      $location.path('/checkout');
+      $route.reload();
+    };
   }
 ]);

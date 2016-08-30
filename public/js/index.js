@@ -30,6 +30,9 @@ var viewModel = angular.module('viewModel', ['ngRoute', 'storeAuth',
               templateUrl: '/orders.html',
               //associate controller
               controller: 'OrderData'
+            }).when('/checkout', {
+              //set as template
+              templateUrl: '/checkout.html'
             })
             .otherwise({redirectTo:'/'});
             //rewrite url so it does not have #

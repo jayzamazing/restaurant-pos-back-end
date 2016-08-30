@@ -1,0 +1,21 @@
+<div class="row">
+  <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 order-screen">
+    <ul class="list-group">
+      <li class="list-group-item" ng-repeat="item in items">
+        <div class="full-clear">
+          <p class="inline-block">{{item.dish}}</p>
+          <p class="inline-block right-align">{{item.cost}}</p>
+          <p ng-if="notes != ''">{{item.notes}}</p>
+        </div>
+        <div class="arrows">
+          Recommended Tip: {{tip}} Total: {{total}}
+        </div>
+  </div>
+  <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 order-screen">
+    <<input type="text">
+    <button type="button" ng-click="cash()" class="btn btn-default choices">Cash</button>
+    <button type="button" disabled class="btn btn-default choices">Credit Card</button>
+  </div>
+  </li>
+  </ul>
+</div>
