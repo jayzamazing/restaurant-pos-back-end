@@ -13,6 +13,7 @@
           <p ng-if="notes != ''">{{item.notes}}</p>
         </div>
       </li>
+    </ul>
       <div class="totals">
         <p>Tax: {{tax}}</p>
         <p>Total: {{total}}</p>
@@ -20,14 +21,36 @@
         <p>Total with Tip: {{recommendedTotal}}</p>
       </div>
   </div>
-  <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 order-screen">
-    <input type="text">
-    <div>
-      <button type="button" ng-click="cash()" class="btn btn-default choices">Cash</button>
-      <button type="button" disabled class="btn btn-default choices">Credit Card</button>
-      <button type="button" disabled class="btn btn-default choices">Print Invididual Check</button>
+  <div class="order-screen">
+    <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+        <button type="button" ng-hide="menu" ng-click="categorySelect()" class="btn btn-default choices">Main Menu</button>
+        <button type="button" ng-click="cash()" class="btn btn-default choices">Cash</button>
+        <button type="button" disabled class="btn btn-default choices">Credit Card</button>
+        <button type="button" disabled class="btn btn-default choices">Print Invididual Check</button>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+      <div>
+        <button type="button" ng-disabled="cashStatus" ng-click="numberClick(1)" class="btn btn-default choices">1</button>
+        <button type="button" ng-disabled="cashStatus" ng-click="numberClick(2)" class="btn btn-default choices">2</button>
+        <button type="button" ng-disabled="cashStatus" ng-click="numberClick(3)" class="btn btn-default choices">3</button>
+        <button type="button" ng-disabled="cashStatus" ng-click="clear()" class="btn btn-default choices">C</button>
+      </div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+      <div>
+        <button type="button" ng-disabled="cashStatus" ng-click="numberClick(4)" class="btn btn-default choices">4</button>
+        <button type="button" ng-disabled="cashStatus" ng-click="numberClick(5)" class="btn btn-default choices">5</button>
+        <button type="button" ng-disabled="cashStatus" ng-click="numberClick(6)" class="btn btn-default choices">6</button>
+      </div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+      <div>
+        <button type="button" ng-disabled="cashStatus" ng-click="numberClick(7)" class="btn btn-default choices">7</button>
+        <button type="button" ng-disabled="cashStatus" ng-click="numberClick(8)" class="btn btn-default choices">8</button>
+        <button type="button" ng-disabled="cashStatus" ng-click="numberClick(9)" class="btn btn-default choices">9</button>
+        <button type="button" ng-disabled="cashStatus" ng-click="calculate()" class="btn btn-default choices">Cash Out</button>
+      </div>
     </div>
   </div>
-  </li>
-  </ul>
+
 </div>
