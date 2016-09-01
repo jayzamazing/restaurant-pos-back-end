@@ -38,13 +38,18 @@
     "url": "git+https://github.com/jayzamazing/Meal-Calculator.git"
   },
   "keywords": [
-    "meal",
-    "calculator",
+    "restaurant",
+    "pos",
     "food",
     "html",
     "css",
     "javascript",
-    "jquery"
+    "feathersjs",
+    "angular",
+    "babel",
+    "webpack",
+    "nodejs",
+    "passport"
   ],
   "author": "Adrian J Lopez <adrianjaylopez@gmail.com>",
   "license": "MIT",

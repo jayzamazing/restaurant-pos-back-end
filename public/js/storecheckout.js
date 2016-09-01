@@ -67,6 +67,8 @@ storeCheckout.controller('Checkout', ['$scope', '$location', '$route', 'DataStor
           $scope.$apply();
         });
       }
-
     };
+    $scope.clear = function() {
+      $scope.cashAmount = '';
+    }
   }]);

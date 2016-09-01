@@ -25,7 +25,7 @@ storeOrders.controller('OrderData', ['$scope', '$location', '$route', 'DataStore
           //get the first check for table
           tableChecks = res1.data[0];
           //store off each check number for later use
-          tableChecks.checks = res1.data.map((item) => { 
+          tableChecks.checks = res1.data.map((item) => {
             return item.checkNumber;
           });
           tableChecks.count = res1.total;
@@ -126,6 +126,7 @@ storeOrders.controller('OrderData', ['$scope', '$location', '$route', 'DataStore
               .then((res) => {
                 var data = res;
                 data.count = tableChecks.count;
+                data.checks = tableChecks.checks;
                 //add results to store in service
                 DataStore.set(data);
                 //set choices in scope
@@ -228,6 +229,7 @@ storeOrders.controller('OrderData', ['$scope', '$location', '$route', 'DataStore
         .then((res) => {
           var data = res;
           data.count = tableChecks.count;
+          data.checks = tableChecks.checks;
           //add results to store in service
           DataStore.set(data);
           //set choices in scope
