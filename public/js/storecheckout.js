@@ -3,6 +3,7 @@ var storeCheckout = angular.module('storeCheckout', []);
 storeCheckout.controller('Checkout', ['$scope', '$location', '$route', 'DataStore', 'Tables', 'Stores',
   function($scope, $location, $route, DataStore, Tables, Stores) {
     $scope.cashStatus = true;
+    $scope.fullyPaid = false;
     var tableChecks = DataStore.get();
     var storeInfo = Stores.get();
     $scope.storeName = storeInfo.storeName;
@@ -61,6 +62,7 @@ storeCheckout.controller('Checkout', ['$scope', '$location', '$route', 'DataStor
         .then((res) => {
           //change status on check to paid
           $scope.checkStatus = 'paid';
+          $scope.fullyPaid = true;
           //force update to occur in view
           $scope.$apply();
         });

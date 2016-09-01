@@ -11,7 +11,10 @@ storeOrders.controller('OrderData', ['$scope', '$location', '$route', 'DataStore
     //setup query
     var postData = {
       query: {
-        tableId: parseInt(tableChecks.tableId)
+        tableId: parseInt(tableChecks.tableId),
+        $sort: {
+          'checkNumber': 1
+        }
       }
     };
     //get amount of tables
@@ -20,10 +23,10 @@ storeOrders.controller('OrderData', ['$scope', '$location', '$route', 'DataStore
       .then(function(res1) {
         if (res1.total > 0) {
           //get the first check for table
-          tableChecks = res1.data.find((item) => {
-            if (item.checkNumber === 1) {
-              return item;
-            }
+          tableChecks = res1.data[0];
+          //store off each check number for later use
+          tableChecks.checks = res1.data.map((item) => { 
+            return item.checkNumber;
           });
           tableChecks.count = res1.total;
           $scope.items = tableChecks.order;
@@ -46,6 +49,7 @@ storeOrders.controller('OrderData', ['$scope', '$location', '$route', 'DataStore
             .then((res) => {
               tableChecks = res;
               tableChecks.count = 1;
+              tableChecks.checks[0] = 1;
               //initially show guest 1
               $scope.items = tableChecks.order;
               //set table number
@@ -156,19 +160,30 @@ storeOrders.controller('OrderData', ['$scope', '$location', '$route', 'DataStore
           max = tableChecks.count;
         var currentCheck = tableChecks.checkNumber;
         //if left arrow is clicked
-        var temp = item.currentTarget.getAttribute('data-id');
         if (item.currentTarget.getAttribute('data-id') === 'left') {
-          if (currentCheck - 1 < min) {
-            currentCheck = max;
-          } else {
-            currentCheck--;
+          for (var i = tableChecks.count - 1; i >= 0; i--) {
+            if(tableChecks.checks[i] === currentCheck) {
+              if (i !== 0) {
+                currentCheck = tableChecks.checks[i - 1];
+                break;
+              } else {
+                currentCheck = tableChecks.checks[tableChecks.count - 1];
+                break;
+              }
+            }
           }
           //otherwise right arrow is clicked
         } else {
-          if (currentCheck + 1 > max) {
-            currentCheck = min;
-          } else {
-            currentCheck++;
+          for (var j = 0; j < tableChecks.count; j++) {
+            if(tableChecks.checks[j] === currentCheck) {
+              if (j !== tableChecks.count - 1) {
+                currentCheck = tableChecks.checks[j + 1];
+                break;
+              } else {
+                currentCheck = tableChecks.checks[0];
+                break;
+              }
+            }
           }
         }
         var postData = {
@@ -183,6 +198,7 @@ storeOrders.controller('OrderData', ['$scope', '$location', '$route', 'DataStore
           .then(function(res) {
             var data = res.data[0];
             data.count = tableChecks.count;
+            data.checks = tableChecks.checks;
             //add results to store in service
             DataStore.set(data);
             //set choices in scope
@@ -229,11 +245,13 @@ storeOrders.controller('OrderData', ['$scope', '$location', '$route', 'DataStore
       //create an empty check
       Tables.create({
           tableId: $scope.tableNumber,
-          checkNumber: tableChecks.count,
+          checkNumber: tableChecks.checks[tableChecks.checks.length - 1] + 1,
           order: []
         })
         .then((res) => {
           var data = res;
+          tableChecks.checks.push(res.checkNumber);
+          data.checks = tableChecks.checks;
           data.count = tableChecks.count;
           //show amount of checks
           $scope.count = tableChecks.count;
@@ -251,9 +269,11 @@ storeOrders.controller('OrderData', ['$scope', '$location', '$route', 'DataStore
     };
     //delete check for removal of empty checks
     $scope.deleteCheck = function() {
+      tableChecks = DataStore.get();
       //if table has more than one check and current guest does not have associated orders
       if (tableChecks.count > 0 && $scope.items.length === 0) {
         $scope.count--;
+        tableChecks.checks.splice(tableChecks.checks.indexOf(tableChecks.checkNumber), 1);
         //remove the table from the database
         Tables.remove(DataStore.get()._id)
           .then(() => {
@@ -273,6 +293,7 @@ storeOrders.controller('OrderData', ['$scope', '$location', '$route', 'DataStore
                 .then(function(res) {
                   var data = res.data[0];
                   data.count = tableChecks.count;
+                  data.checks = tableChecks.checks;
                   //add results to store in service
                   DataStore.set(data);
                   //set choices in scope
