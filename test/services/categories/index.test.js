@@ -58,18 +58,22 @@ describe('categories service', function() {
   //setup
   beforeEach((done) => {
     //create some mock category items
-    Category.create({
-      name: 'breakfast'
-    });
-    Category.create({
-      name: 'dinner'
-    });
-    Category.create({
-      name: 'drinks'
-    });
-    Category.create({
-      name: 'lunch'
-    }, done);
+    Category.create([
+      {
+        name: 'breakfast'
+      },
+      {
+        name: 'dinner'
+      },
+      {
+        name: 'drinks'
+      },
+      {
+        name: 'lunch'
+      }
+    ],
+    done
+    );
   });
   //teardown after tests
   after((done) => {

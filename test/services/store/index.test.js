@@ -58,7 +58,8 @@ describe('store service', () => {
   //setup
   beforeEach((done) => {
       //go through mongoose and create some mock items for testing
-      Store.create({
+      Store.create([
+        {
         storeNumber: 1,
         storeName: 'FOod r Us1',
         address: '313 somewhere',
@@ -67,8 +68,8 @@ describe('store service', () => {
         zipCode: '33412',
         stateTax: 6.5,
         recommendedTip: 20
-      });
-      Store.create({
+      },
+      {
         storeNumber: 2,
         storeName: 'FOod r Us2',
         address: '219 everywhere ln',
@@ -77,8 +78,8 @@ describe('store service', () => {
         zipCode: '93213',
         stateTax: 12,
         recommendedTip: 18
-      });
-      Store.create({
+      },
+      {
         storeNumber: 3,
         storeName: 'FOod r Us3',
         address: '2312 hotdog ln',
@@ -87,8 +88,8 @@ describe('store service', () => {
         zipCode: '24232',
         stateTax: 5,
         recommendedTip: 15
-      });
-      Store.create({
+      },
+      {
         storeNumber: 4,
         storeName: 'FOod r Us4',
         address: '234 rodeo pk',
@@ -97,7 +98,8 @@ describe('store service', () => {
         zipCode: '45324',
         stateTax: 4,
         recommendedTip: 12
-      }, done);
+      }
+    ], done);
   });
   //teardown after tests
   after((done) => {
