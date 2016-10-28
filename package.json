@@ -8,7 +8,7 @@
     "jshint": "jshint src/. test/. --config",
     "start": "node src/",
     "mkdir": "mkdir -p build",
-    "postinstall": "npm run clean && npm run mkdir && npm run build:html && npm run build:css && npm run build:js",
+    "build": "npm run clean && npm run mkdir && npm run build:html && npm run build:css && npm run build:js",
     "watch": "npm run watch:html & npm run watch:css & npm run watch:js",
     "clean": "rm -rf build",
     "build:html": "npm run clean:html && cp public/templates/* build/ && cp public/img/* build/ && cp public/restaurant.ico build/",
