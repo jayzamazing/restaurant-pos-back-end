@@ -1,2 +1,2 @@
-#Restaurant POS
+#Restaurant POS [![Build Status](https://travis-ci.org/jayzamazing/Restaurant-POS.svg?branch=master)](https://travis-ci.org/jayzamazing/Restaurant-POS)
 This project is a a mock restaurant pos system. It allows a logged in user to select a table, add various checks to a table, add orders to a specific check, delete empty checks, and cash out a check. This project uses FeathersJS, Html, CSS, Javascript, Angular, NodeJS, Express, Jquery, Bootstrap, Bcrypt, Body-Parser, Mongoose, MongoDB, Passport, Babel, Mocha, Chai, Less, Uglify-js, and Webpack.
