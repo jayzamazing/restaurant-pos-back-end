@@ -8,10 +8,14 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var minify = process.argv.indexOf('--minify') !== -1;
 var filename = [packageData.name, packageData.version, 'js'];
 var cssfilename = [packageData.name, packageData.version, 'css'];
-var plugins = [];
+var plugins = [], lessPlugins = [];
 if (minify) {
     filename.splice(filename.length - 1, 0, 'min');
     plugins.push(new webpack.optimize.UglifyJsPlugin());
+    cssfilename.splice(filename.length - 1, 0, 'min');
+    lessPlugins.push(new LessPluginCleanCSS({advanced: true}));
+} else {
+
 }
 module.exports = [
   {
@@ -76,8 +80,7 @@ module.exports = [
     },
     output: {
         path: path.resolve(__dirname, 'build'),
-        filename: "[name].js",
-        chunkFilename: "[id].js"
+        filename: 'bundle2.js'
     },
     module: {
       loaders: [
@@ -87,15 +90,14 @@ module.exports = [
         },
         {
           test: /\.less$/,
-          loader: ExtractTextPlugin.extract("style-loader", "css-loader?sourceMap!less-loader?sourceMap")
+          loader: ExtractTextPlugin.extract("style-loader?sourceMap",
+          "css-loader?sourceMap!less-loader?sourceMap")
         }
       ]
     },
     lessLoader: {
-    lessPlugins: [
-      new LessPluginCleanCSS({advanced: true})
-    ]
-  },
+      lessPlugins: lessPlugins
+    },
     devtool: 'source-map',
     plugins: [
         new ExtractTextPlugin(cssfilename.join('.'))
