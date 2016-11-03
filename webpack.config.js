@@ -2,8 +2,12 @@ var path = require('path');
 var webpack = require('webpack');
 var packageData = require('./package.json');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
+var LessPluginCleanCSS = require('less-plugin-clean-css');
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var minify = process.argv.indexOf('--minify') !== -1;
 var filename = [packageData.name, packageData.version, 'js'];
+var cssfilename = [packageData.name, packageData.version, 'css'];
 var plugins = [];
 if (minify) {
     filename.splice(filename.length - 1, 0, 'min');
@@ -64,6 +68,37 @@ module.exports = [
           from: packageData.ico, to: './'
         }
       ])
+    ]
+  },
+  {
+    entry: {
+      app: packageData.css
+    },
+    output: {
+        path: path.resolve(__dirname, 'build'),
+        filename: "[name].js",
+        chunkFilename: "[id].js"
+    },
+    module: {
+      loaders: [
+        {
+          test: /\.(jpg)$/,
+          loader: 'file-loader?name=[name].[ext]'
+        },
+        {
+          test: /\.less$/,
+          loader: ExtractTextPlugin.extract("style-loader", "css-loader?sourceMap!less-loader?sourceMap")
+        }
+      ]
+    },
+    lessLoader: {
+    lessPlugins: [
+      new LessPluginCleanCSS({advanced: true})
+    ]
+  },
+    devtool: 'source-map',
+    plugins: [
+        new ExtractTextPlugin(cssfilename.join('.'))
     ]
   }
 ]
