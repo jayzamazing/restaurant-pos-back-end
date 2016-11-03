@@ -99,9 +99,8 @@ module.exports = [
     ]
   },
   {
-    entry: packageData.mainHtml,
     output: {
-      path: 'build',
+      path: path.resolve(__dirname, 'build'),
       filename: 'index.html'
     },
     module: {
@@ -115,7 +114,7 @@ module.exports = [
     plugins: [
       new HtmlWebpackPlugin({
         version: packageData.version,
-        template: "./public/templates/index.ejs"
+        template: packageData.mainHtml
       })
     ]
   }
