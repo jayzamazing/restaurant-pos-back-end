@@ -166,11 +166,10 @@ storeOrders.controller('OrderData', ['$scope', '$location', '$route', 'DataStore
             if(tableChecks.checks[i] === currentCheck) {
               if (i !== 0) {
                 currentCheck = tableChecks.checks[i - 1];
-                break;
               } else {
                 currentCheck = tableChecks.checks[tableChecks.count - 1];
-                break;
               }
+              break;
             }
           }
           //otherwise right arrow is clicked
@@ -179,11 +178,10 @@ storeOrders.controller('OrderData', ['$scope', '$location', '$route', 'DataStore
             if(tableChecks.checks[j] === currentCheck) {
               if (j !== tableChecks.count - 1) {
                 currentCheck = tableChecks.checks[j + 1];
-                break;
               } else {
                 currentCheck = tableChecks.checks[0];
-                break;
               }
+              break;
             }
           }
         }

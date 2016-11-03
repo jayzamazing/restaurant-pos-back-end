@@ -2,7 +2,8 @@
   "host": "HOST",
   "port": "PORT",
   "mongodb": "DATABASE_URL",
-  "public": "../public/",
+  "build": "../build/",
+  "node_modules": "../node_modules",
   "auth": {
     "token": {
       "secret": "FEATHERS_AUTH_SECRET"
