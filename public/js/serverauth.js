@@ -17,7 +17,7 @@ function($location) {
     console.log(host);
     //set up feathers client side
     app = feathers()
-    .configure(rest(host).fetch(window.fetch.bind(window)))
+    .configure(rest(host).jquery(jQuery))
     .configure(hooks())
     .configure(authentication({
       storage: window.localStorage
