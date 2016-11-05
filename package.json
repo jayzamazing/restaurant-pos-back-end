@@ -1,6 +1,6 @@
 {
   "name": "restaurant-pos",
-  "version": "4.0.3",
+  "version": "4.0.4",
   "description": "Simple restaurant point of sale system",
   "main": "./public/js/index.js",
   "html": [
@@ -18,7 +18,7 @@
     "start": "node src/",
     "mkdir": "mkdir -p build",
     "postinstall": "npm run clean && npm run mkdir && npm run build:webpack",
-    "watch": "npm run watch:html & npm run watch:css & npm run watch:webpack",
+    "watch": "npm run watch:webpack",
     "clean": "rm -rf build",
     "build:webpack": "npm run build:webpack:unminified && npm run build:webpack:minified",
     "watch:webpack": "npm run watch:webpack:unminified & npm run watch:webpack:minified",
