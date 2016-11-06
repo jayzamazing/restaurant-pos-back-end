@@ -1,6 +1,6 @@
 {
   "name": "restaurant-pos",
-  "version": "4.0.4",
+  "version": "4.0.5",
   "description": "Simple restaurant point of sale system",
   "main": "./public/js/index.js",
   "html": [
@@ -62,7 +62,6 @@
     "body-parser": "1.15.2",
     "bootstrap": "3.3.6",
     "compression": "1.6.2",
-    "cors": "2.7.1",
     "express": "4.14.0",
     "feathers": "2.0.1",
     "feathers-authentication": "0.7.9",
