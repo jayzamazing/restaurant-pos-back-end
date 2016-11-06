@@ -26,7 +26,7 @@ html {
 body {
   margin-bottom: 50px;
 }
-//set background color light orange
+//set background color
 body, .navbar-default {
   background-color: @green500;
 }
@@ -78,7 +78,7 @@ figcaption {
   white-space: normal;
   float: left;
 }
-ul li, .btn, input {
+.order-screen ul li, .btn, input {
   background-color: @a200 !important;
 }
 .btn-success {
@@ -103,7 +103,7 @@ ul li, .btn, input {
 }
 //set selected ticket item highlight color in orders.html
 .active {
-  color: @orange;
+  color: @green700;
 }
 //set the height of both sections in orders.html
 .order-screen {
@@ -124,12 +124,29 @@ ul li, .btn, input {
     margin: 0 auto;
     float: none;
 }
-.footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 50px;
-  text-align: center;
+footer {
+    margin-top: 200px;
+    width: 100%;
+    height: 50px;
+    text-align: center;
+}
+footer p {
+    text-align: center;
+}
+.social {
+  padding-left: 0;
+  margin-left: auto;
+  margin-right: auto;
+}
+.social-bottom {
+  max-width: 217px;
+}
+.social li {
+    display: inline-block;
+    margin: 5px;
+}
+.social i {
+  color: @a200;
 }
 @media (min-width: 768px) {
   figcaption {
@@ -146,19 +163,3 @@ ul li, .btn, input {
     font-size: 2em;
   }
 }
-// ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
-//   color: white !important;
-//   opacity: 0.7;
-// }
-// ::-moz-placeholder { /* Firefox 19+ */
-//   color: white !important;
-//   opacity: 0.7;
-// }
-// :-ms-input-placeholder { /* IE 10+ */
-//   color: white !important;
-//   opacity: 0.7;
-// }
-// :-moz-placeholder { /* Firefox 18- */
-//   color: white !important;
-//   opacity: 0.7;
-// }
