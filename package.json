@@ -17,7 +17,7 @@
     "jshint": "jshint src/. test/. --config",
     "start": "node src/",
     "mkdir": "mkdir -p build",
-    "postinstall": "npm run clean && clean:webpack && npm run mkdir && npm run build:webpack",
+    "postinstall": "npm run clean && npm run clean:webpack && npm run mkdir && npm run build:webpack",
     "watch": "npm run watch:webpack",
     "clean": "rm -rf build/",
     "build:webpack": "npm run build:webpack:unminified && npm run build:webpack:minified",
