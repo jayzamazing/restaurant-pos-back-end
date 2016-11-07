@@ -1,9 +1,3 @@
-@dark-orange: hsl(20, 100%, 35%);
-@light-orange: hsl(19, 100%, 90%);
-@orange: hsl(21, 100%, 50%);
-@dark-blue: hsl(178, 100%, 35%);
-@light-blue: hsl(177, 100%, 65%);
-
 @green500: #4CAF50;
 @green700: #216224;
 @a200: #FBA861;
@@ -18,6 +12,7 @@
     overflow: hidden;
     color: white;
     text-shadow: 2px 2px @green700;
+    font-family: 'Roboto', sans-serif;
 }
 html {
   position: relative;
@@ -25,6 +20,7 @@ html {
 }
 body {
   margin-bottom: 50px;
+  font-family: 'Oswald', sans-serif;
 }
 //set background color
 body, .navbar-default {
@@ -51,11 +47,11 @@ figcaption {
 }
 .one-digit{
     top: 37%;
-    right: 45%;
+    right: 46%;
 }
 .two-digit{
     top: 38%;
-    right: 41%;
+    right: 43%;
 }
 //used to allow elements on both sides without messing with page flow in orders.html,
 //used for curtomer ticket
@@ -78,8 +74,8 @@ figcaption {
   white-space: normal;
   float: left;
 }
-.order-screen ul li, .btn, input {
-  background-color: @a200 !important;
+.order-screen ul li, .btn, .form-control, .cash-control {
+  background-color: @a200;
 }
 .btn-success {
   color: black;
@@ -102,8 +98,10 @@ figcaption {
   display: block;
 }
 //set selected ticket item highlight color in orders.html
-.active {
-  color: @green700;
+.list-group-item.active, .list-group-item.active:hover,
+.list-group-item:hover, .btn-default:hover, .btn-default:active:focus,
+.btn-default:focus {
+  background-color: @green700;
 }
 //set the height of both sections in orders.html
 .order-screen {
@@ -147,6 +145,13 @@ footer p {
 }
 .social i {
   color: @a200;
+}
+.login-border {
+  border: 10px solid @green700;
+}
+.login-legend {
+  width: 93px;
+  border-bottom: none;
 }
 @media (min-width: 768px) {
   figcaption {
