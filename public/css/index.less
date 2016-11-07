@@ -1,8 +1,7 @@
-@dark-orange: hsl(20, 100%, 35%);
-@light-orange: hsl(19, 100%, 90%);
-@orange: hsl(21, 100%, 50%);
-@dark-blue: hsl(178, 100%, 35%);
-@light-blue: hsl(177, 100%, 65%);
+@green500: #4CAF50;
+@green700: #216224;
+@a200: #FBA861;
+
 //Deals witht he jumbotron banner done through bootstrap
 .jumbotron {
     position: relative;
@@ -11,11 +10,25 @@
     height: 100%;
     background-size: cover;
     overflow: hidden;
-    color: @dark-orange;
+    color: white;
+    text-shadow: 2px 2px @green700;
+    font-family: 'Roboto', sans-serif;
 }
-//set background color light orange
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+  margin-bottom: 50px;
+  font-family: 'Oswald', sans-serif;
+}
+//set background color
 body, .navbar-default {
-  background-color: @light-orange;
+  background-color: @green500;
+}
+.navbar-default {
+  background-color: @green700;
+  border-color: @green700;
 }
 //add some space between the tables shown in orders.html
 .row-margin {
@@ -28,11 +41,17 @@ figure {
      img {
          width: 100%
      }
-     figcaption {
-         position: absolute;
-         top: 40%;
-         right: 45%
-     }
+}
+figcaption {
+  position: absolute;
+}
+.one-digit{
+    top: 37%;
+    right: 46%;
+}
+.two-digit{
+    top: 38%;
+    right: 43%;
 }
 //used to allow elements on both sides without messing with page flow in orders.html,
 //used for curtomer ticket
@@ -55,6 +74,13 @@ figure {
   white-space: normal;
   float: left;
 }
+.order-screen ul li, .btn, .form-control, .cash-control {
+  background-color: @a200;
+}
+.btn-success {
+  color: black;
+  opacity: 0.7;
+}
 //inherit clear and align text center, used for arrows and text in orders.html
 .arrows {
   text-align: center;
@@ -72,8 +98,10 @@ figure {
   display: block;
 }
 //set selected ticket item highlight color in orders.html
-.active {
-  color: @orange;
+.list-group-item.active, .list-group-item.active:hover,
+.list-group-item:hover, .btn-default:hover, .btn-default:active:focus,
+.btn-default:focus {
+  background-color: @green700;
 }
 //set the height of both sections in orders.html
 .order-screen {
@@ -93,4 +121,50 @@ figure {
 .center_div{
     margin: 0 auto;
     float: none;
+}
+footer {
+    margin-top: 200px;
+    width: 100%;
+    height: 50px;
+    text-align: center;
+}
+footer p {
+    text-align: center;
+}
+.social {
+  padding-left: 0;
+  margin-left: auto;
+  margin-right: auto;
+}
+.social-bottom {
+  max-width: 217px;
+}
+.social li {
+    display: inline-block;
+    margin: 5px;
+}
+.social i {
+  color: @a200;
+}
+.login-border {
+  border: 10px solid @green700;
+}
+.login-legend {
+  width: 93px;
+  border-bottom: none;
+}
+@media (min-width: 768px) {
+  figcaption {
+    font-size: 1.2em;
+  }
+}
+@media (min-width: 992px) {
+  figcaption {
+    font-size: 1.6em;
+  }
+}
+@media (min-width: 1200px) {
+  figcaption {
+    font-size: 2em;
+  }
 }

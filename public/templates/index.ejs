@@ -7,10 +7,8 @@
   <title>Restaurant POS</title>
   <link rel="shortcut icon" type="image/x-icon" href="restaurant.ico?v=1" />
   <link rel="stylesheet" href="scripts/bootstrap/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.0/gh-fork-ribbon.min.css" />
-  <!--[if lt IE 9]>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.0/gh-fork-ribbon.ie.min.css" />
-  <![endif]-->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Oswald|Roboto:900i" rel="stylesheet">
   <link rel="stylesheet" href="restaurant-pos.<%= htmlWebpackPlugin.options.version %>.min.css">
 </head>
 
@@ -35,7 +33,23 @@
     </div>
   </header>
   <section ng-view class="container"></section>
-  <a class="github-fork-ribbon right-top" href="https://github.com/jayzamazing/Restaurant-POS" title="Fork me on GitHub">Fork me on GitHub</a>
+  <footer class="container">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+          <ul class="social social-bottom">
+              <li><a href="https://twitter.com/AdrianJayLopez" target=_Blank><i class="fa fa-twitter fa-3x" aria-hidden="true"></i></a></li>
+              <li><a href="https://github.com/jayzamazing" target=_Blank><i class="fa fa-github fa-3x" aria-hidden="true"></i></a></li>
+              <li><a href="https://www.linkedin.com/pub/adrian-lopez/99/341/688" target=_Blank><i class="fa fa-linkedin fa-3x" aria-hidden="true"></i></a></li>
+              <li><a href="https://plus.google.com/108258618753081021419" target=_Blank><i class="fa fa-google-plus fa-3x" aria-hidden="true"></i></a></li>
+          </ul>
+        </div>
+          <br>
+          <p class="">
+              <span class="copyright">&#169; Adrian J Lopez</span>
+          </p>
+          <p class="">
+            Vector Illustration by <a rel="nofollow" href="http://www.Vecteezy.com/">Vecteezy.com</a>
+          </p>
+  </footer>
   <script src="scripts/jquery/dist/jquery.min.js"></script>
   <script> src="scripts/bootstrap/dist/css/bootstrap.min.js"</script>
   <script src="bundle.js"></script>
