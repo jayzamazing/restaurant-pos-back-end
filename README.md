@@ -18,7 +18,8 @@ The initial web and mobile wireframes are shown below:
 ![image](<./github/Page_4.png>)
 
 ###Prototype
-You can see the application in action at the following link: https://restaurant-pos.herokuapp.com/
+You can see the application in action at the following link:
+http://restaurantpos.jayzamazing.com/
 
 ###Technical
 This project uses FeathersJS for the backend framework which uses Express for the Node.js web framework, Passport for authentication, and Bcrypt for hashing the passwords. The data is stored inside MongoDB using Mongoose. The frontend is done using Html, Less, Javascript, Angular, and Jquery. Responsive design is done using Bootstrap. To build the web application Babel, Uglify-js, and Webpack are used. Testing is done using Mocha and Chai.
