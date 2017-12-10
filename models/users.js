@@ -2,6 +2,10 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
+const options = {
+  toObject: {getters: true},
+  toJSON: {getters: true}
+};
 //schema representing a user
 const userSchema = mongoose.Schema({
   email: {type: String, required: true, unique: true},
@@ -11,7 +15,7 @@ const userSchema = mongoose.Schema({
   stores: [owner: { type: mongoose.Schema.Types.ObjectId, ref: 'store' }],
   createdAt: { type: Date, 'default': Date.now },
   updatedAt: { type: Date, 'default': Date.now }
-});
+}, options);
 
 userSchema.methods.apiRepr = function() {
   return {
@@ -24,7 +28,7 @@ userSchema.methods.apiRepr = function() {
   };
 };
 userSchema.methods.validateRole = function(role) {
-  return this.roles.includes(role)
+  return this.roles.includes(role);
 }
 userSchema.methods.validatePassword = function(password) {
   return bcrypt

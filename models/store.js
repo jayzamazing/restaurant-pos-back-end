@@ -2,6 +2,10 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
+const options = {
+  toObject: {getters: true},
+  toJSON: {getters: true}
+};
 //schema representing a user
 const storeSchema = mongoose.Schema({
   storeNumber: {type: Number, required: true, unique: true},
@@ -14,7 +18,7 @@ const storeSchema = mongoose.Schema({
   recommendedTip: { type: Number, required: true },
   createdAt: { type: Date, 'default': Date.now },
   updatedAt: { type: Date, 'default': Date.now }
-});
+}, options);
 
 storeSchema.methods.apiRepr = function() {
   return {
