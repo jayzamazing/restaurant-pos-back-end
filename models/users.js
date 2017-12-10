@@ -12,7 +12,7 @@ const userSchema = mongoose.Schema({
   password: { type: String, required: true },
   fullName: { type: String, required: true },
   roles: [{ type: String, required: true }],
-  stores: [owner: { type: mongoose.Schema.Types.ObjectId, ref: 'store' }],
+  stores: [{ type: mongoose.Schema.Types.ObjectId, ref: 'store' }],
   createdAt: { type: Date, 'default': Date.now },
   updatedAt: { type: Date, 'default': Date.now }
 }, options);

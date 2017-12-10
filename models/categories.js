@@ -8,6 +8,7 @@ const options = {
 //schema representing a board
 const categoriesSchema = new mongoose.Schema({
   name: { type: String, required: true },
+  menuId: [{ type: mongoose.Schema.Types.ObjectId, ref: 'menu' }],
   createdAt: { type: Date, 'default': Date.now },
   updatedAt: { type: Date, 'default': Date.now }
 }, options);
