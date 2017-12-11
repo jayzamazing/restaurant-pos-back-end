@@ -11,7 +11,7 @@ chai.should();
 chai.use(chaiHttp);
 
 describe('auth service', () => {
-  let decoded, email, token, user;
+  let decoded, user, token;
   function deleteDb() {
     return mongoose.connection.db.dropDatabase();
   }
@@ -28,11 +28,11 @@ describe('auth service', () => {
       user = res;
     })
     .then(() => {
-      ({email} = user);
+      const {username} = user;
       token = jwt.sign(
-        {user: {email}},
+        {username},
           JWT_SECRET,
-          {algorithm: 'HS256', subject: 'email', expiresIn: '7d'}
+          {algorithm: 'HS256', subject: 'username', expiresIn: '7d'}
       );
       decoded = jwt.decode(token);
     });
@@ -55,14 +55,14 @@ describe('auth service', () => {
       //set headers
       .set('Accept', 'application/json')
       //send the following data
-      .auth(user.email, user.unhashed)
+      .auth(user.username, user.unhashed)
       .then(res => {
         res.should.have.status(200);
         res.body.should.be.an('object');
         const resToken = res.body.authToken;
         resToken.should.be.a('string');
         const payload = jwt.verify(resToken, JWT_SECRET, {algorithm: ['HS256']});
-        payload.user.email.should.equal(email);
+        payload.user.username.should.equal(user.username);
       });
   });
   it('should allow user to refresh their token', () => {
@@ -76,7 +76,7 @@ describe('auth service', () => {
         const resToken = res.body.authToken;
         resToken.should.be.a('string');
         const payload = jwt.verify(resToken, JWT_SECRET, {algorithm: ['HS256']});
-        payload.user.should.eql({email});
+        payload.user.username.should.eql(user.username);
         payload.exp.should.be.at.least(decoded.exp);
       });
   });

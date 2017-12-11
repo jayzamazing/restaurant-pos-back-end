@@ -8,9 +8,8 @@ const options = {
 };
 //schema representing a user
 const userSchema = mongoose.Schema({
-  email: {type: String, required: true, unique: true},
+  username: {type: String, required: true, unique: true},
   password: { type: String, required: true },
-  fullName: { type: String, required: true },
   roles: [{ type: String, required: true }],
   store: { type: mongoose.Schema.Types.ObjectId, ref: 'store' },
   createdAt: { type: Date, 'default': Date.now },
@@ -20,9 +19,9 @@ const userSchema = mongoose.Schema({
 userSchema.methods.apiRepr = function() {
   return {
     _id: this._id,
-    email: this.email,
-    fullName: this.fullName,
+    username: this.username,
     roles: this.roles,
+    store: this.store,
     createdAt: this.createdAt,
     updatedAt: this.updatedAt
   };

@@ -2,3 +2,4 @@ node_modules/
 run_mongod
 client/
 .env
+mongodbscript.txt

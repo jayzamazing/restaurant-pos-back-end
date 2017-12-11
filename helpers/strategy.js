@@ -5,9 +5,9 @@ const {Strategy: JwtStrategy, ExtractJwt} = require('passport-jwt');
 const {JWT_SECRET} = require('../config/serverConfig');
 //strategy to verify the user against
 const basicStrategy = new BasicStrategy(
-  (email, password, cb) => {
+  (username, password, cb) => {
     let user;
-    User.findOne({email: email})
+    User.findOne({username})
     .exec()
     .then(_user => {
       user = _user;
@@ -17,7 +17,7 @@ const basicStrategy = new BasicStrategy(
             code: 401,
             reason: 'ValidationError',
             message: 'Incorrect username or password',
-            location: 'email'
+            location: 'username'
         });
 
       }
@@ -31,7 +31,7 @@ const basicStrategy = new BasicStrategy(
           code: 401,
           reason: 'ValidationError',
           message: 'Incorrect username or password',
-          location: 'email'
+          location: 'username'
         });
       } else {
         return cb(null, user);
@@ -49,7 +49,7 @@ const jwtStrategy = new JwtStrategy({
   algorithms: ['HS256']
 },
 (payload, done) => {
-  done(null, payload.user);
+  done(null, payload.username);
 }
 );
 
