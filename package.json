@@ -1,6 +1,6 @@
 {
   "name": "restaurant-pos-back-end",
-  "version": "4.6.0",
+  "version": "4.7.0",
   "private": true,
   "homepage": "https://github.com/jayzamazing/restaurant-pos-back-end#readme",
   "scripts": {
@@ -17,6 +17,7 @@
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.3",
     "express": "~4.15.2",
+    "jsonwebtoken": "^8.1.0",
     "morgan": "~1.8.1",
     "pug": "~2.0.0-beta11",
     "serve-favicon": "~2.4.2"
