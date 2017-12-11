@@ -1,10 +1,15 @@
 {
   "name": "restaurant-pos-back-end",
-  "version": "4.10.0",
+  "version": "4.11.0",
   "private": true,
   "homepage": "https://github.com/jayzamazing/restaurant-pos-back-end#readme",
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "inspect": "node --inspect ./bin/www",
+    "mongod": "mongod --dbpath=/Users/adrianlopez/Documents/mongo-data --nojournal --rest $@",
+    "test": "npm run eslint && npm run mocha",
+    "eslint": "eslint test/.",
+    "mocha": "mocha test/ --recursive"
   },
   "license": "MIT",
   "author": "Adrian J Lopez <adrianjaylopez@gmail.com>",
@@ -13,17 +18,29 @@
     "url": "https://github.com/jayzamazing/react-trello-back-end/issues"
   },
   "dependencies": {
-    "body-parser": "~1.17.1",
+    "bcrypt": "^1.0.3",
+    "body-parser": "^1.18.1",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.3",
+    "dotenv": "^4.0.0",
     "express": "~4.15.2",
+    "express-session": "^1.15.5",
     "jsonwebtoken": "^8.1.0",
+    "mongoose": "^4.11.11",
     "morgan": "~1.8.1",
     "passport": "^0.4.0",
     "passport-http": "^0.3.0",
-    "passport-jwt": "^3.0.1",
+    "passport-jwt": "^3.0.0",
     "pug": "~2.0.0-beta11",
     "serve-favicon": "~2.4.2",
-    "winston": "^2.4.0"
+    "winston": "^2.3.1"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "chai-http": "^3.0.0",
+    "chai-shallow-deep-equal": "^1.4.6",
+    "eslint": "^4.7.1",
+    "faker": "^4.1.0",
+    "mocha": "^3.5.3"
   }
 }
