@@ -3,14 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const {User} = require('../models/users');
 const Router = express.Router();
-const welcomeData = require('../helpers/welcomeData');
 Router.use(bodyParser.json());
-
-//check that the username is valid
-function validateEmail(username) {
-  const regex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  return regex.test(username);
-}
 
 Router.post('/', (req, res) => {
   if (!req.body) {
@@ -19,16 +12,13 @@ Router.post('/', (req, res) => {
   if (!('username' in req.body)) {
     res.status(422).json({message: 'Missing field: username'});
   }
-  let {username, password, fullName} = req.body;
+  let {username, password, store} = req.body;
   if (typeof username !== 'string') {
     res.status(422).json({message: 'Invalid field type: username'});
   }
   username = username.trim();
   if (username === '') {
     res.status(422).json({message: 'Incorrect field length: username'});
-  }
-  if (!validateEmail(username)) {
-    res.status(422).json({message: 'Invalid field type: username'});
   }
   if (!password) {
     res.status(422).json({message: 'Missing field: password'});
@@ -63,17 +53,12 @@ Router.post('/', (req, res) => {
 .create({
   username,
   password: hash,
-  fullName
+  store
 });
 })
 .then(user => {
-  const userInfo = user.apiRepr();
-  //generate sample data for user
-  welcomeData.createBoards(userInfo._id)
-  .then(welcomeBoards => welcomeData.createCardslist(userInfo._id, welcomeBoards))
-  .then(welcomeCardslist => welcomeData.createCards(userInfo._id, welcomeCardslist))
-  .then(() => res.status(201).json(userInfo))
-  .catch(err => {throw err});
+  res.setHeader('Content-Type', 'application/json');
+  res.status(201).json(user.apiRepr());
 })
 .catch(err => {
   if (err.reason === 'ValidationError') {

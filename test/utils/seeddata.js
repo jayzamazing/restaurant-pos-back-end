@@ -56,7 +56,8 @@ const createUserDB = () => {
     const {username, password} = user;
     return User.create({
       username,
-      password
+      password,
+      store
     });
   })
   .then(() => {
@@ -91,4 +92,4 @@ return User.insertMany(seed);
   });
 });
 };
-module.exports = {createUser, createUsers, createUserDB};
+module.exports = {createUser, createUsers, createUserDB, createStoreDb};

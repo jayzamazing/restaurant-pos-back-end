@@ -11,7 +11,7 @@ chai.should();
 chai.use(chaiHttp);
 
 describe('auth service', () => {
-  let decoded, user, token;
+  let decoded, token, user;
   function deleteDb() {
     return mongoose.connection.db.dropDatabase();
   }
