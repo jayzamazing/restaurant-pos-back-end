@@ -16,6 +16,7 @@ const createStore = () => {
     recommendedTip: 20
   };
 };
+//create store in mongo db
 const createStoreDb = () => {
   const store = createStore();
   const {storeNumber, storeName, address, city, state, zipCode, stateTax, recommendedTip} = store;
@@ -30,8 +31,9 @@ const createStoreDb = () => {
     recommendedTip
   }).then(res => {
     return res;
-  }).catch(err => {
-    thow(err);
+  })
+  .catch(err => {
+    throw err;
   });
 };
 //create a user info, hash password, and keep track of original password
@@ -44,20 +46,23 @@ const createUser = (store, role) => {
       password: hash,
       unhashed: password,
       store,
-      role: role
+      role
     };
   });
 };
-const createUserDB = () => {
+//create user in mongo db
+const createUserDB = role => {
   let user;
   return createStoreDb()
-  .then((res) => createUser(res._id))
-  .then((res) => {
-    const {username, password} = res;
+  .then(res => createUser(res._id, role))
+  .then(res => {
+    user = res;
+    const {username, password, store, role} = res;
     return User.create({
       username,
       password,
-      store
+      store,
+      role
     });
   })
   .then(() => {

@@ -1,8 +1,6 @@
 'use strict';
 const chai = require('chai');
 const chaiHttp = require('chai-http');
-const faker = require('faker');
-// const mongoose = require('mongoose');
 const {app, runServer, closeServer} = require('../../bin/www');
 const {DATABASE_URL} = require('../../config/serverConfig');
 const {createStoreDb, createUser} = require('../utils/seeddata');
@@ -11,7 +9,7 @@ chai.should();
 
 chai.use(chaiHttp);
 
-describe.only('user service', () => {
+describe('user service', () => {
   let user;
   //setup
   before(() => {

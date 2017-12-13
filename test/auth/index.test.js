@@ -23,7 +23,7 @@ describe('auth service', () => {
     return closeServer();
   });
   beforeEach(() => {
-    return createUserDB()
+    return createUserDB('manager')
     .then(res => {
       user = res;
     })
