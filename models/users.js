@@ -1,6 +1,7 @@
 'use strict';
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+// mongoose.set('debug', true);
 
 const options = {
   toObject: {getters: true},
@@ -10,7 +11,7 @@ const options = {
 const userSchema = mongoose.Schema({
   username: {type: String, required: true, unique: true},
   password: { type: String, required: true },
-  roles: [{ type: String, required: true }],
+  role: { type: String, default: 'user', enum: ['user', 'admin', 'manager'] },
   store: { type: mongoose.Schema.Types.ObjectId, ref: 'store' },
   createdAt: { type: Date, 'default': Date.now },
   updatedAt: { type: Date, 'default': Date.now }

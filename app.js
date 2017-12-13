@@ -7,6 +7,7 @@ const passport = require('passport');
 const {basicStrategy, jwtStrategy} = require('./helpers/strategy');
 const {User} = require('./models/users');
 const { Router : authRouter } = require('./routes/auth');
+const { Router : userRouter } = require('./routes/users');
 const { STATIC } = require('./config/serverConfig');
 const bodyParser = require('body-parser');
 const {logger} = require('./helpers/logger');
@@ -34,6 +35,7 @@ app.use(passport.initialize());
 passport.use(basicStrategy);
 passport.use(jwtStrategy);
 app.use('/auth/', authRouter);
+app.use('/users/', userRouter);
 app.use('*', (req, res) => {
   res.status(200).sendFile(path.join(__dirname + STATIC + '/index.html'));
 });

@@ -28,32 +28,32 @@ const createStoreDb = () => {
     zipCode,
     stateTax,
     recommendedTip
+  }).then(res => {
+    return res;
+  }).catch(err => {
+    thow(err);
   });
 };
 //create a user info, hash password, and keep track of original password
-const createUser = () => {
+const createUser = (store, role) => {
   const password = faker.internet.password();
   return User.hashPassword(password)
   .then(hash => {
     return {
       username: faker.internet.email(),
       password: hash,
-      unhashed: password
+      unhashed: password,
+      store,
+      role: role
     };
   });
 };
 const createUserDB = () => {
-  let store, user;
+  let user;
   return createStoreDb()
-  .then(res => {
-    store = res._id;
-  })
-  .then(() => createUser())
-  .then(res => {
-    user = res;
-  })
-  .then(() => {
-    const {username, password} = user;
+  .then((res) => createUser(res._id))
+  .then((res) => {
+    const {username, password} = res;
     return User.create({
       username,
       password,

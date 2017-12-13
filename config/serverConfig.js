@@ -1,7 +1,7 @@
 'use strict';
 exports.DATABASE_URL = process.env.DATABASE_URL ||
                        global.DATABASE_URL ||
-                      'mongodb://localhost/reactTrello';
+                      'mongodb://localhost/restaurant-pos-dev';
 exports.PORT = process.env.PORT || 3030;
 exports.NODE_ENV = process.env.NODE_ENV || 'development';
 exports.STATIC = process.env.STATIC || '/public';

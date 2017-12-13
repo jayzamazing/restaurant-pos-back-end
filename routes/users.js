@@ -12,7 +12,7 @@ Router.post('/', (req, res) => {
   if (!('username' in req.body)) {
     res.status(422).json({message: 'Missing field: username'});
   }
-  let {username, password, store} = req.body;
+  let {username, password, store, role} = req.body;
   if (typeof username !== 'string') {
     res.status(422).json({message: 'Invalid field type: username'});
   }
@@ -30,6 +30,17 @@ Router.post('/', (req, res) => {
 
   if (password === '') {
     res.status(422).json({message: 'Incorrect field length: password'});
+  }
+  if (!role) {
+    res.status(422).json({message: 'Missing field: role'});
+  }
+  if (typeof role !== 'string') {
+    res.status(422).json({message: 'Incorrect field type: role'});
+  }
+  role = role.trim();
+
+  if (role === '') {
+    res.status(422).json({message: 'Incorrect field length: role'});
   }
 // check for existing user
   User
@@ -53,7 +64,8 @@ Router.post('/', (req, res) => {
 .create({
   username,
   password: hash,
-  store
+  store,
+  role
 });
 })
 .then(user => {

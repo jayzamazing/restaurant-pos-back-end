@@ -8,8 +8,8 @@ const options = {
 };
 //schema representing a user
 const storeSchema = mongoose.Schema({
-  storeNumber: {type: Number, required: true, unique: true},
-  storeName: { type: String, required: true },
+  storeNumber: { type: Number, unique: true, required: true },
+  storeName: { type: String, unique: true, required: true },
   address: { type: String, required: true },
   city: { type: String, required: true },
   state: { type: String, required: true },
