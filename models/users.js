@@ -22,9 +22,7 @@ userSchema.methods.apiRepr = function() {
     _id: this._id,
     username: this.username,
     roles: this.roles,
-    store: this.store,
-    createdAt: this.createdAt,
-    updatedAt: this.updatedAt
+    store: this.store
   };
 };
 userSchema.methods.validateRole = function(role) {

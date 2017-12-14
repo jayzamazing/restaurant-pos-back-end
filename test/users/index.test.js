@@ -47,7 +47,7 @@ describe('user service', () => {
       /* eslint-disable */
       res.should.be.json;
       /* eslint-enable */
-      res.body.should.include.keys('username', 'createdAt', 'updatedAt');
+      res.body.should.include.keys('username');
       res.body.username.should.equal(user.username);
     });
   });

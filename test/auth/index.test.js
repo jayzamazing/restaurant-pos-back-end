@@ -1,7 +1,7 @@
 'use strict';
 const chai = require('chai');
 const chaiHttp = require('chai-http');
-const mongoose = require('mongoose');
+const {deleteDb} = require('../utils/cleandb');
 const {app, runServer, closeServer} = require('../../bin/www');
 const jwt = require('jsonwebtoken');
 const {JWT_SECRET} = require('../../config/serverConfig');
@@ -12,17 +12,16 @@ chai.use(chaiHttp);
 
 describe('auth service', () => {
   let decoded, token, user;
-  function deleteDb() {
-    return mongoose.connection.db.dropDatabase();
-  }
-  //setup
   before(() => {
+    //start the server and connect to the db
     return runServer();
   });
   after(() => {
+    //stop the server and disconnect from the db
     return closeServer();
   });
   beforeEach(() => {
+    //create a user and then create a token
     return createUserDB('manager')
     .then(res => {
       user = res;
@@ -37,7 +36,9 @@ describe('auth service', () => {
       decoded = jwt.decode(token);
     });
   });
+  //clean up and delete the db
   afterEach(() => {
+    user = {};
     token = {};
     decoded = {};
     return deleteDb();

@@ -7,7 +7,7 @@ const options = {
 };
 //schema representing a board
 const categoriesSchema = new mongoose.Schema({
-  name: { type: String, required: true },
+  name: { type: String, required: true, unique: true },
   createdAt: { type: Date, 'default': Date.now },
   updatedAt: { type: Date, 'default': Date.now }
 }, options);
