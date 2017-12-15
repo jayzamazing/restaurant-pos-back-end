@@ -2,6 +2,8 @@
 const faker = require('faker');
 const {User} = require('../../models/users');
 const {Store} = require('../../models/store');
+const {Categories} = require('../../models/categories');
+
 
 //create a store info
 const createStore = () => {
@@ -97,4 +99,32 @@ return User.insertMany(seed);
   });
 });
 };
-module.exports = {createUser, createUsers, createUserDB, createStoreDb};
+const createCategory = () => {
+  return { name: faker.commerce.product() };
+};
+//create multiple categories
+const createCategoriesDB = count => {
+  const seedData = [];
+  for (let index = 0; index <= count; index++) {
+    seedData.push(createCategory());
+  }
+  //wait for all actions to complete before continuing
+  return Promise.all(seedData)
+  .then(seed => Categories.insertMany(seed))
+  .then(res => {
+    return res.map(categories => {
+      return {
+        _id: categories._id,
+        name: categories.name
+      };
+    });
+  });
+};
+module.exports = {
+  createUser,
+  createUsers,
+  createUserDB,
+  createStoreDb,
+  createCategory,
+  createCategoriesDB
+};

@@ -52,5 +52,33 @@ Router.post('/', authenticatedJWT, (req, res) => {
   res.status(500).json({message: err});
 });
 });
+Router.get('/', authenticatedJWT, (req, res) => {
+  Categories
+  .find()
+  .exec()
+  .then(categories => {
+    var count = categories.length;
+    if (count >= 1) {
+      res.setHeader('Content-Type', 'application/json');
+      res.json(
+        categories.map(
+          (categories) => categories.apiRepr()
+        )
+      );
+    } else {
+      return Promise.reject({
+        code: 204,
+        reason: 'NoData',
+        message: 'No Data found under categories'
+      });
+    }
+  })
+  .catch(err => {
+    if (err.reason === 'NoData') {
+      return res.status(err.code).json(err);
+    }
+    res.status(500).json({message: err});
+  });
+});
 
 module.exports = {Router};
