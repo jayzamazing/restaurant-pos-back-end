@@ -9,6 +9,7 @@ const {User} = require('./models/users');
 const { Router : authRouter } = require('./routes/auth');
 const { Router : userRouter } = require('./routes/users');
 const { Router : categoryRouter } = require('./routes/categories');
+const { Router : menuRouter } = require('./routes/menu');
 const { STATIC } = require('./config/serverConfig');
 const bodyParser = require('body-parser');
 const {logger} = require('./helpers/logger');
@@ -38,6 +39,7 @@ passport.use(jwtStrategy);
 app.use('/auth/', authRouter);
 app.use('/users/', userRouter);
 app.use('/categories/', categoryRouter);
+app.use('/menus/', menuRouter);
 app.use('*', (req, res) => {
   res.status(200).sendFile(path.join(__dirname + STATIC + '/index.html'));
 });

@@ -3,6 +3,7 @@ const faker = require('faker');
 const {User} = require('../../models/users');
 const {Store} = require('../../models/store');
 const {Categories} = require('../../models/categories');
+const {Menu} = require('../../models/menu');
 
 
 //create a store info
@@ -105,8 +106,15 @@ const createCategory = () => {
 //create multiple categories
 const createCategoriesDB = count => {
   const seedData = [];
+  const seedData2 = [];
   for (let index = 0; index <= count; index++) {
-    seedData.push(createCategory());
+    let temp;
+    //ensure that array does not contain duplicate items
+    do {
+      temp = faker.commerce.product();
+    } while (seedData2.includes(temp));
+    seedData.push({name: temp});
+    seedData2.push(temp);
   }
   //wait for all actions to complete before continuing
   return Promise.all(seedData)
@@ -120,7 +128,40 @@ const createCategoriesDB = count => {
     });
   });
 };
+const createMenu = category => {
+  return {
+    name: faker.commerce.productName(),
+    price: parseFloat(faker.commerce.price()),
+    category
+  };
+};
+//create multiple menu items
+const createMenuDB = count => {
+  return createCategoriesDB(count)
+  .then(res => {
+    const seedData = [];
+    for (let index = 0; index < count; index++) {
+      seedData.push(createMenu(res[index]._id));
+    }
+    return seedData;
+  })
+  //wait for all actions to complete before continuing
+  .then(seedData => Promise.all(seedData))
+  .then(seed => Menu.insertMany(seed))
+  .then(res => {
+    return res.map(menu => {
+      return {
+        id: menu._id,
+        name: menu.name,
+        category: menu.category,
+        price: menu.price
+      };
+    });
+  });
+};
 module.exports = {
+  createMenu,
+  createMenuDB,
   createUser,
   createUsers,
   createUserDB,

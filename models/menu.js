@@ -7,7 +7,7 @@ const options = {
 };
 //schema representing a board
 const menuSchema = new mongoose.Schema({
-  name: { type: String, required: true },
+  name: { type: String, required: true, unique: true },
   price: { type: Number, required: true },
   category: [{ type: mongoose.Schema.Types.ObjectId, ref: 'categories' }],
   createdAt: { type: Date, 'default': Date.now },
@@ -18,7 +18,7 @@ menuSchema.methods.apiRepr = function() {
   return {
     _id: this._id,
     name: this.name,
-    categories: categories
+    category: this.category
   };
 };
 

@@ -12,6 +12,15 @@ Router.post('/', (req, res) => {
   if (!('username' in req.body)) {
     res.status(422).json({message: 'Missing field: username'});
   }
+  if (!('password' in req.body)) {
+    res.status(422).json({message: 'Missing field: password'});
+  }
+  if (!('store' in req.body)) {
+    res.status(422).json({message: 'Missing field: store'});
+  }
+  if (!('role' in req.body)) {
+    res.status(422).json({message: 'Missing field: role'});
+  }
   let {username, password, store, role} = req.body;
   if (typeof username !== 'string') {
     res.status(422).json({message: 'Invalid field type: username'});
