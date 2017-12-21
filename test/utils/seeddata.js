@@ -4,7 +4,7 @@ const {User} = require('../../models/users');
 const {Store} = require('../../models/store');
 const {Categories} = require('../../models/categories');
 const {Menu} = require('../../models/menu');
-
+// const {Table} = require('../../models/table');
 
 //create a store info
 const createStore = () => {
@@ -159,9 +159,17 @@ const createMenuDB = count => {
     });
   });
 };
+const createTable = (tableId, checkNumber, order) => {
+  return {
+    tableId,
+    checkNumber,
+    order
+  };
+};
 module.exports = {
   createMenu,
   createMenuDB,
+  createTable,
   createUser,
   createUsers,
   createUserDB,

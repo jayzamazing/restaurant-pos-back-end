@@ -67,6 +67,7 @@ Router.post('/', authenticatedJWT, (req, res) => {
     }
     res.status(500).json({message: err});
   });
+});
 Router.get('/', authenticatedJWT, (req, res) => {
   Menu.find()
   .exec()
@@ -93,7 +94,6 @@ Router.get('/', authenticatedJWT, (req, res) => {
     }
     return res.status(500).json({message: err});
   });
-});
 });
 
 module.exports = {Router};
