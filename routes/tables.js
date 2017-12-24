@@ -55,5 +55,37 @@ Router.post('/', authenticatedJWT, (req, res) => {
     return res.status(500).json({message: err});
   });
 });
+Router.get('/', authenticatedJWT, (req, res) => {
+  //get all tableSchema
+  Table
+  .find()
+  .populate({
+    path: 'counter'
+  })
+  .exec()
+  .then(tables => {
+    var count = tables.length;
+    if (count >= 1) {
+      res.setHeader('Content-Type', 'application/json');
+      res.json(
+        tables.map(
+          (table) => table.apiRepr()
+        )
+      );
+    } else {
+      return Promise.reject({
+        code: 204,
+        reason: 'NoData',
+        message: 'No Tables Found'
+      });
+    }
+  })
+  .catch(err => {
+    if (err.reason === 'NoData') {
+      return res.status(err.code).json(err);
+    }
+    res.status(500).json({message: err});
+  });
+});
 
 module.exports = {Router};
