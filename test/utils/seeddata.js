@@ -4,7 +4,7 @@ const {User} = require('../../models/users');
 const {Store} = require('../../models/store');
 const {Categories} = require('../../models/categories');
 const {Menu} = require('../../models/menu');
-// const {Table} = require('../../models/table');
+const {Table} = require('../../models/table');
 
 //create a store info
 const createStore = () => {
@@ -151,7 +151,7 @@ const createMenuDB = count => {
   .then(res => {
     return res.map(menu => {
       return {
-        id: menu._id,
+        _id: menu._id,
         name: menu.name,
         category: menu.category,
         price: menu.price
@@ -166,10 +166,33 @@ const createTable = (tableId, checkNumber, order) => {
     order
   };
 };
+const createTableDB = menu => {
+  const seedData = [];
+  for (let index = 0; index < menu.length; index++) {
+    /* eslint-disable */
+    seedData.push(createTable(index + 1, 100 + index, [{dish: menu[index]._id, notes: faker.commerce.productName()}]));
+    /* eslint-enable */
+  }
+  return Promise.all(seedData)
+  .then(seed => {
+    return Table.insertMany(seed);
+  })
+  .then(res => {
+    return res.map(table => {
+      return {
+        _id: table._id,
+        tableId: table.tableId,
+        checkNumber: table.checkNumber,
+        order: table.order
+      };
+    });
+  });
+};
 module.exports = {
   createMenu,
   createMenuDB,
   createTable,
+  createTableDB,
   createUser,
   createUsers,
   createUserDB,
