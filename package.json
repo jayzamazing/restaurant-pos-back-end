@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node ./bin/www",
     "inspect": "node --inspect ./bin/www",
-    "mongod": "mongod --dbpath=/Users/adrianlopez/Documents/mongo-data --nojournal --rest $@",
+    "mongod": "mongod --dbpath=/Users/jay/Documents/mongo-data --nojournal --rest $@",
     "test": "npm run eslint && npm run mocha",
     "eslint": "eslint test/.",
     "mocha": "mocha test/ --recursive"
